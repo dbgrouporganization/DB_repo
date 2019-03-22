@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author scj
  *
  */
-public class PersonTable {
+public class CustomerTable {
 
 	/**
 	 * Reads a cvs file for data and adds them to the person table
@@ -23,7 +23,7 @@ public class PersonTable {
 	 * @param fileName
 	 * @throws SQLException
 	 */
-	public static void populatePersonTableFromCSV(Connection conn,
+	public static void populateStockTableFromCSV(Connection conn,
 			                                      String fileName)
 			                                    		  throws SQLException {
 		/**
@@ -33,13 +33,13 @@ public class PersonTable {
 		 * You can do the reading and adding to the table in one
 		 * step, I just broke it up for example reasons
 		 */
-		ArrayList<Person> people = new ArrayList<Person>();
+		ArrayList<Person> Customer = new ArrayList<Person>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				people.add(new Person(split));
+				Customer.add(new Person(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -47,11 +47,11 @@ public class PersonTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all people
+		 * Creates the SQL query to do a bulk add of all Customer
 		 * that were read in. This is more efficent then adding one
 		 * at a time
 		 */
-		String sql = createPersonInsertSQL(people);
+		String sql = createCustomerInsertSQL(Customer);
 
 		/**
 		 * Create and execute an SQL statement
@@ -66,13 +66,20 @@ public class PersonTable {
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createPersonTable(Connection conn){
+	public static void createCustomerTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS person("
-					     + "ID INT PRIMARY KEY,"
+			String query = "CREATE TABLE IF NOT EXISTS customer("
 					     + "FIRST_NAME VARCHAR(255),"
 					     + "LAST_NAME VARCHAR(255),"
-					     + "MI VARCHAR(1),"
+						 + "ID INT PRIMARY KEY,"
+					     + "ADDR_NUM INT,"
+						 + "ADDR_STREET VARCHAR(255),"
+						 + "ADDR_CITY VARCHAR(255),"
+						 + "ADDR_STATE VARCHAR(255),"
+						 + "ADDR_ZIP INT,"
+						 + "PHONE INT,"
+					 	 + "GENDER VARCHAR(255),"
+						 + "INCOME INT"
 					     + ");" ;
 			
 			/**
@@ -89,23 +96,18 @@ public class PersonTable {
 	 * Adds a single person to the database
 	 * 
 	 * @param conn
-	 * @param id
 	 * @param fName
 	 * @param lName
-	 * @param MI
 	 */
-	public static void addPerson(Connection conn,
-			                     int id,
-			                     String fName,
-			                     String lName,
-			                     String MI){
+	public static void addCustomer(Connection conn,
+								   String fName, String lName, int ID, int addr_num, String addr_street, String addr_city, String addr_state, int addr_zip, int phone, String gender, int income){
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO person "
-				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\');",
-				                     id, fName, lName, MI);
+				                   + "VALUES(%s,\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%d\',\'%s\',\'%d\');",
+									fName, lName, ID, addr_num, addr_street, addr_city, addr_state, addr_zip, phone, gender, income);
 		try {
 			/**
 			 * create and execute the query
@@ -119,13 +121,13 @@ public class PersonTable {
 	}
 	
 	/**
-	 * This creates an sql statement to do a bulk add of people
+	 * This creates an sql statement to do a bulk add of customer
 	 * 
-	 * @param people: list of Person objects to add
+	 * @param customer: list of Person objects to add
 	 * 
 	 * @return
 	 */
-	public static String createPersonInsertSQL(ArrayList<Person> people){
+	public static String createCustomerInsertSQL(ArrayList<Person> customer){
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -143,11 +145,11 @@ public class PersonTable {
 		 * 
 		 * If it is the last person add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < people.size(); i++){
-			Person p = people.get(i);
+		for(int i = 0; i < customer.size(); i++){
+			Person p = customer.get(i);
 			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
 					p.getId(), p.getFirstName(), p.getLastName(), p.getMI()));
-			if( i != people.size()-1){
+			if( i != customer.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -166,7 +168,7 @@ public class PersonTable {
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryPersonTable(Connection conn,
+	public static ResultSet queryCustomerTable(Connection conn,
 			                                 ArrayList<String> columns,
 			                                 ArrayList<String> whereClauses){
 		StringBuilder sb = new StringBuilder();
@@ -241,17 +243,24 @@ public class PersonTable {
 	 * @param conn
 	 */
 	public static void printPersonTable(Connection conn){
-		String query = "SELECT * FROM person;";
+		String query = "SELECT * FROM customer;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Person %d: %s %s %s\n",
-						          result.getInt(1),
+				System.out.printf("Customer: %s, %s, %d, %d, %s, %s, %s, %d, %d, %s, %d\n",
+						          result.getString(1),
 						          result.getString(2),
-						          result.getString(4),
-						          result.getString(3));
+						          result.getInt(3),
+						          result.getInt(4),
+								  result.getString(5),
+							   	  result.getString(6),
+								  result.getString(7),
+								  result.getInt(8),
+								  result.getInt(9),
+							 	  result.getString(10),
+								  result.getInt(11));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
