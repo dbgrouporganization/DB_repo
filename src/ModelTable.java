@@ -64,8 +64,9 @@ public class ModelTable {
 	public static void createModelTable(Connection conn){
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS model("
-					     + "MYEAR INT PRIMARY KEY,"
-					     + "MNAME VARCHAR(255) PRIMARY KEY ,"
+					     + "MYEAR INT,"
+					     + "MNAME VARCHAR(255),"
+						 + "PRIMARY KEY(MYEAR, MNAME),"
 					     + "BRAND VARCHAR(255),"
 					     + "BODYSTYLE VARCHAR(255),"
 					     + ");" ;
@@ -123,10 +124,10 @@ public class ModelTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO model (VIM, MODEL, OPTIONS_ID, PRICE) VALUES");
+		sb.append("INSERT INTO model (myear, mname, brand, bodystyle) VALUES");
 		
 		/**
-		 * For each model append a (vim, model, options_id, price) tuple
+		 * For each model append a (myear, mname, brand, bodystyle) tuple
 		 * 
 		 * If it is not the last model add a comma to separate
 		 * 

@@ -1,30 +1,42 @@
 /**
  * Hold data about a stock entry
- * @author scj
  *
+ * @author team 18
  */
 public class Stock {
 
-	int VIN;
-	String OwnerId;
+	int vin;
+	int dealer_id;
+	String brand_owner;
+	int customer_id;
 
-	public Stock(int VIN,
-                 String OwnerId){
-		this.VIN = VIN;
-		this.OwnerId = OwnerId;
+	public Stock(int vin, int dealer_id, String brand_owner, int customer_id) {
+		this.vin = vin;
+		this.dealer_id = dealer_id;
+		this.brand_owner = brand_owner;
+		this.customer_id = customer_id;
 	}
 
 	public Stock(String[] data){
-		this.VIN = Integer.parseInt(data[0]);
-		this.OwnerId = data[1];
+		this.vin = Integer.parseInt(data[0]);
+		this.dealer_id = Integer.parseInt(data[1]);
+		this.brand_owner = data[2];
+		this.customer_id = Integer.parseInt(data[3]);
 	}
 
-	public int getVIN() {
-		return VIN;
-	}
-	
-	public String getOwnerId() {
-		return OwnerId;
+	public int getVin() {
+		return vin;
 	}
 
+	public int getDealer_id() {
+		return dealer_id;
+	}
+
+	public String getBrand_owner() {
+		return brand_owner;
+	}
+
+	public int getCustomer_id() {
+		return customer_id;
+	}
 }

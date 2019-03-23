@@ -3,7 +3,7 @@ import static java.lang.Float.parseFloat;
 /**
  * Hold data about a Vehicle
  *
- * @author jlb
+ * @author team 18
  */
 public class Model {
 

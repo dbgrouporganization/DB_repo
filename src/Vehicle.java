@@ -1,9 +1,7 @@
-import static java.lang.Float.parseFloat;
-
 /**
  * Hold data about a Vehicle
  *
- * @author jlb
+ * @author team 18
  */
 public class Vehicle {
 
@@ -23,7 +21,7 @@ public class Vehicle {
 		this.vin = Integer.parseInt(data[0]);
 		this.model = data[1];
 		this.options_id = data[2];
-		this.price = parseFloat(data[3]);
+		this.price = Float.parseFloat(data[3]);
 	}
 
 	public int getVIN() {

@@ -64,7 +64,7 @@ public class VehicleTable {
 	public static void createVehicleTable(Connection conn){
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS vehicle("
-					     + "VIM INT PRIMARY KEY,"
+					     + "VIN INT PRIMARY KEY,"
 					     + "MODEL VARCHAR(255),"
 					     + "OPTIONS_ID VARCHAR(255),"
 					     + "PRICE NUMERIC(10,2),"
@@ -84,19 +84,19 @@ public class VehicleTable {
 	 * Adds a single Vehicle to the database
 	 *
 	 * @param conn
-	 * @param vim
+	 * @param vin
 	 * @param model
 	 * @param options_id
 	 * @param price
 	 */
-	public static void addVehicle(Connection conn, int vim, String model, String options_id, float price) {
+	public static void addVehicle(Connection conn, int vin, String model, String options_id, float price) {
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO Vehicle "
 				                   + "VALUES(%d,\'%s\',\'%s\',\'%f\');",
-				                     vim, model, options_id, price);
+				                     vin, model, options_id, price);
 		try {
 			/**
 			 * create and execute the query
@@ -123,10 +123,10 @@ public class VehicleTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO vehicle (vim, model, options_id, price) VALUES");
+		sb.append("INSERT INTO vehicle (vin, model, options_id, price) VALUES");
 		
 		/**
-		 * For each vehicle append a (vim, model, options_id, price) tuple
+		 * For each vehicle append a (vin, model, options_id, price) tuple
 		 * 
 		 * If it is not the last vehicle add a comma to separate
 		 * 

@@ -28,9 +28,7 @@ public class DB_Main {
 			Class.forName("org.h2.Driver");
 			
 			//creates the connection
-			conn = DriverManager.getConnection(url,
-					                           user,
-					                           password);
+			conn = DriverManager.getConnection(url, user, password);
 		} catch (SQLException | ClassNotFoundException e) {
 			//You should handle this better
 			e.printStackTrace();
@@ -79,7 +77,7 @@ public class DB_Main {
 			 * Vehicle Table Population
 			 */
 			VehicleTable.createVehicleTable(demo.getConnection());
-			VehicleTable.populateVehicleTableFromCSV(demo.getConnection(),"vehicle.csv");
+			VehicleTable.populateVehicleTableFromCSV(demo.getConnection(),"./csv files/vehicle.csv");
 			//Just displays the table
 			VehicleTable.printVehicleTable(demo.getConnection());
 			//Runs a basic query on the table
@@ -90,7 +88,7 @@ public class DB_Main {
 			 * Brand Table Population
 			 */
 			BrandTable.createBrandTable(demo.getConnection());
-			BrandTable.populateBrandTableFromCSV(demo.getConnection(),"brand.csv");
+			BrandTable.populateBrandTableFromCSV(demo.getConnection(),"./csv files/brand.csv");
 			//Just displays the table
 			BrandTable.printBrandTable(demo.getConnection());
 			//Runs a basic query on the table
@@ -101,18 +99,18 @@ public class DB_Main {
 			 * Dealer Table Population
 			 */
 			DealerTable.createDealerTable(demo.getConnection());
-			DealerTable.populateDealerTableFromCSV(demo.getConnection(),"dealer.csv");
+			DealerTable.populateDealerTableFromCSV(demo.getConnection(),"./csv files/dealer.csv");
 			//Just displays the table
 			DealerTable.printDealerTable(demo.getConnection());
 			//Runs a basic query on the table
-			System.out.println("\n\nPrint results of SELECT * FROM sealer");
+			System.out.println("\n\nPrint results of SELECT * FROM dealer");
 			ResultSet results3 = DealerTable.queryDealerTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
 
 			/**
 			 * Model Table Population
 			 */
 			ModelTable.createModelTable(demo.getConnection());
-			ModelTable.populateModelTableFromCSV(demo.getConnection(),"model.csv");
+			ModelTable.populateModelTableFromCSV(demo.getConnection(),"./csv files/model.csv");
 			//Just displays the table
 			ModelTable.printModelTable(demo.getConnection());
 			//Runs a basic query on the table
@@ -123,7 +121,7 @@ public class DB_Main {
 			 * Customer Table Population
 			 */
 			CustomerTable.createCustomerTable(demo.getConnection());
-			CustomerTable.populateCustomerTableFromCSV(demo.getConnection(),"customer.csv");
+			CustomerTable.populateCustomerTableFromCSV(demo.getConnection(),"./csv files/customer.csv");
 			//Just displays the table
 			CustomerTable.printCustomerTable(demo.getConnection());
 			//Runs a basic query on the table
@@ -134,7 +132,7 @@ public class DB_Main {
 			 * Stock Table Population
 			 */
 			StockTable.createStockTable(demo.getConnection());
-			StockTable.populateStockTableFromCSV(demo.getConnection(),"stock.csv");
+			StockTable.populateStockTableFromCSV(demo.getConnection(),"./csv files/stock.csv");
 			//Just displays the table
 			StockTable.printStockTable(demo.getConnection());
 			//Runs a basic query on the table
@@ -145,24 +143,23 @@ public class DB_Main {
 			 * Options Table Population
 			 */
 			OptionsTable.createOptionsTable(demo.getConnection());
-			OptionsTable.populateOptionsTableFromCSV(demo.getConnection(),"options.csv");
+			OptionsTable.populateOptionsTableFromCSV(demo.getConnection(),"./csv files/options.csv");
 			//Just displays the table
 			OptionsTable.printOptionsTable(demo.getConnection());
 			//Runs a basic query on the table
-			System.out.println("\n\nPrint results of SELECT * FROM vehicle");
+			System.out.println("\n\nPrint results of SELECT * FROM options");
 			ResultSet results7 = OptionsTable.queryOptionsTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
 
 			/**
 			 * Sale Table Population
-			 *
+			 */
 			SaleTable.createSaleTable(demo.getConnection());
-			SaleTable.populateSaleTableFromCSV(demo.getConnection(),"sale.csv");
+			SaleTable.populateSaleTableFromCSV(demo.getConnection(),"./csv files/sale.csv");
 			//Just displays the table
 			SaleTable.printSaleTable(demo.getConnection());
 			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM sale");
 			ResultSet results8 = SaleTable.querySaleTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
-			*/
 
 			/**
 			 * Iterates the Result set
@@ -182,17 +179,12 @@ public class DB_Main {
 						          results1.getFloat(4));
 			}
 
-
-
-
-
-
 			/**
 			 * A more complex query with columns selected and 
 			 * addition conditions
 			 */
 			System.out.println("\n\nPrint results of SELECT "
-					+ "vim, model "
+					+ "vin, model "
 					+ "FROM vehicle "
 					+ "WHERE model = \'Aventador\' "
 					+ "AND options_id = 2");
@@ -204,7 +196,7 @@ public class DB_Main {
 			 * you can just construct the whole query here 
 			 */
 			ArrayList<String> columns = new ArrayList<String>();
-			columns.add("vim");
+			columns.add("vin");
 			columns.add("model");
 			columns.add("options_id");
 			
@@ -223,15 +215,12 @@ public class DB_Main {
 			 * Notice not all of the columns are here because
 			 * we limited what to show in the query
 			 */
-			ResultSet results11 = VehicleTable.queryVehicleTable(
-                    demo.getConnection(),
-                    columns,
-                    whereClauses);
-			while(results2.next()){
+			ResultSet results9 = VehicleTable.queryVehicleTable(demo.getConnection(), columns, whereClauses);
+			while(results9.next()){
 			System.out.printf("\tVehicle %d: %s %d\n",
-				          results2.getInt(1),
-				          results2.getString(2),
-				          results2.getInt(3));
+				          results9.getInt(1),
+				          results9.getString(2),
+				          results9.getInt(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
