@@ -31,7 +31,7 @@ public class Customer {
 		this.income = income;
 	}
 
-	public Customer(String[] data){
+	public Customer (String[] data){
 		this.fName = data[0];
 		this.lName = data[1];
 		this.ID = Integer.parseInt(data[2]);
