@@ -8,32 +8,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Vehicle table
+ * Class to make and manipulate the Options table
  *
  * @author jlb
  */
-public class VehicleTable {
+public class OptionsTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the vehicle table
+	 * Reads a cvs file for data and adds them to the Options table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
 	 * @param fileName: name of csv file
 	 * @throws SQLException
 	 */
-	public static void populateVehicleTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateOptionsTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
 		 */
-		ArrayList<Vehicle> vehicle = new ArrayList<Vehicle>();
+		ArrayList<Options> Options = new ArrayList<Options>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				vehicle.add(new Vehicle(split));
+				Options.add(new Options(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -41,11 +41,11 @@ public class VehicleTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all vehicles
+		 * Creates the SQL query to do a bulk add of all Options
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createVehicleInsertSQL(vehicle);
+		String sql = createOptionsInsertSQL(Options);
 
 		/**
 		 * Create and execute an SQL statement
@@ -57,17 +57,21 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Create the Vehicle table with the given attributes
+	 * Create the Options table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createVehicleTable(Connection conn){
+	public static void createOptionsTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS vehicle("
-					     + "VIM INT PRIMARY KEY,"
-					     + "MODEL VARCHAR(255),"
-					     + "OPTIONS_ID VARCHAR(255),"
-					     + "PRICE NUMERIC(10,2),"
+			String query = "CREATE TABLE IF NOT EXISTS Options("
+					     + "options_id INT PRIMARY KEY,"
+					     + "color VARCHAR(255),"
+					     + "engine VARCHAR(255),"
+					     + "transmission VARCHAR(255),"
+						 + "navigation BOOLEAN,"
+						 + "bluetooth BOOLEAN,"
+					 	 + "heated_seats BOOLEAN,"
+						 + "roof_rack BOOLEAN,"
 					     + ");" ;
 			
 			/**
@@ -81,22 +85,27 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Adds a single Vehicle to the database
+	 * Adds a single Options to the database
 	 *
 	 * @param conn
-	 * @param vim
-	 * @param model
 	 * @param options_id
-	 * @param price
+	 * @param color
+	 * @param engine
+	 * @param transmission
+	 * @param navigation
+	 * @param bluetooth
+	 * @param heated_seats
+	 * @param roof_rack
 	 */
-	public static void addVehicle(Connection conn, int vim, String model, String options_id, float price) {
+	public static void addOptions(Connection conn, int options_id, String color, String engine, String transmission,
+								  Boolean navigation, Boolean bluetooth, Boolean heated_seats, Boolean roof_rack) {
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Vehicle "
-				                   + "VALUES(%d,\'%s\',\'%s\',\'%f\');",
-				                     vim, model, options_id, price);
+		String query = String.format("INSERT INTO Options "
+				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\',%b,%b,%b,%b);",
+				                     options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack);
 		try {
 			/**
 			 * create and execute the query
@@ -110,33 +119,33 @@ public class VehicleTable {
 	}
 	
 	/**
-	 * This creates an sql statement to do a bulk add of people
+	 * This creates an sql statement to do a bulk add of Options
 	 * 
-	 * @param vehicle: list of Vehicle objects to add
+	 * @param Options: list of Options objects to add
 	 * 
 	 * @return
 	 */
-	public static String createVehicleInsertSQL(ArrayList<Vehicle> vehicle) {
+	public static String createOptionsInsertSQL(ArrayList<Options> Options) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO vehicle (vim, model, options_id, price) VALUES");
+		sb.append("INSERT INTO Options (options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack) VALUES");
 		
 		/**
-		 * For each vehicle append a (vim, model, options_id, price) tuple
+		 * For each Options append a (options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack) tuple
 		 * 
-		 * If it is not the last vehicle add a comma to separate
+		 * If it is not the last Options add a comma to separate
 		 * 
-		 * If it is the last vehicle add a semi-colon to end the statement
+		 * If it is the last Options add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < vehicle.size(); i++){
-			Vehicle v = vehicle.get(i);
-			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
-					v.getVIN(), v.getModel(), v.getOptions_ID(), v.getPrice()));
-			if( i != vehicle.size()-1){
+		for(int i = 0; i < Options.size(); i++){
+			Options v = Options.get(i);
+			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\',%b,%b,%b,%b)",
+					v.getOptions_id(), v.getColor(), v.getEngine(), v.getTransmission(), v.getNavigation(), v.getBluetooth(), v.getHeated_seats(), v.getRoof_rack()));
+			if( i != Options.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -147,14 +156,14 @@ public class VehicleTable {
 	}
 	
 	/**
-	 * Makes a query to the Vehicle table with given columns and conditions
+	 * Makes a query to the Options table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryOptionsTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -185,7 +194,7 @@ public class VehicleTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Vehicle ");
+		sb.append("FROM Options ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -223,21 +232,25 @@ public class VehicleTable {
 	}
 	
 	/**
-	 * Queries and prints the table
+	 * Queries and print the table
 	 * @param conn
 	 */
-	public static void printVehicleTable(Connection conn){
-		String query = "SELECT * FROM Vehicle;";
+	public static void printOptionsTable(Connection conn){
+		String query = "SELECT * FROM Options;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Vehicle %d: %s %s %f\n",
+				System.out.printf("Options %d: %s %s %s %b %b %b %b\n",
 						          result.getInt(1),
 						          result.getString(2),
-						          result.getString(3),
-						          result.getFloat(4));
+								  result.getString(3),
+								  result.getString(4),
+								  result.getBoolean(5),
+						          result.getBoolean(6),
+                                  result.getBoolean(7),
+						          result.getBoolean(8));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

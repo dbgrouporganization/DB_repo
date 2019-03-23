@@ -12,28 +12,28 @@ import java.util.ArrayList;
  *
  * @author jlb
  */
-public class VehicleTable {
+public class ModelTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the vehicle table
+	 * Reads a cvs file for data and adds them to the Model table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
 	 * @param fileName: name of csv file
 	 * @throws SQLException
 	 */
-	public static void populateVehicleTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateModelTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
 		 */
-		ArrayList<Vehicle> vehicle = new ArrayList<Vehicle>();
+		ArrayList<Model> model = new ArrayList<Model>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				vehicle.add(new Vehicle(split));
+				model.add(new Model(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -41,11 +41,11 @@ public class VehicleTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all vehicles
+		 * Creates the SQL query to do a bulk add of all models
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createVehicleInsertSQL(vehicle);
+		String sql = createModelInsertSQL(model);
 
 		/**
 		 * Create and execute an SQL statement
@@ -57,13 +57,13 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Create the Vehicle table with the given attributes
+	 * Create the Model table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createVehicleTable(Connection conn){
+	public static void createModelTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS vehicle("
+			String query = "CREATE TABLE IF NOT EXISTS model("
 					     + "VIM INT PRIMARY KEY,"
 					     + "MODEL VARCHAR(255),"
 					     + "OPTIONS_ID VARCHAR(255),"
@@ -80,23 +80,23 @@ public class VehicleTable {
 		}
 	}
 
-	/**
-	 * Adds a single Vehicle to the database
-	 *
-	 * @param conn
-	 * @param vim
-	 * @param model
-	 * @param options_id
-	 * @param price
-	 */
-	public static void addVehicle(Connection conn, int vim, String model, String options_id, float price) {
+    /**
+     * Adds a single Model to the database
+     *
+     * @param conn
+     * @param Year
+     * @param Name
+     * @param Brand
+     * @param BodyStyle
+     */
+	public static void addModel(Connection conn, int Year, String Name, String Brand, String BodyStyle) {
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Vehicle "
-				                   + "VALUES(%d,\'%s\',\'%s\',\'%f\');",
-				                     vim, model, options_id, price);
+		String query = String.format("INSERT INTO Model "
+				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\');",
+				                     Year, Name, Brand, BodyStyle);
 		try {
 			/**
 			 * create and execute the query
@@ -112,31 +112,31 @@ public class VehicleTable {
 	/**
 	 * This creates an sql statement to do a bulk add of people
 	 * 
-	 * @param vehicle: list of Vehicle objects to add
+	 * @param model: list of Model objects to add
 	 * 
 	 * @return
 	 */
-	public static String createVehicleInsertSQL(ArrayList<Vehicle> vehicle) {
+	public static String createModelInsertSQL(ArrayList<Model> model) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO vehicle (vim, model, options_id, price) VALUES");
+		sb.append("INSERT INTO model (VIM, MODEL, OPTIONS_ID, PRICE) VALUES");
 		
 		/**
-		 * For each vehicle append a (vim, model, options_id, price) tuple
+		 * For each model append a (vim, model, options_id, price) tuple
 		 * 
-		 * If it is not the last vehicle add a comma to separate
+		 * If it is not the last model add a comma to separate
 		 * 
-		 * If it is the last vehicle add a semi-colon to end the statement
+		 * If it is the last model add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < vehicle.size(); i++){
-			Vehicle v = vehicle.get(i);
+		for(int i = 0; i < model.size(); i++){
+			Model v = model.get(i);
 			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
-					v.getVIN(), v.getModel(), v.getOptions_ID(), v.getPrice()));
-			if( i != vehicle.size()-1){
+					v.getYear(), v.getName(), v.getBrand(), v.getBodyStyle()));
+			if( i != model.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -147,14 +147,14 @@ public class VehicleTable {
 	}
 	
 	/**
-	 * Makes a query to the Vehicle table with given columns and conditions
+	 * Makes a query to the Model table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryModelTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -185,7 +185,7 @@ public class VehicleTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Vehicle ");
+		sb.append("FROM Model ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -226,18 +226,18 @@ public class VehicleTable {
 	 * Queries and prints the table
 	 * @param conn
 	 */
-	public static void printVehicleTable(Connection conn){
-		String query = "SELECT * FROM Vehicle;";
+	public static void printModelTable(Connection conn){
+		String query = "SELECT * FROM Model;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Vehicle %d: %s %s %f\n",
+				System.out.printf("Model %d: %s %s %s\n",
 						          result.getInt(1),
 						          result.getString(2),
 						          result.getString(3),
-						          result.getFloat(4));
+						          result.getString(4));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

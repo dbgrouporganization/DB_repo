@@ -8,32 +8,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Vehicle table
+ * Class to make and manipulate the Sale table
  *
  * @author jlb
  */
-public class VehicleTable {
+public class SaleTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the vehicle table
+	 * Reads a cvs file for data and adds them to the Sale table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
 	 * @param fileName: name of csv file
 	 * @throws SQLException
 	 */
-	public static void populateVehicleTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateSaleTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
 		 */
-		ArrayList<Vehicle> vehicle = new ArrayList<Vehicle>();
+		ArrayList<Sale> sale = new ArrayList<Sale>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				vehicle.add(new Vehicle(split));
+				sale.add(new Sale(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -41,11 +41,11 @@ public class VehicleTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all vehicles
+		 * Creates the SQL query to do a bulk add of all sales
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createVehicleInsertSQL(vehicle);
+		String sql = createSaleInsertSQL(sale);
 
 		/**
 		 * Create and execute an SQL statement
@@ -57,17 +57,16 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Create the Vehicle table with the given attributes
+	 * Create the Sale table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createVehicleTable(Connection conn){
+	public static void createSaleTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS vehicle("
+			String query = "CREATE TABLE IF NOT EXISTS sale("
+					     + "DATE VARCHAR(255) PRIMARY KEY,"
 					     + "VIM INT PRIMARY KEY,"
-					     + "MODEL VARCHAR(255),"
-					     + "OPTIONS_ID VARCHAR(255),"
-					     + "PRICE NUMERIC(10,2),"
+					     + "CUSTOMER_ID INT PRIMARY KEY,"
 					     + ");" ;
 			
 			/**
@@ -81,22 +80,21 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Adds a single Vehicle to the database
+	 * Adds a single Sale to the database
 	 *
 	 * @param conn
-	 * @param vim
-	 * @param model
-	 * @param options_id
-	 * @param price
+	 * @param date
+	 * @param vin
+	 * @param customer_id
 	 */
-	public static void addVehicle(Connection conn, int vim, String model, String options_id, float price) {
+	public static void addSale(Connection conn, String date, int vin, int customer_id) {
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Vehicle "
-				                   + "VALUES(%d,\'%s\',\'%s\',\'%f\');",
-				                     vim, model, options_id, price);
+		String query = String.format("INSERT INTO Sale "
+				                   + "VALUES(\'%s\',%d,\'%s\');",
+				                     date, vin, customer_id);
 		try {
 			/**
 			 * create and execute the query
@@ -112,31 +110,31 @@ public class VehicleTable {
 	/**
 	 * This creates an sql statement to do a bulk add of people
 	 * 
-	 * @param vehicle: list of Vehicle objects to add
+	 * @param sale: list of Sale objects to add
 	 * 
 	 * @return
 	 */
-	public static String createVehicleInsertSQL(ArrayList<Vehicle> vehicle) {
+	public static String createSaleInsertSQL(ArrayList<Sale> sale) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO vehicle (vim, model, options_id, price) VALUES");
+		sb.append("INSERT INTO sale (date, vin, customer_id) VALUES");
 		
 		/**
-		 * For each vehicle append a (vim, model, options_id, price) tuple
+		 * For each sale append a (date, vin, customer_id) tuple
 		 * 
-		 * If it is not the last vehicle add a comma to separate
+		 * If it is not the last sale add a comma to separate
 		 * 
-		 * If it is the last vehicle add a semi-colon to end the statement
+		 * If it is the last sale add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < vehicle.size(); i++){
-			Vehicle v = vehicle.get(i);
-			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
-					v.getVIN(), v.getModel(), v.getOptions_ID(), v.getPrice()));
-			if( i != vehicle.size()-1){
+		for(int i = 0; i < sale.size(); i++){
+			Sale v = sale.get(i);
+			sb.append(String.format("(\'%s\',%d,\'%s\')",
+					v.getDate(), v.getVin(), v.getCustomer_id()));
+			if( i != sale.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -147,14 +145,14 @@ public class VehicleTable {
 	}
 	
 	/**
-	 * Makes a query to the Vehicle table with given columns and conditions
+	 * Makes a query to the Sale table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet querySaleTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -185,7 +183,7 @@ public class VehicleTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Vehicle ");
+		sb.append("FROM Sale ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -226,18 +224,17 @@ public class VehicleTable {
 	 * Queries and prints the table
 	 * @param conn
 	 */
-	public static void printVehicleTable(Connection conn){
-		String query = "SELECT * FROM Vehicle;";
+	public static void printSaleTable(Connection conn){
+		String query = "SELECT * FROM Sale;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Vehicle %d: %s %s %f\n",
-						          result.getInt(1),
-						          result.getString(2),
-						          result.getString(3),
-						          result.getFloat(4));
+				System.out.printf("Sale %s: %d %s \n",
+						          result.getString(1),
+						          result.getInt(2),
+						          result.getString(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -8,32 +8,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Vehicle table
+ * Class to make and manipulate the Brand table
  *
  * @author jlb
  */
-public class VehicleTable {
+public class BrandTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the vehicle table
+	 * Reads a cvs file for data and adds them to the Brand table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
 	 * @param fileName: name of csv file
 	 * @throws SQLException
 	 */
-	public static void populateVehicleTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateBrandTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
 		 */
-		ArrayList<Vehicle> vehicle = new ArrayList<Vehicle>();
+		ArrayList<Brand> Brand = new ArrayList<Brand>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				vehicle.add(new Vehicle(split));
+				Brand.add(new Brand(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -41,11 +41,11 @@ public class VehicleTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all vehicles
+		 * Creates the SQL query to do a bulk add of all Brands
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createVehicleInsertSQL(vehicle);
+		String sql = createBrandInsertSQL(Brand);
 
 		/**
 		 * Create and execute an SQL statement
@@ -57,17 +57,14 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Create the Vehicle table with the given attributes
+	 * Create the Brand table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createVehicleTable(Connection conn){
+	public static void createBrandTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS vehicle("
-					     + "VIM INT PRIMARY KEY,"
-					     + "MODEL VARCHAR(255),"
-					     + "OPTIONS_ID VARCHAR(255),"
-					     + "PRICE NUMERIC(10,2),"
+			String query = "CREATE TABLE IF NOT EXISTS Brand("
+					     + "name VARCHAR(255),"
 					     + ");" ;
 			
 			/**
@@ -81,22 +78,17 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Adds a single Vehicle to the database
+	 * Adds a single Brand to the database
 	 *
 	 * @param conn
-	 * @param vim
-	 * @param model
-	 * @param options_id
-	 * @param price
+	 * @param name
 	 */
-	public static void addVehicle(Connection conn, int vim, String model, String options_id, float price) {
+	public static void addBrand(Connection conn, String name) {
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Vehicle "
-				                   + "VALUES(%d,\'%s\',\'%s\',\'%f\');",
-				                     vim, model, options_id, price);
+		String query = String.format("INSERT INTO Brand VALUES(\'%s\');", name);
 		try {
 			/**
 			 * create and execute the query
@@ -110,33 +102,32 @@ public class VehicleTable {
 	}
 	
 	/**
-	 * This creates an sql statement to do a bulk add of people
+	 * This creates an sql statement to do a bulk add of brands
 	 * 
-	 * @param vehicle: list of Vehicle objects to add
+	 * @param Brand: list of Brand objects to add
 	 * 
 	 * @return
 	 */
-	public static String createVehicleInsertSQL(ArrayList<Vehicle> vehicle) {
+	public static String createBrandInsertSQL(ArrayList<Brand> Brand) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO vehicle (vim, model, options_id, price) VALUES");
+		sb.append("INSERT INTO Brand (name) VALUES");
 		
 		/**
-		 * For each vehicle append a (vim, model, options_id, price) tuple
+		 * For each Brand append a (name) tuple
 		 * 
-		 * If it is not the last vehicle add a comma to separate
+		 * If it is not the last Brand add a comma to separate
 		 * 
-		 * If it is the last vehicle add a semi-colon to end the statement
+		 * If it is the last Brand add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < vehicle.size(); i++){
-			Vehicle v = vehicle.get(i);
-			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
-					v.getVIN(), v.getModel(), v.getOptions_ID(), v.getPrice()));
-			if( i != vehicle.size()-1){
+		for(int i = 0; i < Brand.size(); i++){
+			Brand v = Brand.get(i);
+			sb.append(String.format("(\'%s\')", v.getName()));
+			if( i != Brand.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -147,14 +138,14 @@ public class VehicleTable {
 	}
 	
 	/**
-	 * Makes a query to the Vehicle table with given columns and conditions
+	 * Makes a query to the Brand table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryBrandTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -185,7 +176,7 @@ public class VehicleTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Vehicle ");
+		sb.append("FROM Brand ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -226,18 +217,15 @@ public class VehicleTable {
 	 * Queries and prints the table
 	 * @param conn
 	 */
-	public static void printVehicleTable(Connection conn){
-		String query = "SELECT * FROM Vehicle;";
+	public static void printBrandTable(Connection conn){
+		String query = "SELECT * FROM Brand;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Vehicle %d: %s %s %f\n",
-						          result.getInt(1),
-						          result.getString(2),
-						          result.getString(3),
-						          result.getFloat(4));
+				System.out.printf("Brand %s\n",
+						          result.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
