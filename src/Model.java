@@ -7,31 +7,31 @@ import static java.lang.Float.parseFloat;
  */
 public class Model {
 
-	private int Year;
-	private String Name;
+	private int MYear;
+	private String MName;
 	private String Brand;
 	private String BodyStyle;
 
-	public Model(int Year, String Name, String Brand, String BodyStyle) {
-		this.Year = Year;
-		this.Name = Name;
+	public Model(int MYear, String MName, String Brand, String BodyStyle) {
+		this.MYear = MYear;
+		this.MName = MName;
 		this.Brand = Brand;
 		this.BodyStyle = BodyStyle;
 	}
 
 	public Model(String[] data){
-		this.Year = Integer.parseInt(data[0]);
-		this.Name = data[1];
+		this.MYear = Integer.parseInt(data[0]);
+		this.MName = data[1];
 		this.Brand = data[2];
 		this.BodyStyle = data[3];
 	}
 
-	public int getYear() {
-		return Year;
+	public int getMYear() {
+		return MYear;
 	}
 
-	public String getName() {
-		return Name;
+	public String getMName() {
+		return MName;
 	}
 
 	public String getBrand() {

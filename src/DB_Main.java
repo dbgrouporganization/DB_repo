@@ -76,23 +76,94 @@ public class DB_Main {
 		try {
 			
 			/**
-			 * Creates a sample Vehicle table
-			 * and populates it from a csv file
+			 * Vehicle Table Population
 			 */
 			VehicleTable.createVehicleTable(demo.getConnection());
 			VehicleTable.populateVehicleTableFromCSV(demo.getConnection(),"vehicle.csv");
-			
-			/**
-			 * Just displays the table
-			 */
+			//Just displays the table
 			VehicleTable.printVehicleTable(demo.getConnection());
-			
-			/**
-			 * Runs a basic query on the table
-			 */
+			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM vehicle");
-			ResultSet results = VehicleTable.queryVehicleTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
-			
+			ResultSet results1 = VehicleTable.queryVehicleTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+
+			/**
+			 * Brand Table Population
+			 */
+			BrandTable.createBrandTable(demo.getConnection());
+			BrandTable.populateBrandTableFromCSV(demo.getConnection(),"brand.csv");
+			//Just displays the table
+			BrandTable.printBrandTable(demo.getConnection());
+			//Runs a basic query on the table
+			System.out.println("\n\nPrint results of SELECT * FROM brand");
+			ResultSet results2 = BrandTable.queryBrandTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+
+			/**
+			 * Dealer Table Population
+			 */
+			DealerTable.createDealerTable(demo.getConnection());
+			DealerTable.populateDealerTableFromCSV(demo.getConnection(),"dealer.csv");
+			//Just displays the table
+			DealerTable.printDealerTable(demo.getConnection());
+			//Runs a basic query on the table
+			System.out.println("\n\nPrint results of SELECT * FROM sealer");
+			ResultSet results3 = DealerTable.queryDealerTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+
+			/**
+			 * Model Table Population
+			 */
+			ModelTable.createModelTable(demo.getConnection());
+			ModelTable.populateModelTableFromCSV(demo.getConnection(),"model.csv");
+			//Just displays the table
+			ModelTable.printModelTable(demo.getConnection());
+			//Runs a basic query on the table
+			System.out.println("\n\nPrint results of SELECT * FROM model");
+			ResultSet results4 = ModelTable.queryModelTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+
+			/**
+			 * Customer Table Population
+			 */
+			CustomerTable.createCustomerTable(demo.getConnection());
+			CustomerTable.populateCustomerTableFromCSV(demo.getConnection(),"customer.csv");
+			//Just displays the table
+			CustomerTable.printCustomerTable(demo.getConnection());
+			//Runs a basic query on the table
+			System.out.println("\n\nPrint results of SELECT * FROM customer");
+			ResultSet results5 = CustomerTable.queryCustomerTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+
+			/**
+			 * Stock Table Population
+			 */
+			StockTable.createStockTable(demo.getConnection());
+			StockTable.populateStockTableFromCSV(demo.getConnection(),"stock.csv");
+			//Just displays the table
+			StockTable.printStockTable(demo.getConnection());
+			//Runs a basic query on the table
+			System.out.println("\n\nPrint results of SELECT * FROM stock");
+			ResultSet results6 = StockTable.queryStockTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+
+			/**
+			 * Options Table Population
+			 */
+			OptionsTable.createOptionsTable(demo.getConnection());
+			OptionsTable.populateOptionsTableFromCSV(demo.getConnection(),"options.csv");
+			//Just displays the table
+			OptionsTable.printOptionsTable(demo.getConnection());
+			//Runs a basic query on the table
+			System.out.println("\n\nPrint results of SELECT * FROM vehicle");
+			ResultSet results7 = OptionsTable.queryOptionsTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+
+			/**
+			 * Sale Table Population
+			 *
+			SaleTable.createSaleTable(demo.getConnection());
+			SaleTable.populateSaleTableFromCSV(demo.getConnection(),"sale.csv");
+			//Just displays the table
+			SaleTable.printSaleTable(demo.getConnection());
+			//Runs a basic query on the table
+			System.out.println("\n\nPrint results of SELECT * FROM sale");
+			ResultSet results8 = SaleTable.querySaleTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			*/
+
 			/**
 			 * Iterates the Result set
 			 * 
@@ -103,14 +174,19 @@ public class DB_Main {
 			 * order you created them. To guarantee order list the columns
 			 * you want
 			 */
-			while(results.next()){
+			while(results1.next()){
 				System.out.printf("\tVehicle %d: %s %s %f\n",
-						          results.getInt(1),
-						          results.getString(2),
-						          results.getString(3),
-						          results.getFloat(4));
+						          results1.getInt(1),
+						          results1.getString(2),
+						          results1.getString(3),
+						          results1.getFloat(4));
 			}
-			
+
+
+
+
+
+
 			/**
 			 * A more complex query with columns selected and 
 			 * addition conditions
@@ -147,7 +223,7 @@ public class DB_Main {
 			 * Notice not all of the columns are here because
 			 * we limited what to show in the query
 			 */
-			ResultSet results2 = VehicleTable.queryVehicleTable(
+			ResultSet results11 = VehicleTable.queryVehicleTable(
                     demo.getConnection(),
                     columns,
                     whereClauses);

@@ -243,7 +243,7 @@ public class CustomerTable {
 	 * Queries and print the table
 	 * @param conn
 	 */
-	public static void printPersonTable(Connection conn){
+	public static void printCustomerTable(Connection conn){
 		String query = "SELECT * FROM customer;";
 		try {
 			Statement stmt = conn.createStatement();
