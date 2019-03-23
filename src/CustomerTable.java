@@ -146,7 +146,8 @@ public class CustomerTable {
 		 * If it is the last person add a semi-colon to end the statement
 		 */
 		for(int i = 0; i < customer.size(); i++){
-			Person p = customer.get(i);
+			Customer c = new Customer()
+					= customer.get(i);
 			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
 					p.getId(), p.getFirstName(), p.getLastName(), p.getMI()));
 			if( i != customer.size()-1){
