@@ -104,8 +104,8 @@ public class OptionsTable {
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO Options "
-				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\',%d,\'%s\',\'%s\',%d);",
-				                     id, name, addr_street, addr_num, addr_city, addr_state, addr_zip);
+				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\',%b,%b,%b,%b);",
+				                     options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack);
 		try {
 			/**
 			 * create and execute the query
@@ -132,10 +132,10 @@ public class OptionsTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO Options (id, name, addr_street, addr_num, addr_city, addr_state, addr_zip) VALUES");
+		sb.append("INSERT INTO Options (options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack) VALUES");
 		
 		/**
-		 * For each Options append a (id, name, addr_street, addr_num, addr_city, addr_state, addr_zip) tuple
+		 * For each Options append a (options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack) tuple
 		 * 
 		 * If it is not the last Options add a comma to separate
 		 * 
@@ -143,8 +143,8 @@ public class OptionsTable {
 		 */
 		for(int i = 0; i < Options.size(); i++){
 			Options v = Options.get(i);
-			sb.append(String.format("(%d,\'%s\',\'%s\',%d,\'%s\',\'%s\',%d)",
-					v.getId(), v.getName(), v.getAddr_street(), v.getAddr_num(), v.getAddr_city(), v.getAddr_state(), v.getAddr_zip()));
+			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\',%b,%b,%b,%b)",
+					v.getOptions_id(), v.getColor(), v.getEngine(), v.getTransmission(), v.getNavigation(), v.getBluetooth(), v.getHeated_seats(), v.getRoof_rack()));
 			if( i != Options.size()-1){
 				sb.append(",");
 			}
@@ -242,14 +242,15 @@ public class OptionsTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Options %d: %s %s %d %s %s %d\n",
+				System.out.printf("Options %d: %s %s %s %b %b %b %b\n",
 						          result.getInt(1),
 						          result.getString(2),
 								  result.getString(3),
-								  result.getInt(4),
-								  result.getString(5),
-						          result.getString(6),
-						          result.getInt(7));
+								  result.getString(4),
+								  result.getBoolean(5),
+						          result.getBoolean(6),
+                                  result.getBoolean(7),
+						          result.getBoolean(8));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
