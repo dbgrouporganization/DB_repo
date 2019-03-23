@@ -6,8 +6,7 @@ import java.util.ArrayList;
  * You will create something similar
  * to run your database.
  * 
- * @author scj
- *
+ * @author team 18
  */
 public class DB_Main {
 
@@ -20,11 +19,8 @@ public class DB_Main {
 	 * @param user: user name for the owner of the database
 	 * @param password: password of the database owner
 	 */
-	public void createConnection(String location,
-			                     String user,
-			                     String password){
+	public void createConnection(String location, String user, String password) {
 		try {
-			
 			//This needs to be on the front of your location
 			String url = "jdbc:h2:" + location;
 			
