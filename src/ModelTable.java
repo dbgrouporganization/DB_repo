@@ -64,10 +64,10 @@ public class ModelTable {
 	public static void createModelTable(Connection conn){
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS model("
-					     + "VIM INT PRIMARY KEY,"
-					     + "MODEL VARCHAR(255),"
-					     + "OPTIONS_ID VARCHAR(255),"
-					     + "PRICE NUMERIC(10,2),"
+					     + "MYEAR INT PRIMARY KEY,"
+					     + "MNAME VARCHAR(255) PRIMARY KEY ,"
+					     + "BRAND VARCHAR(255),"
+					     + "BODYSTYLE VARCHAR(255),"
 					     + ");" ;
 			
 			/**
@@ -84,19 +84,19 @@ public class ModelTable {
      * Adds a single Model to the database
      *
      * @param conn
-     * @param Year
-     * @param Name
+     * @param MYear
+     * @param MName
      * @param Brand
      * @param BodyStyle
      */
-	public static void addModel(Connection conn, int Year, String Name, String Brand, String BodyStyle) {
+	public static void addModel(Connection conn, int MYear, String MName, String Brand, String BodyStyle) {
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO Model "
 				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\');",
-				                     Year, Name, Brand, BodyStyle);
+				                     MYear, MName, Brand, BodyStyle);
 		try {
 			/**
 			 * create and execute the query
@@ -135,7 +135,7 @@ public class ModelTable {
 		for(int i = 0; i < model.size(); i++){
 			Model v = model.get(i);
 			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
-					v.getYear(), v.getName(), v.getBrand(), v.getBodyStyle()));
+					v.getMYear(), v.getMName(), v.getBrand(), v.getBodyStyle()));
 			if( i != model.size()-1){
 				sb.append(",");
 			}

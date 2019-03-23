@@ -64,7 +64,7 @@ public class BrandTable {
 	public static void createBrandTable(Connection conn){
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS Brand("
-					     + "name VARCHAR(255),"
+					     + "name VARCHAR(255) PRIMARY KEY,"
 					     + ");" ;
 			
 			/**
