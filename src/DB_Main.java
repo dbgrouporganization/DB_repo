@@ -65,12 +65,12 @@ public class DB_Main {
 
 		DB_Main demo = new DB_Main();
 		
-		//Hard drive location of the database
+		// Hard drive location of the database
 		String location = "./h2demo/h2demo";
 		String user = "user";
 		String password = "1234";
 		
-		//Create the database connections, basically makes the database
+		// Create the database connections, basically makes the database
 		demo.createConnection(location, user, password);
 		
 		try {
