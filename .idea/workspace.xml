@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90e9ea33-5301-42d6-880c-d955ee665d2f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Brand.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/BrandTable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DB_Main.java" afterPath="$PROJECT_DIR$/src/DB_Main.java" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -17,26 +14,27 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DB_Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DB_Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DB_Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="911">
-              <caret line="72" column="11" lean-forward="false" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
+            <state relative-caret-position="701">
+              <caret line="164" column="1" lean-forward="false" selection-start-line="164" selection-start-column="1" selection-end-line="164" selection-end-column="1" />
               <folding>
-                <element signature="docComment;method#createConnection#0;class#DB_Main#0" expanded="false" />
-                <element signature="docComment;method#getConnection#0;class#DB_Main#0" expanded="false" />
-                <element signature="docComment;method#closeConnection#0;class#DB_Main#0" expanded="false" />
-                <element signature="docComment;method#main#0;class#DB_Main#0" expanded="false" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1148#1149#0" expanded="true" />
+                <element signature="e#1166#1167#0" expanded="true" />
+                <element signature="e#3405#3413#0" expanded="true" />
+                <element signature="e#3581#3589#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Brand.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Brand.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Brand.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="126">
-              <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+              <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding>
                 <element signature="e#117#118#0" expanded="true" />
                 <element signature="e#140#141#0" expanded="true" />
@@ -70,9 +68,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/DB_Main.java" />
         <option value="$PROJECT_DIR$/src/BrandTable.java" />
         <option value="$PROJECT_DIR$/src/Brand.java" />
+        <option value="$PROJECT_DIR$/src/DB_Main.java" />
       </list>
     </option>
   </component>
@@ -271,19 +269,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/DB_Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="911">
-          <caret line="72" column="11" lean-forward="false" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
-          <folding>
-            <element signature="docComment;method#createConnection#0;class#DB_Main#0" expanded="false" />
-            <element signature="docComment;method#getConnection#0;class#DB_Main#0" expanded="false" />
-            <element signature="docComment;method#closeConnection#0;class#DB_Main#0" expanded="false" />
-            <element signature="docComment;method#main#0;class#DB_Main#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/BrandTable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -295,12 +280,26 @@
     <entry file="file://$PROJECT_DIR$/src/Brand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
           <folding>
             <element signature="e#117#118#0" expanded="true" />
             <element signature="e#140#141#0" expanded="true" />
             <element signature="e#172#173#0" expanded="true" />
             <element signature="e#198#199#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DB_Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="701">
+          <caret line="164" column="1" lean-forward="false" selection-start-line="164" selection-start-column="1" selection-end-line="164" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1148#1149#0" expanded="true" />
+            <element signature="e#1166#1167#0" expanded="true" />
+            <element signature="e#3405#3413#0" expanded="true" />
+            <element signature="e#3581#3589#0" expanded="true" />
           </folding>
         </state>
       </provider>
