@@ -8,32 +8,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Brand table
+ * Class to make and manipulate the Options table
  *
  * @author jlb
  */
-public class BrandTable {
+public class OptionsTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the Brand table
+	 * Reads a cvs file for data and adds them to the Options table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
 	 * @param fileName: name of csv file
 	 * @throws SQLException
 	 */
-	public static void populateBrandTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateOptionsTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
 		 */
-		ArrayList<Brand> Brand = new ArrayList<Brand>();
+		ArrayList<Options> Options = new ArrayList<Options>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				Brand.add(new Brand(split));
+				Options.add(new Options(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -41,11 +41,11 @@ public class BrandTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all Brands
+		 * Creates the SQL query to do a bulk add of all Options
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createBrandInsertSQL(Brand);
+		String sql = createOptionsInsertSQL(Options);
 
 		/**
 		 * Create and execute an SQL statement
@@ -57,14 +57,21 @@ public class BrandTable {
 	}
 
 	/**
-	 * Create the Brand table with the given attributes
+	 * Create the Options table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createBrandTable(Connection conn){
+	public static void createOptionsTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS Brand("
-					     + "name VARCHAR(255),"
+			String query = "CREATE TABLE IF NOT EXISTS Options("
+					     + "options_id INT PRIMARY KEY,"
+					     + "color VARCHAR(255),"
+					     + "engine VARCHAR(255),"
+					     + "transmission VARCHAR(255),"
+						 + "navigation BOOLEAN,"
+						 + "bluetooth BOOLEAN,"
+					 	 + "heated_seats BOOLEAN,"
+						 + "roof_rack BOOLEAN,"
 					     + ");" ;
 			
 			/**
@@ -78,17 +85,27 @@ public class BrandTable {
 	}
 
 	/**
-	 * Adds a single Brand to the database
+	 * Adds a single Options to the database
 	 *
 	 * @param conn
-	 * @param name
+	 * @param options_id
+	 * @param color
+	 * @param engine
+	 * @param transmission
+	 * @param navigation
+	 * @param bluetooth
+	 * @param heated_seats
+	 * @param roof_rack
 	 */
-	public static void addBrand(Connection conn, String name) {
+	public static void addOptions(Connection conn, int options_id, String color, String engine, String transmission,
+								  Boolean navigation, Boolean bluetooth, Boolean heated_seats, Boolean roof_rack) {
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Brand VALUES(\'%s\');", name);
+		String query = String.format("INSERT INTO Options "
+				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\',%d,\'%s\',\'%s\',%d);",
+				                     id, name, addr_street, addr_num, addr_city, addr_state, addr_zip);
 		try {
 			/**
 			 * create and execute the query
@@ -102,32 +119,33 @@ public class BrandTable {
 	}
 	
 	/**
-	 * This creates an sql statement to do a bulk add of brands
+	 * This creates an sql statement to do a bulk add of Options
 	 * 
-	 * @param Brand: list of Brand objects to add
+	 * @param Options: list of Options objects to add
 	 * 
 	 * @return
 	 */
-	public static String createBrandInsertSQL(ArrayList<Brand> Brand) {
+	public static String createOptionsInsertSQL(ArrayList<Options> Options) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO Brand (name) VALUES");
+		sb.append("INSERT INTO Options (id, name, addr_street, addr_num, addr_city, addr_state, addr_zip) VALUES");
 		
 		/**
-		 * For each Brand append a (name) tuple
+		 * For each Options append a (id, name, addr_street, addr_num, addr_city, addr_state, addr_zip) tuple
 		 * 
-		 * If it is not the last Brand add a comma to separate
+		 * If it is not the last Options add a comma to separate
 		 * 
-		 * If it is the last Brand add a semi-colon to end the statement
+		 * If it is the last Options add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < Brand.size(); i++){
-			Brand v = Brand.get(i);
-			sb.append(String.format("(\'%s\')", v.getName()));
-			if( i != Brand.size()-1){
+		for(int i = 0; i < Options.size(); i++){
+			Options v = Options.get(i);
+			sb.append(String.format("(%d,\'%s\',\'%s\',%d,\'%s\',\'%s\',%d)",
+					v.getId(), v.getName(), v.getAddr_street(), v.getAddr_num(), v.getAddr_city(), v.getAddr_state(), v.getAddr_zip()));
+			if( i != Options.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -138,14 +156,14 @@ public class BrandTable {
 	}
 	
 	/**
-	 * Makes a query to the Brand table with given columns and conditions
+	 * Makes a query to the Options table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryBrandTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryOptionsTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -176,7 +194,7 @@ public class BrandTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Brand ");
+		sb.append("FROM Options ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -214,18 +232,24 @@ public class BrandTable {
 	}
 	
 	/**
-	 * Queries and prints the table
+	 * Queries and print the table
 	 * @param conn
 	 */
-	public static void printBrandTable(Connection conn){
-		String query = "SELECT * FROM Brand;";
+	public static void printOptionsTable(Connection conn){
+		String query = "SELECT * FROM Options;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Brand %s\n",
-						          result.getString(1));
+				System.out.printf("Options %d: %s %s %d %s %s %d\n",
+						          result.getInt(1),
+						          result.getString(2),
+								  result.getString(3),
+								  result.getInt(4),
+								  result.getString(5),
+						          result.getString(6),
+						          result.getInt(7));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
