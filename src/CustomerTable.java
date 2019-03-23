@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Class to make and manipulate the person table
- * @author scj
+ * @author omg
  *
  */
 public class CustomerTable {
@@ -23,7 +23,7 @@ public class CustomerTable {
 	 * @param fileName
 	 * @throws SQLException
 	 */
-	public static void populateStockTableFromCSV(Connection conn,
+	public static void populateCustomerTableFromCSV(Connection conn,
 			                                      String fileName)
 			                                    		  throws SQLException {
 		/**
@@ -33,13 +33,13 @@ public class CustomerTable {
 		 * You can do the reading and adding to the table in one
 		 * step, I just broke it up for example reasons
 		 */
-		ArrayList<Person> Customer = new ArrayList<Person>();
+		ArrayList<Customer> Customer = new ArrayList<Customer>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				Customer.add(new Person(split));
+				Customer.add(new Customer(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -127,7 +127,7 @@ public class CustomerTable {
 	 * 
 	 * @return
 	 */
-	public static String createCustomerInsertSQL(ArrayList<Person> customer){
+	public static String createCustomerInsertSQL(ArrayList<Customer> customer){
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -146,10 +146,10 @@ public class CustomerTable {
 		 * If it is the last person add a semi-colon to end the statement
 		 */
 		for(int i = 0; i < customer.size(); i++){
-			Customer c = new Customer()
-					= customer.get(i);
-			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
-					p.getId(), p.getFirstName(), p.getLastName(), p.getMI()));
+			Customer c = customer.get(i);
+			sb.append(String.format("(%s,\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%d\',\'%s\',\'%d\')",
+					c.getfName(), c.getlName(), c.getID(), c.getAddr_num(), c.getAddr_street(), c.getAddr_city(), c.getAddr_state(),
+					c.getAddr_zip(), c.getPhone(), c.getGender(), c.getIncome()));
 			if( i != customer.size()-1){
 				sb.append(",");
 			}
