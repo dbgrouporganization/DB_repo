@@ -1,7 +1,7 @@
 /**
  * Hold data about a Vehicle
  *
- * @author team 18
+ * @author jlb
  */
 public class Vehicle {
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Class to make and manipulate the Sale table
  *
- * @author jlb
+ * @author omg
  */
 public class SaleTable {
 
@@ -67,6 +67,7 @@ public class SaleTable {
 					     + "DATE VARCHAR(255),"
 					     + "VIN INT,"
 					     + "CUSTOMER_ID INT,"
+					     + "DEALER_ID INT,"
 						 + "PRIMARY KEY(DATE, VIN, CUSTOMER_ID),"
 					     + ");" ;
 			
@@ -88,14 +89,14 @@ public class SaleTable {
 	 * @param vin
 	 * @param customer_id
 	 */
-	public static void addSale(Connection conn, String date, int vin, int customer_id) {
+	public static void addSale(Connection conn, String date, int vin, int customer_id, int dealer_id) {
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO Sale "
-				                   + "VALUES(\'%s\',%d,\'%s\');",
-				                     date, vin, customer_id);
+				                   + "VALUES(\'%s\',%d,\'%s\',%d);",
+				                     date, vin, customer_id, dealer_id);
 		try {
 			/**
 			 * create and execute the query
@@ -122,7 +123,7 @@ public class SaleTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO sale (date, vin, customer_id) VALUES");
+		sb.append("INSERT INTO sale (date, vin, customer_id, dealer_id) VALUES");
 		
 		/**
 		 * For each sale append a (date, vin, customer_id) tuple
@@ -133,8 +134,8 @@ public class SaleTable {
 		 */
 		for(int i = 0; i < sale.size(); i++){
 			Sale v = sale.get(i);
-			sb.append(String.format("(\'%s\',%d,\'%s\')",
-					v.getDate(), v.getVin(), v.getCustomer_id()));
+			sb.append(String.format("(\'%s\',%d,\'%s\',%d)",
+					v.getDate(), v.getVin(), v.getCustomer_id(), v.getDealer_id()));
 			if( i != sale.size()-1){
 				sb.append(",");
 			}
@@ -232,10 +233,11 @@ public class SaleTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Sale %s: %d %s \n",
+				System.out.printf("Sale %s: %d %s %d\n",
 						          result.getString(1),
 						          result.getInt(2),
-						          result.getString(3));
+						          result.getString(3),
+								  result.getInt(4));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

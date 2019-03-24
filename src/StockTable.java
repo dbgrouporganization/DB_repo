@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Class to make and manipulate the stock table
  *
- * @author team 18
+ * @author jlb
  */
 public class StockTable {
 

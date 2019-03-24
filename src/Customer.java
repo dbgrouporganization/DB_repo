@@ -1,6 +1,6 @@
 /**
- * Hold data about a person
- * @author scj
+ * Hold data about a Customer
+ * @author omg
  *
  */
 public class Customer {

@@ -2,11 +2,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * This is a sample main program. 
- * You will create something similar
- * to run your database.
+ * This main program is used to populate the database from the provided csv files.
  * 
- * @author team 18
+ * @author omg
  */
 public class DB_Main {
 
@@ -36,7 +34,7 @@ public class DB_Main {
 	}
 	
 	/**
-	 * just returns the connection
+	 * Getter for db connection
 	 * @return: returns class level connection
 	 */
 	public Connection getConnection(){
@@ -44,8 +42,7 @@ public class DB_Main {
 	}
 	
 	/**
-	 * When your database program exits 
-	 * you should close the connection
+	 * Closes the connection to the database.
 	 */
 	public void closeConnection(){
 		try {
@@ -57,7 +54,7 @@ public class DB_Main {
 	
 	/**
 	 * Starts and runs the database
-	 * @param args: not used but you can use them
+	 * @param args: not used
 	 */
 	public static void main(String[] args) {
 
@@ -68,7 +65,7 @@ public class DB_Main {
 		String user = "user";
 		String password = "1234";
 		
-		// Create the database connections, basically makes the database
+		// Create the database connections
 		demo.createConnection(location, user, password);
 		
 		try {
@@ -165,11 +162,6 @@ public class DB_Main {
 			 * Iterates the Result set
 			 * 
 			 * Result Set is what a query in H2 returns
-			 * 
-			 * Note the columns are not 0 indexed
-			 * If you give no columns it will return them in the
-			 * order you created them. To guarantee order list the columns
-			 * you want
 			 */
 			while(results1.next()){
 				System.out.printf("\tVehicle %d: %s %s %f\n",

@@ -1,7 +1,7 @@
 /**
  * Hold data about a stock entry
  *
- * @author team 18
+ * @author jlb
  */
 public class Stock {
 

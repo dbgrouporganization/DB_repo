@@ -1,27 +1,27 @@
 import static java.lang.Float.parseFloat;
 
 /**
- * Hold data about a Vehicle
+ * Hold data about a Model
  *
- * @author team 18
+ * @author omg
  */
 public class Model {
 
 	private int MYear;
-	private String MName;
+	private String Model;
 	private String Brand;
 	private String BodyStyle;
 
-	public Model(int MYear, String MName, String Brand, String BodyStyle) {
+	public Model(int MYear, String Model, String Brand, String BodyStyle) {
 		this.MYear = MYear;
-		this.MName = MName;
+		this.Model = Model;
 		this.Brand = Brand;
 		this.BodyStyle = BodyStyle;
 	}
 
 	public Model(String[] data){
 		this.MYear = Integer.parseInt(data[0]);
-		this.MName = data[1];
+		this.Model = data[1];
 		this.Brand = data[2];
 		this.BodyStyle = data[3];
 	}
@@ -30,8 +30,8 @@ public class Model {
 		return MYear;
 	}
 
-	public String getMName() {
-		return MName;
+	public String getModel() {
+		return Model;
 	}
 
 	public String getBrand() {
