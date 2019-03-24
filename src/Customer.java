@@ -13,11 +13,11 @@ public class Customer {
 	private String addr_city;
 	private String addr_state;
 	private int addr_zip;
-	private int phone;
+	private String phone;
 	private String Gender;
-	private int income;
+	private float income;
 
-	public Customer(String fName, String lName, int ID, int addr_num, String addr_street, String addr_city, String addr_state, int addr_zip, int phone, String gender, int income) {
+	public Customer(String fName, String lName, int ID, int addr_num, String addr_street, String addr_city, String addr_state, int addr_zip, String phone, String gender, float income) {
 		this.fName = fName;
 		this.lName = lName;
 		this.ID = ID;
@@ -40,9 +40,9 @@ public class Customer {
 		this.addr_city = data[5];
 		this.addr_state = data[6];
 		this.addr_zip = Integer.parseInt(data[7]);
-		this.phone = Integer.parseInt(data[8]);
+		this.phone = data[8];
 		this.Gender = data[9];
-		this.income = Integer.parseInt(data[10]);
+		this.income = Float.parseFloat(data[10]);
 	}
 
 	public String getfName() {
@@ -77,7 +77,7 @@ public class Customer {
 		return addr_zip;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
@@ -85,7 +85,7 @@ public class Customer {
 		return Gender;
 	}
 
-	public int getIncome() {
+	public float getIncome() {
 		return income;
 	}
 }

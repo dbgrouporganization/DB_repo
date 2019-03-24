@@ -8,14 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the person table
- * @author scj
+ * Class to make and manipulate the stock table
  *
+ * @author team 18
  */
 public class StockTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the person table
+	 * Reads a csv file for data and adds them to the stock table
 	 * 
 	 * Does not create the table. It must already be created
 	 * 
@@ -23,9 +23,7 @@ public class StockTable {
 	 * @param fileName
 	 * @throws SQLException
 	 */
-	public static void populateStockTableFromCSV(Connection conn,
-			                                      String fileName)
-			                                    		  throws SQLException {
+	public static void populateStockTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
@@ -48,7 +46,7 @@ public class StockTable {
 
 		/**
 		 * Creates the SQL query to do a bulk add of all customer
-		 * that were read in. This is more efficent then adding one
+		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
 		String sql = createStockInsertSQL(stock);
@@ -62,7 +60,7 @@ public class StockTable {
 		stmt.execute(sql);
 	}
 	/**
-	 * Create the person table with the given attributes
+	 * Create the stock table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
@@ -70,7 +68,9 @@ public class StockTable {
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS stock("
 					     + "VIN INT PRIMARY KEY,"
-					     + "OWNERID VARCHAR(20),"
+                         + "DEALER_ID INT,"
+                         + "BRAND_OWNER VARCHAR(255),"
+					     + "CUSTOMER_ID INT,"
 					     + ");" ;
 			
 			/**
@@ -82,24 +82,24 @@ public class StockTable {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Adds a single person to the database
-	 * 
-	 * @param conn
-	 * @param VIN
-	 * @param OwnerId
-	 */
-	public static void addStock(Connection conn,
-			                     int VIN,
-			                     String OwnerId){
+
+    /**
+     * Adds a single stock to the database
+     *
+     * @param conn
+     * @param vin
+     * @param dealer_id
+     * @param brand_owner
+     * @param customer_id
+     */
+	public static void addStock(Connection conn, int vin, int dealer_id, String brand_owner, int customer_id){
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO stock "
-				                   + "VALUES(%d,\'%s\');",
-				                     VIN, OwnerId);
+				                   + "VALUES(%d,%d,\'%s\',%d);",
+				                     vin, dealer_id, brand_owner, customer_id);
 		try {
 			/**
 			 * create and execute the query
@@ -128,19 +128,19 @@ public class StockTable {
 		 * the order of the data in reference 
 		 * to the columns to ad dit to
 		 */
-		sb.append("INSERT INTO person (id, FIRST_NAME, LAST_NAME, MI) VALUES");
+		sb.append("INSERT INTO stock (vin, dealer_id, brand_owner, customer_id) VALUES");
 		
 		/**
-		 * For each person append a (id, first_name, last_name, MI) tuple
+		 * For each person append a (vin, dealer_id, brand_owner, customer_id) tuple
 		 * 
-		 * If it is not the last person add a comma to seperate
+		 * If it is not the last person add a comma to separate
 		 * 
 		 * If it is the last person add a semi-colon to end the statement
 		 */
 		for(int i = 0; i < stock.size(); i++){
 			Stock s = stock.get(i);
-			sb.append(String.format("(%d,\'%s\')",
-					s.getVIN(), s.getOwnerId()));
+			sb.append(String.format("(%d,%d,\'%s\',%d)",
+					s.getVin(), s.getDealer_id(), s.getBrand_owner(), s.getCustomer_id()));
 			if( i != stock.size()-1){
 				sb.append(",");
 			}
@@ -160,9 +160,7 @@ public class StockTable {
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryStockTable(Connection conn,
-			                                 ArrayList<String> columns,
-			                                 ArrayList<String> whereClauses){
+	public static ResultSet queryStockTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses){
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -174,7 +172,7 @@ public class StockTable {
 		 * If we gave no columns just give them all to us
 		 * 
 		 * other wise add the columns to the query
-		 * adding a comma top seperate
+		 * adding a comma top separate
 		 */
 		if(columns.isEmpty()){
 			sb.append("* ");
@@ -241,13 +239,14 @@ public class StockTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Stock %d: %s \n",
+				System.out.printf("Stock %d: %d %s %d\n",
 						          result.getInt(1),
-						          result.getString(2));
+                                  result.getInt(2),
+                                  result.getString(3),
+						          result.getInt(4));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }

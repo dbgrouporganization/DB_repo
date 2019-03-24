@@ -8,14 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the person table
+ * Class to make and manipulate the customer table
  * @author omg
  *
  */
 public class CustomerTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the person table
+	 * Reads a csv file for data and adds them to the customer table
 	 * 
 	 * Does not create the table. It must already be created
 	 * 
@@ -62,7 +62,7 @@ public class CustomerTable {
 		stmt.execute(sql);
 	}
 	/**
-	 * Create the person table with the given attributes
+	 * Create the customer table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
@@ -77,9 +77,9 @@ public class CustomerTable {
 						 + "ADDR_CITY VARCHAR(255),"
 						 + "ADDR_STATE VARCHAR(255),"
 						 + "ADDR_ZIP INT,"
-						 + "PHONE INT,"
+						 + "PHONE VARCHAR(255),"
 					 	 + "GENDER VARCHAR(255),"
-						 + "INCOME INT"
+						 + "INCOME NUMERIC(10,2)"
 					     + ");" ;
 			
 			/**
@@ -93,20 +93,20 @@ public class CustomerTable {
 	}
 	
 	/**
-	 * Adds a single person to the database
+	 * Adds a single customer to the database
 	 * 
 	 * @param conn
 	 * @param fName
 	 * @param lName
 	 */
 	public static void addCustomer(Connection conn,
-								   String fName, String lName, int ID, int addr_num, String addr_street, String addr_city, String addr_state, int addr_zip, int phone, String gender, int income){
+								   String fName, String lName, int ID, int addr_num, String addr_street, String addr_city, String addr_state, int addr_zip, String phone, String gender, float income){
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO person "
-				                   + "VALUES(%s,\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%d\',\'%s\',\'%d\');",
+		String query = String.format("INSERT INTO customer "
+				                   + "VALUES(%s,\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%s\',\'%s\',\'%f\');",
 									fName, lName, ID, addr_num, addr_street, addr_city, addr_state, addr_zip, phone, gender, income);
 		try {
 			/**
@@ -123,7 +123,7 @@ public class CustomerTable {
 	/**
 	 * This creates an sql statement to do a bulk add of customer
 	 * 
-	 * @param customer: list of Person objects to add
+	 * @param customer: list of Customer objects to add
 	 * 
 	 * @return
 	 */
@@ -136,18 +136,18 @@ public class CustomerTable {
 		 * the order of the data in reference 
 		 * to the columns to ad dit to
 		 */
-		sb.append("INSERT INTO person (id, FIRST_NAME, LAST_NAME, MI) VALUES");
+		sb.append("INSERT INTO customer (FIRST_NAME, LAST_NAME, ID, addr_num, addr_street, addr_city, addr_state, addr_zip, PHONE, GENDER, INCOME) VALUES");
 		
 		/**
-		 * For each person append a (id, first_name, last_name, MI) tuple
+		 * For each customer append a (FIRST_NAME, LAST_NAME, ID, addr_num, addr_street, addr_city, addr_state, addr_zip, PHONE, GENDER, INCOME) tuple
 		 * 
-		 * If it is not the last person add a comma to seperate
+		 * If it is not the last customer add a comma to separate
 		 * 
-		 * If it is the last person add a semi-colon to end the statement
+		 * If it is the last customer add a semi-colon to end the statement
 		 */
 		for(int i = 0; i < customer.size(); i++){
 			Customer c = customer.get(i);
-			sb.append(String.format("(%s,\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%d\',\'%s\',\'%d\')",
+			sb.append(String.format("(\'%s\',\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%s\',\'%s\',%f)",
 					c.getfName(), c.getlName(), c.getID(), c.getAddr_num(), c.getAddr_street(), c.getAddr_city(), c.getAddr_state(),
 					c.getAddr_zip(), c.getPhone(), c.getGender(), c.getIncome()));
 			if( i != customer.size()-1){
@@ -161,7 +161,7 @@ public class CustomerTable {
 	}
 	
 	/**
-	 * Makes a query to the person table 
+	 * Makes a query to the customer table
 	 * with given columns and conditions
 	 * 
 	 * @param conn
@@ -169,9 +169,7 @@ public class CustomerTable {
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryCustomerTable(Connection conn,
-			                                 ArrayList<String> columns,
-			                                 ArrayList<String> whereClauses){
+	public static ResultSet queryCustomerTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses){
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -183,7 +181,7 @@ public class CustomerTable {
 		 * If we gave no columns just give them all to us
 		 * 
 		 * other wise add the columns to the query
-		 * adding a comma top seperate
+		 * adding a comma top separate
 		 */
 		if(columns.isEmpty()){
 			sb.append("* ");
@@ -202,7 +200,7 @@ public class CustomerTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM person ");
+		sb.append("FROM customer ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -250,7 +248,7 @@ public class CustomerTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Customer: %s, %s, %d, %d, %s, %s, %s, %d, %d, %s, %d\n",
+				System.out.printf("Customer: %s, %s, %d, %d, %s, %s, %s, %d, %s, %s, %f\n",
 						          result.getString(1),
 						          result.getString(2),
 						          result.getInt(3),
@@ -259,13 +257,12 @@ public class CustomerTable {
 							   	  result.getString(6),
 								  result.getString(7),
 								  result.getInt(8),
-								  result.getInt(9),
+								  result.getString(9),
 							 	  result.getString(10),
-								  result.getInt(11));
+								  result.getFloat(11));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }

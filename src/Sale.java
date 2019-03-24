@@ -1,7 +1,7 @@
 /**
  * Hold data about a Sale
  *
- * @author jlb
+ * @author team 18
  */
 public class Sale {
 
