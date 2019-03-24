@@ -61,7 +61,7 @@ public class DB_Main {
 		DB_Main demo = new DB_Main();
 		
 		// Hard drive location of the database
-		String location = "./h2demo/h2demo";
+		String location = "./DB/Automobile";
 		String user = "user";
 		String password = "1234";
 		
