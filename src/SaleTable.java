@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Class to make and manipulate the Sale table
  *
- * @author jlb
+ * @author team 18
  */
 public class SaleTable {
 

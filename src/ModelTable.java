@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Class to make and manipulate the Vehicle table
  *
- * @author jlb
+ * @author omg
  */
 public class ModelTable {
 
@@ -65,8 +65,8 @@ public class ModelTable {
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS model("
 					     + "MYEAR INT,"
-					     + "MNAME VARCHAR(255),"
-						 + "PRIMARY KEY(MYEAR, MNAME),"
+					     + "MODEL VARCHAR(255),"
+						 + "PRIMARY KEY(MYEAR, MODEL),"
 					     + "BRAND VARCHAR(255),"
 					     + "BODYSTYLE VARCHAR(255),"
 					     + ");" ;
@@ -86,18 +86,18 @@ public class ModelTable {
      *
      * @param conn
      * @param MYear
-     * @param MName
+     * @param Model
      * @param Brand
      * @param BodyStyle
      */
-	public static void addModel(Connection conn, int MYear, String MName, String Brand, String BodyStyle) {
+	public static void addModel(Connection conn, int MYear, String Model, String Brand, String BodyStyle) {
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO Model "
 				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\');",
-				                     MYear, MName, Brand, BodyStyle);
+				                     MYear, Model, Brand, BodyStyle);
 		try {
 			/**
 			 * create and execute the query
@@ -124,10 +124,10 @@ public class ModelTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO model (myear, mname, brand, bodystyle) VALUES");
+		sb.append("INSERT INTO model (myear, model, brand, bodystyle) VALUES");
 		
 		/**
-		 * For each model append a (myear, mname, brand, bodystyle) tuple
+		 * For each model append a (myear, model, brand, bodystyle) tuple
 		 * 
 		 * If it is not the last model add a comma to separate
 		 * 
@@ -136,7 +136,7 @@ public class ModelTable {
 		for(int i = 0; i < model.size(); i++){
 			Model v = model.get(i);
 			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
-					v.getMYear(), v.getMName(), v.getBrand(), v.getBodyStyle()));
+					v.getMYear(), v.getModel(), v.getBrand(), v.getBodyStyle()));
 			if( i != model.size()-1){
 				sb.append(",");
 			}

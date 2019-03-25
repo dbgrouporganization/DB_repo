@@ -7,13 +7,15 @@ public class Vehicle {
 
 	int vin;
 	String model;
+	int year;
 	String options_id;
 	float price;
 	int owner_id;
 
-	public Vehicle(int vin, String model, String options_id, float price, int owner_id) {
+	public Vehicle(int vin, String model, int year, String options_id, float price, int owner_id) {
 		this.vin = vin;
 		this.model = model;
+		this.year = year;
 		this.options_id = options_id;
 		this.price = price;
 		this.owner_id = owner_id;
@@ -22,9 +24,10 @@ public class Vehicle {
 	public Vehicle(String[] data){
 		this.vin = Integer.parseInt(data[0]);
 		this.model = data[1];
-		this.options_id = data[2];
-		this.price = Float.parseFloat(data[3]);
-		this.owner_id = Integer.parseInt(data[4]);
+		this.year = Integer.parseInt(data[2]);
+		this.options_id = data[3];
+		this.price = Float.parseFloat(data[4]);
+		this.owner_id = Integer.parseInt(data[5]);
 	}
 
 	public int getVIN() {
@@ -34,6 +37,8 @@ public class Vehicle {
 	public String getModel() {
 		return model;
 	}
+
+	public int getYear() { return year; }
 	
 	public String getOptions_ID() {
 		return options_id;
