@@ -18,6 +18,7 @@ public class Login {
         user = console.next();
         System.out.print("Please enter your Password: ");
         pass = console.next();
+        //This section is for testing purposes.
     }
 
     public String getAccess(){
