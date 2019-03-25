@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Class to make and manipulate the Sale table
  *
- * @author omg
+ * @author team 18
  */
 public class SaleTable {
 
@@ -66,9 +66,9 @@ public class SaleTable {
 			String query = "CREATE TABLE IF NOT EXISTS sale("
 					     + "DATE VARCHAR(255),"
 					     + "VIN INT,"
-					     + "CUSTOMER_ID INT,"
-					     + "DEALER_ID INT,"
-						 + "PRIMARY KEY(DATE, VIN, CUSTOMER_ID),"
+						 + "PRIMARY KEY(DATE, VIN),"
+					     + "BUYER_ID INT,"
+						 + "SELLER_ID INT,"
 					     + ");" ;
 			
 			/**
@@ -87,16 +87,17 @@ public class SaleTable {
 	 * @param conn
 	 * @param date
 	 * @param vin
-	 * @param customer_id
+	 * @param buyer_id
+	 * @param seller_id
 	 */
-	public static void addSale(Connection conn, String date, int vin, int customer_id, int dealer_id) {
+	public static void addSale(Connection conn, String date, int vin, int buyer_id, int seller_id) {
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO Sale "
-				                   + "VALUES(\'%s\',%d,\'%s\',%d);",
-				                     date, vin, customer_id, dealer_id);
+				                   + "VALUES(\'%s\',%d,%d,%d);",
+				                     date, vin, buyer_id, seller_id);
 		try {
 			/**
 			 * create and execute the query
@@ -123,10 +124,10 @@ public class SaleTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO sale (date, vin, customer_id, dealer_id) VALUES");
+		sb.append("INSERT INTO sale (date, vin, buyer_id, seller_id) VALUES");
 		
 		/**
-		 * For each sale append a (date, vin, customer_id) tuple
+		 * For each sale append a (date, vin, buyer_id, seller_id) tuple
 		 * 
 		 * If it is not the last sale add a comma to separate
 		 * 
@@ -134,8 +135,8 @@ public class SaleTable {
 		 */
 		for(int i = 0; i < sale.size(); i++){
 			Sale v = sale.get(i);
-			sb.append(String.format("(\'%s\',%d,\'%s\',%d)",
-					v.getDate(), v.getVin(), v.getCustomer_id(), v.getDealer_id()));
+			sb.append(String.format("(\'%s\',%d,%d,%d)",
+					v.getDate(), v.getVin(), v.getBuyer_id(), v.getSeller_id()));
 			if( i != sale.size()-1){
 				sb.append(",");
 			}
@@ -233,11 +234,11 @@ public class SaleTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Sale %s: %d %s %d\n",
+				System.out.printf("Sale %s: %d %d %d\n",
 						          result.getString(1),
 						          result.getInt(2),
-						          result.getString(3),
-								  result.getInt(4));
+                                  result.getInt(3),
+						          result.getInt(4));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

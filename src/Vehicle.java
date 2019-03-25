@@ -1,7 +1,7 @@
 /**
  * Hold data about a Vehicle
  *
- * @author jlb
+ * @author team 18
  */
 public class Vehicle {
 
@@ -10,13 +10,15 @@ public class Vehicle {
 	int year;
 	String options_id;
 	float price;
+	int owner_id;
 
-	public Vehicle(int vin, int year, String model, String options_id, float price) {
+	public Vehicle(int vin, String model, int year, String options_id, float price, int owner_id) {
 		this.vin = vin;
-		this.year = year;
 		this.model = model;
+		this.year = year;
 		this.options_id = options_id;
 		this.price = price;
+		this.owner_id = owner_id;
 	}
 
 	public Vehicle(String[] data){
@@ -25,6 +27,7 @@ public class Vehicle {
 		this.year = Integer.parseInt(data[2]);
 		this.options_id = data[3];
 		this.price = Float.parseFloat(data[4]);
+		this.owner_id = Integer.parseInt(data[5]);
 	}
 
 	public int getVIN() {
@@ -34,6 +37,8 @@ public class Vehicle {
 	public String getModel() {
 		return model;
 	}
+
+	public int getYear() { return year; }
 	
 	public String getOptions_ID() {
 		return options_id;
@@ -43,5 +48,7 @@ public class Vehicle {
 		return price;
 	}
 
-	public int getYear() { return year; }
+	public int getOwner_id() {
+		return owner_id;
+	}
 }

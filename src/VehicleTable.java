@@ -69,6 +69,7 @@ public class VehicleTable {
 						 + "YEAR INT,"
 					     + "OPTIONS_ID VARCHAR(255),"
 					     + "PRICE NUMERIC(10,2),"
+						 + "OWNER_ID INT,"
 					     + ");" ;
 			
 			/**
@@ -89,15 +90,16 @@ public class VehicleTable {
 	 * @param model
 	 * @param options_id
 	 * @param price
+	 * @param owner_id
 	 */
-	public static void addVehicle(Connection conn, int vin, String model, int year, String options_id, float price) {
+	public static void addVehicle(Connection conn, int vin, String model, int year, String options_id, float price, int owner_id) {
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO Vehicle "
-				                   + "VALUES(%d,\'%s\',%d, \'%s\',\'%f\');",
-				                     vin, model, year, options_id, price);
+				                   + "VALUES(%d,\'%s\',%d,\'%s\',\'%f\',%d);",
+				                     vin, model, year, options_id, price, owner_id);
 		try {
 			/**
 			 * create and execute the query
@@ -124,10 +126,10 @@ public class VehicleTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO vehicle (vin, model, year, options_id, price) VALUES");
+		sb.append("INSERT INTO vehicle (vin, model, year, options_id, price, owner_id) VALUES");
 		
 		/**
-		 * For each vehicle append a (vin, model, options_id, price) tuple
+		 * For each vehicle append a (vin, model, year, options_id, price, owner_id) tuple
 		 * 
 		 * If it is not the last vehicle add a comma to separate
 		 * 
@@ -135,8 +137,8 @@ public class VehicleTable {
 		 */
 		for(int i = 0; i < vehicle.size(); i++){
 			Vehicle v = vehicle.get(i);
-			sb.append(String.format("(%d,\'%s\', %d, \'%s\',\'%s\')",
-					v.getVIN(), v.getModel(), v.getYear(), v.getOptions_ID(), v.getPrice()));
+			sb.append(String.format("(%d,\'%s\',%d,\'%s\',\'%s\',%d)",
+					v.getVIN(), v.getModel(), v.getYear(), v.getOptions_ID(), v.getPrice(), v.getOwner_id()));
 			if( i != vehicle.size()-1){
 				sb.append(",");
 			}
@@ -234,12 +236,13 @@ public class VehicleTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Vehicle %d: %s %d %s %f\n",
+				System.out.printf("Vehicle %d: %s %d %s %f %d\n",
 						          result.getInt(1),
 						          result.getString(2),
-						          result.getInt(3),
+								  result.getInt(3),
 						          result.getString(4),
-						          result.getFloat(5));
+						          result.getFloat(5),
+								  result.getInt(6));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
