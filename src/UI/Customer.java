@@ -8,7 +8,7 @@ public class Customer {
     public Customer(Connection conn){
         this.conn = conn;
         System.out.println("Welcome Customer!");
-
+        customerStart();
     }
 
     public void customerStart(){
