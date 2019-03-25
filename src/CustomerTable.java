@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Class to make and manipulate the customer table
- * @author omg
- *
+ * @author team 18
  */
 public class CustomerTable {
 
@@ -23,9 +22,7 @@ public class CustomerTable {
 	 * @param fileName
 	 * @throws SQLException
 	 */
-	public static void populateCustomerTableFromCSV(Connection conn,
-			                                      String fileName)
-			                                    		  throws SQLException {
+	public static void populateCustomerTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
@@ -48,7 +45,7 @@ public class CustomerTable {
 
 		/**
 		 * Creates the SQL query to do a bulk add of all Customer
-		 * that were read in. This is more efficent then adding one
+		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
 		String sql = createCustomerInsertSQL(Customer);
@@ -69,14 +66,9 @@ public class CustomerTable {
 	public static void createCustomerTable(Connection conn){
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS customer("
+						 + "OWNER_ID INT PRIMARY KEY,"
 					     + "FIRST_NAME VARCHAR(255),"
 					     + "LAST_NAME VARCHAR(255),"
-						 + "ID INT PRIMARY KEY,"
-					     + "ADDR_NUM INT,"
-						 + "ADDR_STREET VARCHAR(255),"
-						 + "ADDR_CITY VARCHAR(255),"
-						 + "ADDR_STATE VARCHAR(255),"
-						 + "ADDR_ZIP INT,"
 						 + "PHONE VARCHAR(255),"
 					 	 + "GENDER VARCHAR(255),"
 						 + "INCOME NUMERIC(10,2)"
@@ -91,23 +83,26 @@ public class CustomerTable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Adds a single customer to the database
-	 * 
+	 *
 	 * @param conn
+	 * @param owner_id
 	 * @param fName
 	 * @param lName
+	 * @param phone
+	 * @param gender
+	 * @param income
 	 */
-	public static void addCustomer(Connection conn, String fName, String lName, int ID, int addr_num, String addr_street,
-								   String addr_city, String addr_state, int addr_zip, String phone, String gender, float income){
+	public static void addCustomer(Connection conn, int owner_id, String fName, String lName, String phone, String gender, float income){
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO customer "
-				                   + "VALUES(%s,\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%s\',\'%s\',\'%f\');",
-									fName, lName, ID, addr_num, addr_street, addr_city, addr_state, addr_zip, phone, gender, income);
+				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\',\'%s\',%f);",
+									owner_id, fName, lName, phone, gender, income);
 		try {
 			/**
 			 * create and execute the query
@@ -136,10 +131,10 @@ public class CustomerTable {
 		 * the order of the data in reference 
 		 * to the columns to ad dit to
 		 */
-		sb.append("INSERT INTO customer (FIRST_NAME, LAST_NAME, ID, addr_num, addr_street, addr_city, addr_state, addr_zip, PHONE, GENDER, INCOME) VALUES");
+		sb.append("INSERT INTO customer (OWNER_ID, FIRST_NAME, LAST_NAME, PHONE, GENDER, INCOME) VALUES");
 		
 		/**
-		 * For each customer append a (FIRST_NAME, LAST_NAME, ID, addr_num, addr_street, addr_city, addr_state, addr_zip, PHONE, GENDER, INCOME) tuple
+		 * For each customer append a (OWNER_ID, FIRST_NAME, LAST_NAME, PHONE, GENDER, INCOME) tuple
 		 * 
 		 * If it is not the last customer add a comma to separate
 		 * 
@@ -147,9 +142,8 @@ public class CustomerTable {
 		 */
 		for(int i = 0; i < customer.size(); i++){
 			Customer c = customer.get(i);
-			sb.append(String.format("(\'%s\',\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%s\',\'%s\',%f)",
-					c.getfName(), c.getlName(), c.getId(), c.getAddr_num(), c.getAddr_street(), c.getAddr_city(), c.getAddr_state(),
-					c.getAddr_zip(), c.getPhone(), c.getGender(), c.getIncome()));
+			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\',\'%s\',%f)",
+					c.getOwner_id(), c.getfName(), c.getlName(), c.getPhone(), c.getGender(), c.getIncome()));
 			if( i != customer.size()-1){
 				sb.append(",");
 			}
@@ -248,18 +242,14 @@ public class CustomerTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Customer: %s, %s, %d, %d, %s, %s, %s, %d, %s, %s, %f\n",
-						          result.getString(1),
+				System.out.printf("Customer: %d %s %s %s %s %f\n",
+						          result.getInt(1),
 						          result.getString(2),
-						          result.getInt(3),
-						          result.getInt(4),
+								  result.getString(3),
+							   	  result.getString(4),
 								  result.getString(5),
-							   	  result.getString(6),
-								  result.getString(7),
-								  result.getInt(8),
-								  result.getString(9),
-							 	  result.getString(10),
-								  result.getFloat(11));
+							 	  result.getString(6),
+								  result.getFloat(7));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

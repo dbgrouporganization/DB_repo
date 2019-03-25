@@ -148,6 +148,17 @@ public class DB_Main {
 			ResultSet results7 = SaleTable.querySaleTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
 
 			/**
+			 * Owner Table Population
+			 */
+			OwnerTable.createOwnerTable(demo.getConnection());
+			OwnerTable.populateOwnerTableFromCSV(demo.getConnection(),"./csv files/owner.csv");
+			//Just displays the table
+			OwnerTable.printOwnerTable(demo.getConnection());
+			//Runs a basic query on the table
+			System.out.println("\n\nPrint results of SELECT * FROM owner");
+			ResultSet results8 = OwnerTable.queryOwnerTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+
+			/**
 			 * Iterates the Result set
 			 * 
 			 * Result Set is what a query in H2 returns
@@ -197,12 +208,12 @@ public class DB_Main {
 			 * Notice not all of the columns are here because
 			 * we limited what to show in the query
 			 */
-			ResultSet results8 = VehicleTable.queryVehicleTable(demo.getConnection(), columns, whereClauses);
-			while(results8.next()){
+			ResultSet results9 = VehicleTable.queryVehicleTable(demo.getConnection(), columns, whereClauses);
+			while(results9.next()){
 			System.out.printf("\tVehicle %d: %s %d\n",
-				          results8.getInt(1),
-				          results8.getString(2),
-				          results8.getInt(3));
+				          results9.getInt(1),
+				          results9.getString(2),
+				          results9.getInt(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

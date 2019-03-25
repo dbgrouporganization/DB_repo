@@ -1,31 +1,25 @@
 /**
  * Hold data about a Dealer
  *
- * @author jlb
+ * @author team 18
  */
-public class Dealer extends Owner{
+public class Dealer{
 
+	int owner_id;
 	String name;
 
-	public Dealer(int id, String name, String addr_street, int addr_num,
-				  String addr_city, String addr_state, int addr_zip) {
-		this.id = id;
+	public Dealer(int owner_id, String name) {
+		this.owner_id = owner_id;
 		this.name = name;
-		this.addr_street = addr_street;
-		this.addr_num = addr_num;
-		this.addr_city = addr_city;
-		this.addr_state = addr_state;
-		this.addr_zip = addr_zip;
 	}
 
 	public Dealer(String[] data) {
-		this.id = Integer.parseInt(data[0]);
+		this.owner_id = Integer.parseInt(data[0]);
 		this.name = data[1];
-		this.addr_street = data[2];
-		this.addr_num = Integer.parseInt(data[3]);
-		this.addr_city = data[4];
-		this.addr_state = data[5];
-		this.addr_zip = Integer.parseInt(data[6]);
+	}
+
+	public int getOwner_id() {
+		return owner_id;
 	}
 
 	public String getName() {

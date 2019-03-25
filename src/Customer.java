@@ -1,43 +1,37 @@
 /**
  * Hold data about a Customer
- * @author omg
  *
+ * @author team 18
  */
-public class Customer extends Owner{
+public class Customer{
 
+	private int owner_id;
 	private String fName;
 	private String lName;
 	private String phone;
 	private String gender;
 	private float income;
 
-	public Customer(String fName, String lName, int id, int addr_num, String addr_street, String addr_city,
-					String addr_state, int addr_zip, String phone, String gender, float income) {
+	public Customer(int owner_id, String fName, String lName, String phone, String gender, float income) {
+		this.owner_id = owner_id;
 		this.fName = fName;
 		this.lName = lName;
-		this.id = id;
-		this.addr_num = addr_num;
-		this.addr_street = addr_street;
-		this.addr_city = addr_city;
-		this.addr_state = addr_state;
-		this.addr_zip = addr_zip;
 		this.phone = phone;
 		this.gender = gender;
 		this.income = income;
 	}
 
-	public Customer (String[] data){
-		this.fName = data[0];
-		this.lName = data[1];
-		this.id = Integer.parseInt(data[2]);
-		this.addr_num = Integer.parseInt(data[3]);
-		this.addr_street = data[4];
-		this.addr_city = data[5];
-		this.addr_state = data[6];
-		this.addr_zip = Integer.parseInt(data[7]);
-		this.phone = data[8];
-		this.gender = data[9];
-		this.income = Float.parseFloat(data[10]);
+	public Customer(String[] data) {
+		this.owner_id = Integer.parseInt(data[0]);
+		this.fName = data[1];
+		this.lName = data[2];
+		this.phone = data[3];
+		this.gender = data[4];
+		this.income = Float.parseFloat(data[5]);
+	}
+
+	public int getOwner_id() {
+		return owner_id;
 	}
 
 	public String getfName() {
