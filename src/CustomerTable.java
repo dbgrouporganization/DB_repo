@@ -99,8 +99,8 @@ public class CustomerTable {
 	 * @param fName
 	 * @param lName
 	 */
-	public static void addCustomer(Connection conn,
-								   String fName, String lName, int ID, int addr_num, String addr_street, String addr_city, String addr_state, int addr_zip, String phone, String gender, float income){
+	public static void addCustomer(Connection conn, String fName, String lName, int ID, int addr_num, String addr_street,
+								   String addr_city, String addr_state, int addr_zip, String phone, String gender, float income){
 		
 		/**
 		 * SQL insert statement
@@ -148,7 +148,7 @@ public class CustomerTable {
 		for(int i = 0; i < customer.size(); i++){
 			Customer c = customer.get(i);
 			sb.append(String.format("(\'%s\',\'%s\',\'%d\',\'%d\',\'%s\',\'%s\',\'%s\',\'%d\',\'%s\',\'%s\',%f)",
-					c.getfName(), c.getlName(), c.getID(), c.getAddr_num(), c.getAddr_street(), c.getAddr_city(), c.getAddr_state(),
+					c.getfName(), c.getlName(), c.getId(), c.getAddr_num(), c.getAddr_street(), c.getAddr_city(), c.getAddr_state(),
 					c.getAddr_zip(), c.getPhone(), c.getGender(), c.getIncome()));
 			if( i != customer.size()-1){
 				sb.append(",");

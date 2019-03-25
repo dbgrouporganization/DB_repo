@@ -3,15 +3,9 @@
  *
  * @author jlb
  */
-public class Dealer {
+public class Dealer extends Owner{
 
-	int id;
 	String name;
-	String addr_street;
-	int addr_num;
-	String addr_city;
-	String addr_state;
-	int addr_zip;
 
 	public Dealer(int id, String name, String addr_street, int addr_num,
 				  String addr_city, String addr_state, int addr_zip) {
@@ -34,31 +28,7 @@ public class Dealer {
 		this.addr_zip = Integer.parseInt(data[6]);
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public String getAddr_street() {
-		return addr_street;
-	}
-
-	public int getAddr_num() {
-		return addr_num;
-	}
-
-	public String getAddr_city() {
-		return addr_city;
-	}
-
-	public String getAddr_state() {
-		return addr_state;
-	}
-
-	public int getAddr_zip() {
-		return addr_zip;
 	}
 }
