@@ -8,6 +8,9 @@ public class StartUp {
         //String access = login. getAccess();
         VehicleLookup test = new VehicleLookup(null);
         test.console();
+        Admin test1 = new Admin(null);
+        Customer cust = new Customer(null);
+
     }
 
 }
