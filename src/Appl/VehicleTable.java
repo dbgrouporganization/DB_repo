@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Appl.Vehicle table
+ * Class to make and manipulate the Vehicle table
  *
  * @author jlb
  */
@@ -59,7 +59,7 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Create the Appl.Vehicle table with the given attributes
+	 * Create the Vehicle table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
@@ -85,7 +85,7 @@ public class VehicleTable {
 	}
 
 	/**
-	 * Adds a single Appl.Vehicle to the database
+	 * Adds a single Vehicle to the database
 	 *
 	 * @param conn
 	 * @param vin
@@ -99,7 +99,7 @@ public class VehicleTable {
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Appl.Vehicle "
+		String query = String.format("INSERT INTO Vehicle "
 				                   + "VALUES(%d,\'%s\',%d,\'%s\',\'%f\',%d);",
 				                     vin, model, year, options_id, price, owner_id);
 		try {
@@ -117,7 +117,7 @@ public class VehicleTable {
 	/**
 	 * This creates an sql statement to do a bulk add of people
 	 * 
-	 * @param vehicle: list of Appl.Vehicle objects to add
+	 * @param vehicle: list of Vehicle objects to add
 	 * 
 	 * @return
 	 */
@@ -152,7 +152,7 @@ public class VehicleTable {
 	}
 	
 	/**
-	 * Makes a query to the Appl.Vehicle table with given columns and conditions
+	 * Makes a query to the Vehicle table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
@@ -190,7 +190,7 @@ public class VehicleTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Appl.Vehicle ");
+		sb.append("FROM Vehicle ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -226,19 +226,39 @@ public class VehicleTable {
 		}
 		return null;
 	}
+
+	/**
+	 * Prints the results from this table
+	 * @param results the ResultSet to print
+	 */
+	public static void printVehicleResults(ResultSet results){
+		try {
+			while(results.next()){
+				System.out.printf("Vehicle %d: %s %d %s %f %d\n",
+						results.getInt(1),
+						results.getString(2),
+						results.getInt(3),
+						results.getString(4),
+						results.getFloat(5),
+						results.getInt(6));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Queries and prints the table
 	 * @param conn
 	 */
 	public static void printVehicleTable(Connection conn){
-		String query = "SELECT * FROM Appl.Vehicle;";
+		String query = "SELECT * FROM Vehicle;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Appl.Vehicle %d: %s %d %s %f %d\n",
+				System.out.printf("Vehicle %d: %s %d %s %f %d\n",
 						          result.getInt(1),
 						          result.getString(2),
 								  result.getInt(3),

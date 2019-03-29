@@ -3,7 +3,7 @@ package Appl;
 /**
  * Hold data about a Brand
  *
- * @author jlb
+ * @author team 18
  */
 public class Brand {
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Class to make and manipulate the Brand table
  *
- * @author jlb
+ * @author team 18
  */
 public class BrandTable {
 

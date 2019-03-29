@@ -3,13 +3,14 @@ package UI;
 import Appl.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Customer {
     private Connection conn;
     public Customer(Connection conn){
         this.conn = conn;
-        System.out.println("Welcome Appl.Customer!");
+        System.out.println("Welcome Customer!");
         customerStart();
     }
 
@@ -51,6 +52,18 @@ public class Customer {
                     System.out.println("Please enter the dealer's name to search for:");
                     String name = console.next();
                     //TODO SQL Query for dealer's name
+
+                    // if name of dealer has an apostrophe duplicate it for sql
+                    if(name.contains("'")) {
+                        name = name.substring(0, name.indexOf("'")) + "'" + name.substring(name.indexOf("'"), name.length());
+                    }
+                    // create where clause for sql query
+                    ArrayList<String> whereClauses = new ArrayList<String>();
+                    whereClauses.add("name = " + name);
+                    // query and print results
+                    ResultSet nameResults = DealerTable.queryDealerTable(conn, new ArrayList<>(), whereClauses);
+                    DealerTable.printDealerResults(nameResults);
+
                     break;
                 case "city":
                     System.out.println("Please enter the dealer's city to search for:");
@@ -69,21 +82,29 @@ public class Customer {
 
     public void modelLookup(){
         Scanner console = new Scanner(System.in);
-        System.out.println("Please enter the Appl.Model you would like to search for:");
+        System.out.println("Please enter the Model you would like to search for:");
         String model = console.next();
         System.out.println("Please enter the Year you would like to search for:");
-        String year = console.next();
+        int year = console.nextInt();
         //TODO SQL Query for model and year.
 
+        // create where clause for sql query
+        ArrayList<String> whereClauses = new ArrayList<String>();
+        whereClauses.add("vin = " + vin);
+        // query and print results
+        ResultSet vinResults = VehicleTable.queryVehicleTable(conn, new ArrayList<>(), whereClauses);
+        VehicleTable.printVehicleResults(vinResults);
     }
 
     public void vinLookup(){
         Scanner console = new Scanner(System.in);
         System.out.println("Please enter the vin to search for:");
         int vin = console.nextInt();
-        //TODO SQL Query for a vin.
-        ResultSet vinResults = VehicleTable.queryVehicleTable(conn, )
+        // create where clause for sql query
+        ArrayList<String> whereClauses = new ArrayList<String>();
+        whereClauses.add("vin = " + vin);
+        // query and print results
+        ResultSet vinResults = VehicleTable.queryVehicleTable(conn, new ArrayList<>(), whereClauses);
+        VehicleTable.printVehicleResults(vinResults);
     }
-
-
 }

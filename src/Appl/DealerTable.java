@@ -10,14 +10,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Appl.Dealer table
+ * Class to make and manipulate the Dealer table
  *
  * @author jlb
  */
 public class DealerTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the Appl.Dealer table
+	 * Reads a cvs file for data and adds them to the Dealer table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
@@ -59,13 +59,13 @@ public class DealerTable {
 	}
 
 	/**
-	 * Create the Appl.Dealer table with the given attributes
+	 * Create the Dealer table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
 	public static void createDealerTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS Appl.Dealer("
+			String query = "CREATE TABLE IF NOT EXISTS Dealer("
 						 + "owner_id INT PRIMARY KEY,"
 					     + "name VARCHAR(255),"
 					     + ");" ;
@@ -81,7 +81,7 @@ public class DealerTable {
 	}
 
 	/**
-	 * Adds a single Appl.Dealer to the database
+	 * Adds a single Dealer to the database
 	 *
 	 * @param conn
 	 * @param owner_id
@@ -92,7 +92,7 @@ public class DealerTable {
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Appl.Dealer "
+		String query = String.format("INSERT INTO Dealer "
 				                   + "VALUES(%d,\'%s\');",
 				                     owner_id, name);
 		try {
@@ -110,7 +110,7 @@ public class DealerTable {
 	/**
 	 * This creates an sql statement to do a bulk add of dealers
 	 * 
-	 * @param Dealer: list of Appl.Dealer objects to add
+	 * @param Dealer: list of Dealer objects to add
 	 * 
 	 * @return
 	 */
@@ -121,14 +121,14 @@ public class DealerTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO Appl.Dealer (owner_id, name) VALUES");
+		sb.append("INSERT INTO Dealer (owner_id, name) VALUES");
 		
 		/**
-		 * For each Appl.Dealer append a (owner_id, name) tuple
+		 * For each Dealer append a (owner_id, name) tuple
 		 * 
-		 * If it is not the last Appl.Dealer add a comma to separate
+		 * If it is not the last Dealer add a comma to separate
 		 * 
-		 * If it is the last Appl.Dealer add a semi-colon to end the statement
+		 * If it is the last Dealer add a semi-colon to end the statement
 		 */
 		for(int i = 0; i < Dealer.size(); i++){
 			Dealer v = Dealer.get(i);
@@ -145,7 +145,7 @@ public class DealerTable {
 	}
 	
 	/**
-	 * Makes a query to the Appl.Dealer table with given columns and conditions
+	 * Makes a query to the Dealer table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
@@ -183,7 +183,7 @@ public class DealerTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Appl.Dealer ");
+		sb.append("FROM Dealer ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -219,25 +219,41 @@ public class DealerTable {
 		}
 		return null;
 	}
+
+	/**
+	 * Prints the results from this table
+	 * @param results the ResultSet to print
+	 */
+	public static void printDealerResults(ResultSet results){
+		try {
+			while(results.next()){
+				System.out.printf("Dealer %d: %s\n",
+						results.getInt(1),
+						results.getString(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	/**
 	 * Queries and print the table
 	 * @param conn
 	 */
 	public static void printDealerTable(Connection conn){
-		String query = "SELECT * FROM Appl.Dealer;";
+		String query = "SELECT * FROM Dealer;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Appl.Dealer %d: %s\n",
+				System.out.printf("Dealer %d: %s\n",
 						          result.getInt(1),
 						          result.getString(2));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }

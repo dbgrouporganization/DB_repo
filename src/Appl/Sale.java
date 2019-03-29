@@ -1,7 +1,7 @@
 package Appl;
 
 /**
- * Hold data about a Appl.Sale
+ * Hold data about a Sale
  *
  * @author team 18
  */

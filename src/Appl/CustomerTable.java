@@ -46,7 +46,7 @@ public class CustomerTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all Appl.Customer
+		 * Creates the SQL query to do a bulk add of all Customer
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
@@ -120,7 +120,7 @@ public class CustomerTable {
 	/**
 	 * This creates an sql statement to do a bulk add of customer
 	 * 
-	 * @param customer: list of Appl.Customer objects to add
+	 * @param customer: list of Customer objects to add
 	 * 
 	 * @return
 	 */
@@ -244,7 +244,7 @@ public class CustomerTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Appl.Customer: %d %s %s %s %s %f\n",
+				System.out.printf("Customer: %d %s %s %s %s %f\n",
 						          result.getInt(1),
 						          result.getString(2),
 								  result.getString(3),
