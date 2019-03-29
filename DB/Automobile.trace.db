@@ -7,5 +7,5 @@ org.h2.jdbc.JdbcSQLDataException: Invalid value "7" for parameter "columnIndex" 
 	at org.h2.jdbc.JdbcResultSet.checkColumnIndex(JdbcResultSet.java:3231)
 	at org.h2.jdbc.JdbcResultSet.get(JdbcResultSet.java:3270)
 	at org.h2.jdbc.JdbcResultSet.getFloat(JdbcResultSet.java:696)
-	at CustomerTable.printCustomerTable(CustomerTable.java:252)
-	at DB_Main.main(DB_Main.java:123)
+	at Appl.CustomerTable.printCustomerTable(Appl.CustomerTable.java:252)
+	at Appl.DB_Main.main(Appl.DB_Main.java:123)

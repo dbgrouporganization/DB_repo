@@ -1,7 +1,9 @@
+package Appl;
+
 import static java.lang.Float.parseFloat;
 
 /**
- * Hold data about a Model
+ * Hold data about a Appl.Model
  *
  * @author omg
  */

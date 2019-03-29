@@ -1,3 +1,5 @@
+package Appl;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,35 +10,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the owner table
- * @author team 18
+ * Class to make and manipulate the Brand table
+ *
+ * @author jlb
  */
-public class OwnerTable {
+public class BrandTable {
 
 	/**
-	 * Reads a csv file for data and adds them to the owner table
-	 * 
+	 * Reads a cvs file for data and adds them to the Brand table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
-	 * @param fileName
+	 * @param fileName: name of csv file
 	 * @throws SQLException
 	 */
-	public static void populateOwnerTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateBrandTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
-		 *
-		 * You can do the reading and adding to the table in one
-		 * step, I just broke it up for example reasons
 		 */
-		ArrayList<Owner> Owner = new ArrayList<Owner>();
+		ArrayList<Brand> Brand = new ArrayList<Brand>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				Owner.add(new Owner(split));
+				Brand.add(new Brand(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -44,11 +43,11 @@ public class OwnerTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all Owner
+		 * Creates the SQL query to do a bulk add of all Brands
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createOwnerInsertSQL(Owner);
+		String sql = createBrandInsertSQL(Brand);
 
 		/**
 		 * Create and execute an SQL statement
@@ -58,20 +57,16 @@ public class OwnerTable {
 		Statement stmt = conn.createStatement();
 		stmt.execute(sql);
 	}
+
 	/**
-	 * Create the owner table with the given attributes
+	 * Create the Brand table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createOwnerTable(Connection conn){
+	public static void createBrandTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS owner("
-						 + "OWNER_ID INT PRIMARY KEY,"
-					     + "ADDR_NUM INT,"
-						 + "ADDR_STREET VARCHAR(255),"
-						 + "ADDR_CITY VARCHAR(255),"
-						 + "ADDR_STATE VARCHAR(255),"
-						 + "ADDR_ZIP INT,"
+			String query = "CREATE TABLE IF NOT EXISTS Brand("
+					     + "name VARCHAR(255) PRIMARY KEY,"
 					     + ");" ;
 			
 			/**
@@ -85,25 +80,17 @@ public class OwnerTable {
 	}
 
 	/**
-	 * Adds a single owner to the database
+	 * Adds a single Brand to the database
 	 *
 	 * @param conn
-	 * @param owner_id
-	 * @param addr_num
-	 * @param addr_street
-	 * @param addr_city
-	 * @param addr_state
-	 * @param addr_zip
+	 * @param name
 	 */
-	public static void addOwner(Connection conn, int owner_id, int addr_num, String addr_street,
-								   String addr_city, String addr_state, int addr_zip){
+	public static void addBrand(Connection conn, String name) {
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO owner "
-				                   + "VALUES(%d,%sd,\'%s\',\'%s\',\'%s\',%d);",
-									owner_id, addr_num, addr_street, addr_city, addr_state, addr_zip);
+		String query = String.format("INSERT INTO Brand VALUES(\'%s\');", name);
 		try {
 			/**
 			 * create and execute the query
@@ -117,35 +104,32 @@ public class OwnerTable {
 	}
 	
 	/**
-	 * This creates an sql statement to do a bulk add of owner
+	 * This creates an sql statement to do a bulk add of brands
 	 * 
-	 * @param owner: list of Owner objects to add
+	 * @param Brand: list of Brand objects to add
 	 * 
 	 * @return
 	 */
-	public static String createOwnerInsertSQL(ArrayList<Owner> owner){
+	public static String createBrandInsertSQL(ArrayList<Brand> Brand) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
-		 * The start of the statement, 
-		 * tells it the table to add it to
-		 * the order of the data in reference 
-		 * to the columns to ad dit to
+		 * The start of the statement, tells it the table to add it to
+		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO owner (owner_id, addr_num, addr_street, addr_city, addr_state, addr_zip) VALUES");
+		sb.append("INSERT INTO Brand (name) VALUES");
 		
 		/**
-		 * For each owner append a (owner_id, addr_num, addr_street, addr_city, addr_state, addr_zip) tuple
+		 * For each Brand append a (name) tuple
 		 * 
-		 * If it is not the last owner add a comma to separate
+		 * If it is not the last Brand add a comma to separate
 		 * 
-		 * If it is the last owner add a semi-colon to end the statement
+		 * If it is the last Brand add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < owner.size(); i++){
-			Owner c = owner.get(i);
-			sb.append(String.format("(%d,%d,\'%s\',\'%s\',\'%s\',%d)",
-					c.getOwner_id(), c.getAddr_num(), c.getAddr_street(), c.getAddr_city(), c.getAddr_state(), c.getAddr_zip()));
-			if( i != owner.size()-1){
+		for(int i = 0; i < Brand.size(); i++){
+			Brand v = Brand.get(i);
+			sb.append(String.format("(\'%s\')", v.getName()));
+			if( i != Brand.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -156,15 +140,14 @@ public class OwnerTable {
 	}
 	
 	/**
-	 * Makes a query to the owner table
-	 * with given columns and conditions
+	 * Makes a query to the Brand table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryOwnerTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses){
+	public static ResultSet queryBrandTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -175,7 +158,7 @@ public class OwnerTable {
 		/**
 		 * If we gave no columns just give them all to us
 		 * 
-		 * other wise add the columns to the query
+		 * otherwise add the columns to the query
 		 * adding a comma top separate
 		 */
 		if(columns.isEmpty()){
@@ -195,7 +178,7 @@ public class OwnerTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM owner ");
+		sb.append("FROM Brand ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -233,26 +216,22 @@ public class OwnerTable {
 	}
 	
 	/**
-	 * Queries and print the table
+	 * Queries and prints the table
 	 * @param conn
 	 */
-	public static void printOwnerTable(Connection conn){
-		String query = "SELECT * FROM owner;";
+	public static void printBrandTable(Connection conn){
+		String query = "SELECT * FROM Brand;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Owner: %d, %d, %s, %s, %s, %d\n",
-						          result.getInt(1),
-						          result.getInt(2),
-						          result.getString(3),
-						          result.getString(4),
-								  result.getString(5),
-							   	  result.getInt(6));
+				System.out.printf("Brand %s\n",
+						          result.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 	}
 }

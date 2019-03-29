@@ -1,3 +1,5 @@
+package Appl;
+
 /**
  * Hold data about a Dealer
  *

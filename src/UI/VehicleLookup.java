@@ -17,7 +17,7 @@ public class VehicleLookup {
         while(loop) {
             //General message
             System.out.println("Welcome to vehicle lookup, what would you like to search by?");
-            System.out.println("The options are Vin, Model and year, Brand, Dealer, State or Zip.");
+            System.out.println("The options are Vin, Appl.Model and year, Appl.Brand, Appl.Dealer, State or Zip.");
             System.out.println("You can also exit by saying exit.");
             // what user wants to search by
             String search = console.next();
@@ -30,20 +30,20 @@ public class VehicleLookup {
                     String vin = console.next();
                     searchVin(vin);
                     return;
-                case "Model":
+                case "Appl.Model":
                     System.out.println("Please enter the model you would like to find:");
                     String Model = console.next();
                     System.out.println("Please enter the year you would like to find:");
                     String Year = console.next();
                     searchModel(Model, Year);
                     break;
-                case "Brand":
-                    System.out.println("Please enter the Brand you would like to find:");
+                case "Appl.Brand":
+                    System.out.println("Please enter the Appl.Brand you would like to find:");
                     String Brand = console.next();
                     searchBrand(Brand);
                     break;
-                case "Dealer":
-                    System.out.println("Please enter the Dealer you would like to find:");
+                case "Appl.Dealer":
+                    System.out.println("Please enter the Appl.Dealer you would like to find:");
                     String Dealer = console.next();
                     searchDealer(Dealer);
                     break;

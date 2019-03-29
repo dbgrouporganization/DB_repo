@@ -1,3 +1,5 @@
+package Appl;
+
 import java.sql.Connection;
 
 public class SQLQueries {

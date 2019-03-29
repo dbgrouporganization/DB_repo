@@ -1,3 +1,5 @@
+package Appl;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,32 +10,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Options table
+ * Class to make and manipulate the Appl.Dealer table
  *
  * @author jlb
  */
-public class OptionsTable {
+public class DealerTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the Options table
+	 * Reads a cvs file for data and adds them to the Appl.Dealer table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
 	 * @param fileName: name of csv file
 	 * @throws SQLException
 	 */
-	public static void populateOptionsTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateDealerTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
 		 */
-		ArrayList<Options> Options = new ArrayList<Options>();
+		ArrayList<Dealer> Dealer = new ArrayList<Dealer>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				Options.add(new Options(split));
+				Dealer.add(new Dealer(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -41,11 +43,11 @@ public class OptionsTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all Options
+		 * Creates the SQL query to do a bulk add of all Dealers
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createOptionsInsertSQL(Options);
+		String sql = createDealerInsertSQL(Dealer);
 
 		/**
 		 * Create and execute an SQL statement
@@ -57,21 +59,15 @@ public class OptionsTable {
 	}
 
 	/**
-	 * Create the Options table with the given attributes
+	 * Create the Appl.Dealer table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createOptionsTable(Connection conn){
+	public static void createDealerTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS Options("
-					     + "options_id INT PRIMARY KEY,"
-					     + "color VARCHAR(255),"
-					     + "engine VARCHAR(255),"
-					     + "transmission VARCHAR(255),"
-						 + "navigation BOOLEAN,"
-						 + "bluetooth BOOLEAN,"
-					 	 + "heated_seats BOOLEAN,"
-						 + "roof_rack BOOLEAN,"
+			String query = "CREATE TABLE IF NOT EXISTS Appl.Dealer("
+						 + "owner_id INT PRIMARY KEY,"
+					     + "name VARCHAR(255),"
 					     + ");" ;
 			
 			/**
@@ -85,27 +81,20 @@ public class OptionsTable {
 	}
 
 	/**
-	 * Adds a single Options to the database
+	 * Adds a single Appl.Dealer to the database
 	 *
 	 * @param conn
-	 * @param options_id
-	 * @param color
-	 * @param engine
-	 * @param transmission
-	 * @param navigation
-	 * @param bluetooth
-	 * @param heated_seats
-	 * @param roof_rack
+	 * @param owner_id
+	 * @param name
 	 */
-	public static void addOptions(Connection conn, int options_id, String color, String engine, String transmission,
-								  Boolean navigation, Boolean bluetooth, Boolean heated_seats, Boolean roof_rack) {
+	public static void addDealer(Connection conn, int owner_id, String name) {
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Options "
-				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\',%b,%b,%b,%b);",
-				                     options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack);
+		String query = String.format("INSERT INTO Appl.Dealer "
+				                   + "VALUES(%d,\'%s\');",
+				                     owner_id, name);
 		try {
 			/**
 			 * create and execute the query
@@ -119,33 +108,33 @@ public class OptionsTable {
 	}
 	
 	/**
-	 * This creates an sql statement to do a bulk add of Options
+	 * This creates an sql statement to do a bulk add of dealers
 	 * 
-	 * @param Options: list of Options objects to add
+	 * @param Dealer: list of Appl.Dealer objects to add
 	 * 
 	 * @return
 	 */
-	public static String createOptionsInsertSQL(ArrayList<Options> Options) {
+	public static String createDealerInsertSQL(ArrayList<Dealer> Dealer) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO Options (options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack) VALUES");
+		sb.append("INSERT INTO Appl.Dealer (owner_id, name) VALUES");
 		
 		/**
-		 * For each Options append a (options_id, color, engine, transmission, navigation, bluetooth, heated_seats, roof_rack) tuple
+		 * For each Appl.Dealer append a (owner_id, name) tuple
 		 * 
-		 * If it is not the last Options add a comma to separate
+		 * If it is not the last Appl.Dealer add a comma to separate
 		 * 
-		 * If it is the last Options add a semi-colon to end the statement
+		 * If it is the last Appl.Dealer add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < Options.size(); i++){
-			Options v = Options.get(i);
-			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\',%b,%b,%b,%b)",
-					v.getOptions_id(), v.getColor(), v.getEngine(), v.getTransmission(), v.getNavigation(), v.getBluetooth(), v.getHeated_seats(), v.getRoof_rack()));
-			if( i != Options.size()-1){
+		for(int i = 0; i < Dealer.size(); i++){
+			Dealer v = Dealer.get(i);
+			sb.append(String.format("(%d,\'%s\')",
+					v.getOwner_id(), v.getName()));
+			if( i != Dealer.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -156,14 +145,14 @@ public class OptionsTable {
 	}
 	
 	/**
-	 * Makes a query to the Options table with given columns and conditions
+	 * Makes a query to the Appl.Dealer table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryOptionsTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryDealerTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -194,7 +183,7 @@ public class OptionsTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Options ");
+		sb.append("FROM Appl.Dealer ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -235,22 +224,16 @@ public class OptionsTable {
 	 * Queries and print the table
 	 * @param conn
 	 */
-	public static void printOptionsTable(Connection conn){
-		String query = "SELECT * FROM Options;";
+	public static void printDealerTable(Connection conn){
+		String query = "SELECT * FROM Appl.Dealer;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Options %d: %s %s %s %b %b %b %b\n",
+				System.out.printf("Appl.Dealer %d: %s\n",
 						          result.getInt(1),
-						          result.getString(2),
-								  result.getString(3),
-								  result.getString(4),
-								  result.getBoolean(5),
-						          result.getBoolean(6),
-                                  result.getBoolean(7),
-						          result.getBoolean(8));
+						          result.getString(2));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

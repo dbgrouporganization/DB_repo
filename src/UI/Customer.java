@@ -1,13 +1,15 @@
 package UI;
 
+import Appl.*;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.Scanner;
 
 public class Customer {
     private Connection conn;
     public Customer(Connection conn){
         this.conn = conn;
-        System.out.println("Welcome Customer!");
+        System.out.println("Welcome Appl.Customer!");
         customerStart();
     }
 
@@ -53,7 +55,7 @@ public class Customer {
                 case "city":
                     System.out.println("Please enter the dealer's city to search for:");
                     String city = console.next();
-                    //TODO SQL Query for dealer's cit
+                    //TODO SQL Query for dealer's city
                     break;
                 case "state":
                     System.out.println("Please enter the dealer's state to search for:");
@@ -67,7 +69,7 @@ public class Customer {
 
     public void modelLookup(){
         Scanner console = new Scanner(System.in);
-        System.out.println("Please enter the Model you would like to search for:");
+        System.out.println("Please enter the Appl.Model you would like to search for:");
         String model = console.next();
         System.out.println("Please enter the Year you would like to search for:");
         String year = console.next();
@@ -78,8 +80,9 @@ public class Customer {
     public void vinLookup(){
         Scanner console = new Scanner(System.in);
         System.out.println("Please enter the vin to search for:");
-        String vin = console.next();
+        int vin = console.nextInt();
         //TODO SQL Query for a vin.
+        ResultSet vinResults = VehicleTable.queryVehicleTable(conn, )
     }
 
 

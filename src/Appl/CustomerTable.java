@@ -1,3 +1,5 @@
+package Appl;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,32 +10,35 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Dealer table
- *
- * @author jlb
+ * Class to make and manipulate the customer table
+ * @author team 18
  */
-public class DealerTable {
+public class CustomerTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the Dealer table
+	 * Reads a csv file for data and adds them to the customer table
+	 * 
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
-	 * @param fileName: name of csv file
+	 * @param fileName
 	 * @throws SQLException
 	 */
-	public static void populateDealerTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateCustomerTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
+		 *
+		 * You can do the reading and adding to the table in one
+		 * step, I just broke it up for example reasons
 		 */
-		ArrayList<Dealer> Dealer = new ArrayList<Dealer>();
+		ArrayList<Customer> Customer = new ArrayList<Customer>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				Dealer.add(new Dealer(split));
+				Customer.add(new Customer(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -41,11 +46,11 @@ public class DealerTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all Dealers
+		 * Creates the SQL query to do a bulk add of all Appl.Customer
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createDealerInsertSQL(Dealer);
+		String sql = createCustomerInsertSQL(Customer);
 
 		/**
 		 * Create and execute an SQL statement
@@ -55,17 +60,20 @@ public class DealerTable {
 		Statement stmt = conn.createStatement();
 		stmt.execute(sql);
 	}
-
 	/**
-	 * Create the Dealer table with the given attributes
+	 * Create the customer table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createDealerTable(Connection conn){
+	public static void createCustomerTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS Dealer("
-						 + "owner_id INT PRIMARY KEY,"
-					     + "name VARCHAR(255),"
+			String query = "CREATE TABLE IF NOT EXISTS customer("
+						 + "OWNER_ID INT PRIMARY KEY,"
+					     + "FIRST_NAME VARCHAR(255),"
+					     + "LAST_NAME VARCHAR(255),"
+						 + "PHONE VARCHAR(255),"
+					 	 + "GENDER VARCHAR(255),"
+						 + "INCOME NUMERIC(10,2)"
 					     + ");" ;
 			
 			/**
@@ -79,20 +87,24 @@ public class DealerTable {
 	}
 
 	/**
-	 * Adds a single Dealer to the database
+	 * Adds a single customer to the database
 	 *
 	 * @param conn
 	 * @param owner_id
-	 * @param name
+	 * @param fName
+	 * @param lName
+	 * @param phone
+	 * @param gender
+	 * @param income
 	 */
-	public static void addDealer(Connection conn, int owner_id, String name) {
+	public static void addCustomer(Connection conn, int owner_id, String fName, String lName, String phone, String gender, float income){
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Dealer "
-				                   + "VALUES(%d,\'%s\');",
-				                     owner_id, name);
+		String query = String.format("INSERT INTO customer "
+				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\',\'%s\',%f);",
+									owner_id, fName, lName, phone, gender, income);
 		try {
 			/**
 			 * create and execute the query
@@ -106,33 +118,35 @@ public class DealerTable {
 	}
 	
 	/**
-	 * This creates an sql statement to do a bulk add of dealers
+	 * This creates an sql statement to do a bulk add of customer
 	 * 
-	 * @param Dealer: list of Dealer objects to add
+	 * @param customer: list of Appl.Customer objects to add
 	 * 
 	 * @return
 	 */
-	public static String createDealerInsertSQL(ArrayList<Dealer> Dealer) {
+	public static String createCustomerInsertSQL(ArrayList<Customer> customer){
 		StringBuilder sb = new StringBuilder();
 		
 		/**
-		 * The start of the statement, tells it the table to add it to
-		 * the order of the data in reference to the columns to add it to
+		 * The start of the statement, 
+		 * tells it the table to add it to
+		 * the order of the data in reference 
+		 * to the columns to ad dit to
 		 */
-		sb.append("INSERT INTO Dealer (owner_id, name) VALUES");
+		sb.append("INSERT INTO customer (OWNER_ID, FIRST_NAME, LAST_NAME, PHONE, GENDER, INCOME) VALUES");
 		
 		/**
-		 * For each Dealer append a (owner_id, name) tuple
+		 * For each customer append a (OWNER_ID, FIRST_NAME, LAST_NAME, PHONE, GENDER, INCOME) tuple
 		 * 
-		 * If it is not the last Dealer add a comma to separate
+		 * If it is not the last customer add a comma to separate
 		 * 
-		 * If it is the last Dealer add a semi-colon to end the statement
+		 * If it is the last customer add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < Dealer.size(); i++){
-			Dealer v = Dealer.get(i);
-			sb.append(String.format("(%d,\'%s\')",
-					v.getOwner_id(), v.getName()));
-			if( i != Dealer.size()-1){
+		for(int i = 0; i < customer.size(); i++){
+			Customer c = customer.get(i);
+			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\',\'%s\',%f)",
+					c.getOwner_id(), c.getfName(), c.getlName(), c.getPhone(), c.getGender(), c.getIncome()));
+			if( i != customer.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -143,14 +157,15 @@ public class DealerTable {
 	}
 	
 	/**
-	 * Makes a query to the Dealer table with given columns and conditions
+	 * Makes a query to the customer table
+	 * with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryDealerTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryCustomerTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses){
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -161,7 +176,7 @@ public class DealerTable {
 		/**
 		 * If we gave no columns just give them all to us
 		 * 
-		 * otherwise add the columns to the query
+		 * other wise add the columns to the query
 		 * adding a comma top separate
 		 */
 		if(columns.isEmpty()){
@@ -181,7 +196,7 @@ public class DealerTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Dealer ");
+		sb.append("FROM customer ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -222,20 +237,24 @@ public class DealerTable {
 	 * Queries and print the table
 	 * @param conn
 	 */
-	public static void printDealerTable(Connection conn){
-		String query = "SELECT * FROM Dealer;";
+	public static void printCustomerTable(Connection conn){
+		String query = "SELECT * FROM customer;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Dealer %d: %s\n",
+				System.out.printf("Appl.Customer: %d %s %s %s %s %f\n",
 						          result.getInt(1),
-						          result.getString(2));
+						          result.getString(2),
+								  result.getString(3),
+							   	  result.getString(4),
+								  result.getString(5),
+							 	  result.getString(6),
+								  result.getFloat(7));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }

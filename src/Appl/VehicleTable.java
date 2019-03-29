@@ -1,3 +1,5 @@
+package Appl;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,32 +10,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- * Class to make and manipulate the Brand table
+ * Class to make and manipulate the Appl.Vehicle table
  *
  * @author jlb
  */
-public class BrandTable {
+public class VehicleTable {
 
 	/**
-	 * Reads a cvs file for data and adds them to the Brand table
+	 * Reads a cvs file for data and adds them to the vehicle table
 	 * Does not create the table. It must already be created
 	 * 
 	 * @param conn: database connection to work with
 	 * @param fileName: name of csv file
 	 * @throws SQLException
 	 */
-	public static void populateBrandTableFromCSV(Connection conn, String fileName) throws SQLException {
+	public static void populateVehicleTableFromCSV(Connection conn, String fileName) throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
 		 */
-		ArrayList<Brand> Brand = new ArrayList<Brand>();
+		ArrayList<Vehicle> vehicle = new ArrayList<Vehicle>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] split = line.split(",");
-				Brand.add(new Brand(split));
+				vehicle.add(new Vehicle(split));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -41,11 +43,11 @@ public class BrandTable {
 		}
 
 		/**
-		 * Creates the SQL query to do a bulk add of all Brands
+		 * Creates the SQL query to do a bulk add of all vehicles
 		 * that were read in. This is more efficient then adding one
 		 * at a time
 		 */
-		String sql = createBrandInsertSQL(Brand);
+		String sql = createVehicleInsertSQL(vehicle);
 
 		/**
 		 * Create and execute an SQL statement
@@ -57,14 +59,19 @@ public class BrandTable {
 	}
 
 	/**
-	 * Create the Brand table with the given attributes
+	 * Create the Appl.Vehicle table with the given attributes
 	 * 
 	 * @param conn: the database connection to work with
 	 */
-	public static void createBrandTable(Connection conn){
+	public static void createVehicleTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS Brand("
-					     + "name VARCHAR(255) PRIMARY KEY,"
+			String query = "CREATE TABLE IF NOT EXISTS vehicle("
+					     + "VIN INT PRIMARY KEY,"
+					     + "MODEL VARCHAR(255),"
+						 + "YEAR INT,"
+					     + "OPTIONS_ID VARCHAR(255),"
+					     + "PRICE NUMERIC(10,2),"
+						 + "OWNER_ID INT,"
 					     + ");" ;
 			
 			/**
@@ -78,17 +85,23 @@ public class BrandTable {
 	}
 
 	/**
-	 * Adds a single Brand to the database
+	 * Adds a single Appl.Vehicle to the database
 	 *
 	 * @param conn
-	 * @param name
+	 * @param vin
+	 * @param model
+	 * @param options_id
+	 * @param price
+	 * @param owner_id
 	 */
-	public static void addBrand(Connection conn, String name) {
+	public static void addVehicle(Connection conn, int vin, String model, int year, String options_id, float price, int owner_id) {
 		
 		/**
 		 * SQL insert statement
 		 */
-		String query = String.format("INSERT INTO Brand VALUES(\'%s\');", name);
+		String query = String.format("INSERT INTO Appl.Vehicle "
+				                   + "VALUES(%d,\'%s\',%d,\'%s\',\'%f\',%d);",
+				                     vin, model, year, options_id, price, owner_id);
 		try {
 			/**
 			 * create and execute the query
@@ -102,32 +115,33 @@ public class BrandTable {
 	}
 	
 	/**
-	 * This creates an sql statement to do a bulk add of brands
+	 * This creates an sql statement to do a bulk add of people
 	 * 
-	 * @param Brand: list of Brand objects to add
+	 * @param vehicle: list of Appl.Vehicle objects to add
 	 * 
 	 * @return
 	 */
-	public static String createBrandInsertSQL(ArrayList<Brand> Brand) {
+	public static String createVehicleInsertSQL(ArrayList<Vehicle> vehicle) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO Brand (name) VALUES");
+		sb.append("INSERT INTO vehicle (vin, model, year, options_id, price, owner_id) VALUES");
 		
 		/**
-		 * For each Brand append a (name) tuple
+		 * For each vehicle append a (vin, model, year, options_id, price, owner_id) tuple
 		 * 
-		 * If it is not the last Brand add a comma to separate
+		 * If it is not the last vehicle add a comma to separate
 		 * 
-		 * If it is the last Brand add a semi-colon to end the statement
+		 * If it is the last vehicle add a semi-colon to end the statement
 		 */
-		for(int i = 0; i < Brand.size(); i++){
-			Brand v = Brand.get(i);
-			sb.append(String.format("(\'%s\')", v.getName()));
-			if( i != Brand.size()-1){
+		for(int i = 0; i < vehicle.size(); i++){
+			Vehicle v = vehicle.get(i);
+			sb.append(String.format("(%d,\'%s\',%d,\'%s\',\'%s\',%d)",
+					v.getVIN(), v.getModel(), v.getYear(), v.getOptions_ID(), v.getPrice(), v.getOwner_id()));
+			if( i != vehicle.size()-1){
 				sb.append(",");
 			}
 			else{
@@ -138,14 +152,14 @@ public class BrandTable {
 	}
 	
 	/**
-	 * Makes a query to the Brand table with given columns and conditions
+	 * Makes a query to the Appl.Vehicle table with given columns and conditions
 	 * 
 	 * @param conn
 	 * @param columns: columns to return
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryBrandTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -176,7 +190,7 @@ public class BrandTable {
 		/**
 		 * Tells it which table to get the data from
 		 */
-		sb.append("FROM Brand ");
+		sb.append("FROM Appl.Vehicle ");
 		
 		/**
 		 * If we gave it conditions append them
@@ -217,15 +231,20 @@ public class BrandTable {
 	 * Queries and prints the table
 	 * @param conn
 	 */
-	public static void printBrandTable(Connection conn){
-		String query = "SELECT * FROM Brand;";
+	public static void printVehicleTable(Connection conn){
+		String query = "SELECT * FROM Appl.Vehicle;";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Brand %s\n",
-						          result.getString(1));
+				System.out.printf("Appl.Vehicle %d: %s %d %s %f %d\n",
+						          result.getInt(1),
+						          result.getString(2),
+								  result.getInt(3),
+						          result.getString(4),
+						          result.getFloat(5),
+								  result.getInt(6));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

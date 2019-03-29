@@ -1,3 +1,5 @@
+package Appl;
+
 /**
  * Hold data about an Owner
  * @author team 18
