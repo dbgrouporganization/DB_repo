@@ -3,6 +3,7 @@ package UI;
 import Appl.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -86,14 +87,51 @@ public class Customer {
         String model = console.next();
         System.out.println("Please enter the Year you would like to search for:");
         int year = console.nextInt();
-        //TODO SQL Query for model and year.
+        // SELECT vin, vehicle.model, year, price, brand, bodystyle, color, engine, transmission, navigation,
+        // bluetooth, heated_seats, roof_rack, name FROM vehicle INNER JOIN dealer ON vehicle.owner_id=dealer.owner_id
+        // INNER JOIN options ON vehicle.options_id=options.options_id INNER JOIN model ON vehicle.year=model.myear AND
+        // vehicle.model=model.model WHERE vehicle.model = 'Aventador' AND year = 2016;
+
+        // add attributes to ArrayList for SELECT
+        String attributes[] = { "vin", "vehicle.model", "year", "price", "brand", "bodystyle", "color", "engine",
+                                "transmission", "navigation", "bluetooth", "heated_seats", "roof_rack", "name" };
+        ArrayList<String> columns = new ArrayList<>();
+        for(String s : attributes) {
+            columns.add(s);
+        }
+
+        // join with dealer on owner_id, options on options_id, and model on year and model
+        String innerJoin = "INNER JOIN dealer ON vehicle.owner_id=dealer.owner_id INNER JOIN options ON vehicle.options_id=" +
+                "options.options_id INNER JOIN model ON vehicle.year=model.myear AND vehicle.model=model.model ";
 
         // create where clause for sql query
         ArrayList<String> whereClauses = new ArrayList<String>();
-        whereClauses.add("vin = " + vin);
+        whereClauses.add("vehicle.model = '" + model + "'");
+        whereClauses.add("year = " + year);
+
         // query and print results
-        ResultSet vinResults = VehicleTable.queryVehicleTable(conn, new ArrayList<>(), whereClauses);
-        VehicleTable.printVehicleResults(vinResults);
+        ResultSet results = VehicleTable.queryVehicleTable(conn, columns, innerJoin, whereClauses);
+        try {
+            while(results.next()){
+                System.out.printf("Vehicle %d: %s %d %f %s %s %s %s %s %s %s %s %s %s\n",
+                        results.getInt(1),
+                        results.getString(2),
+                        results.getInt(3),
+                        results.getFloat(4),
+                        results.getString(5),
+                        results.getString(6),
+                        results.getString(7),
+                        results.getString(8),
+                        results.getString(9),
+                        results.getString(10),
+                        results.getString(11),
+                        results.getString(12),
+                        results.getString(13),
+                        results.getString(14));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void vinLookup(){
@@ -104,7 +142,7 @@ public class Customer {
         ArrayList<String> whereClauses = new ArrayList<String>();
         whereClauses.add("vin = " + vin);
         // query and print results
-        ResultSet vinResults = VehicleTable.queryVehicleTable(conn, new ArrayList<>(), whereClauses);
+        ResultSet vinResults = VehicleTable.queryVehicleTable(conn, new ArrayList<>(), "", whereClauses);
         VehicleTable.printVehicleResults(vinResults);
     }
 }

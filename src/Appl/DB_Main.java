@@ -81,7 +81,7 @@ public class DB_Main {
 			VehicleTable.printVehicleTable(demo.getConnection());
 			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM vehicle");
-			ResultSet results1 = VehicleTable.queryVehicleTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			ResultSet results1 = VehicleTable.queryVehicleTable(demo.getConnection(), new ArrayList<String>(), "", new ArrayList<String>());
 
 			/**
 			 * Appl.Brand Table Population
@@ -210,7 +210,7 @@ public class DB_Main {
 			 * Notice not all of the columns are here because
 			 * we limited what to show in the query
 			 */
-			ResultSet results9 = VehicleTable.queryVehicleTable(demo.getConnection(), columns, whereClauses);
+			ResultSet results9 = VehicleTable.queryVehicleTable(demo.getConnection(), columns, "", whereClauses);
 			while(results9.next()){
 			System.out.printf("\tAppl.Vehicle %d: %s %d\n",
 				          results9.getInt(1),

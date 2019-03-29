@@ -40,7 +40,9 @@ public class Vehicle {
 		return model;
 	}
 
-	public int getYear() { return year; }
+	public int getYear() {
+		return year;
+	}
 	
 	public String getOptions_ID() {
 		return options_id;

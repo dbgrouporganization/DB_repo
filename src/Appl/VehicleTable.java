@@ -159,7 +159,7 @@ public class VehicleTable {
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, String innerJoin, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -191,6 +191,9 @@ public class VehicleTable {
 		 * Tells it which table to get the data from
 		 */
 		sb.append("FROM Vehicle ");
+
+		// add the inner join portion
+		sb.append(innerJoin);
 		
 		/**
 		 * If we gave it conditions append them
