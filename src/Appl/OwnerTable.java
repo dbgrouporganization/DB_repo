@@ -72,7 +72,7 @@ public class OwnerTable {
 					     + "ADDR_NUM INT,"
 						 + "ADDR_STREET VARCHAR(255),"
 						 + "ADDR_CITY VARCHAR(255),"
-						 + "ADDR_STATE VARCHAR(255),"
+						 + "ADDR_STATE CHAR(2),"
 						 + "ADDR_ZIP INT,"
 					     + ");" ;
 			

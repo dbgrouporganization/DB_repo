@@ -152,7 +152,7 @@ public class DealerTable {
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryDealerTable(Connection conn, ArrayList<String> columns, ArrayList<String> whereClauses) {
+	public static ResultSet queryDealerTable(Connection conn, ArrayList<String> columns, String innerJoin, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -184,6 +184,9 @@ public class DealerTable {
 		 * Tells it which table to get the data from
 		 */
 		sb.append("FROM Dealer ");
+
+		// add the inner join portion
+		sb.append(innerJoin);
 		
 		/**
 		 * If we gave it conditions append them
@@ -234,7 +237,26 @@ public class DealerTable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
 
+	/**
+	 * Prints the results from a dealer lookup query
+	 * @param results the ResultSet to print
+	 */
+	public static void printDealerQueryResults(ResultSet results){
+		try {
+			while(results.next()){
+				System.out.printf("Dealer %s: %d %s %s %s %d\n",
+						results.getString(1),
+						results.getInt(2),
+						results.getString(3),
+						results.getString(4),
+						results.getString(5),
+						results.getInt(6));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

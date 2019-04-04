@@ -249,6 +249,34 @@ public class VehicleTable {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Prints the results from a vehicle lookup
+	 * @param results the ResultSet to print
+	 */
+	public static void printVehicleQueryResults(ResultSet results){
+		try {
+			while(results.next()){
+				System.out.printf("Vehicle %d: %s %d %f %s %s %s %s %s %s %s %s %s %s\n",
+						results.getInt(1),
+						results.getString(2),
+						results.getInt(3),
+						results.getFloat(4),
+						results.getString(5),
+						results.getString(6),
+						results.getString(7),
+						results.getString(8),
+						results.getString(9),
+						results.getString(10),
+						results.getString(11),
+						results.getString(12),
+						results.getString(13),
+						results.getString(14));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Queries and prints the table
