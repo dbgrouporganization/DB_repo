@@ -26,7 +26,7 @@ public class Model {
 		this.BodyStyle = data[3];
 	}
 
-	public int getMYear() {
+	public int getYear() {
 		return Year;
 	}
 

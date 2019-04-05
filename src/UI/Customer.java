@@ -53,7 +53,7 @@ public class Customer {
         }
 
         // join with owner on owner_id
-        String innerJoin = "INNER JOIN owner ON dealer.owner_id=owner.owner_id ";
+        String naturalJoin = "NATURAL JOIN ";
 
         // ArrayList of where clauses
         ArrayList<String> whereClauses = new ArrayList<>();
@@ -71,7 +71,7 @@ public class Customer {
                     /*
                         example query:
                         SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM dealer
-                        INNER JOIN owner ON dealer.owner_id=owner.owner_id WHERE name = 'Owen''s Imports';
+                        NATURAL JOIN owner WHERE name = 'Owen''s Imports';
                     */
 
                     // if name of dealer has an apostrophe, duplicate it for sql query
@@ -88,7 +88,7 @@ public class Customer {
                     whereClauses.add("name = " + name);
 
                     // query and print results
-                    ResultSet nameResults = DealerTable.queryDealerTable(conn, columns, innerJoin, whereClauses);
+                    ResultSet nameResults = DealerTable.queryDealerTable(conn, columns, naturalJoin, whereClauses);
                     DealerTable.printDealerQueryResults(nameResults);
                     break;
                 case "city":
@@ -97,7 +97,7 @@ public class Customer {
                     /*
                         example query:
                         SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM dealer
-                        INNER JOIN owner ON dealer.owner_id=owner.owner_id WHERE addr_city = 'Rochester';
+                        NATURAL JOIN owner WHERE addr_city = 'Rochester';
                     */
 
                     // make sure where clause array is empty then add new where clause for sql query
@@ -109,7 +109,7 @@ public class Customer {
                     whereClauses.add("addr_city = " + city);
 
                     // query and print results
-                    ResultSet cityResults = DealerTable.queryDealerTable(conn, columns, innerJoin, whereClauses);
+                    ResultSet cityResults = DealerTable.queryDealerTable(conn, columns, naturalJoin, whereClauses);
                     DealerTable.printDealerQueryResults(cityResults);
                     break;
                 case "state":
@@ -118,7 +118,7 @@ public class Customer {
                     /*
                         example query:
                         SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM dealer
-                        INNER JOIN owner ON dealer.owner_id=owner.owner_id WHERE addr_state = 'NY';
+                        NATURAL JOIN owner WHERE addr_state = 'NY';
                     */
 
                     // make sure where clause array is empty then add new where clause for sql query
@@ -130,7 +130,7 @@ public class Customer {
                     whereClauses.add("addr_state = " + state);
 
                     // query and print results
-                    ResultSet stateResults = DealerTable.queryDealerTable(conn, columns, innerJoin, whereClauses);
+                    ResultSet stateResults = DealerTable.queryDealerTable(conn, columns, naturalJoin, whereClauses);
                     DealerTable.printDealerQueryResults(stateResults);
                     break;
                 default:
@@ -148,23 +148,21 @@ public class Customer {
         int year = console.nextInt();
         /*
             example query:
-            SELECT vin, vehicle.model, year, price, brand, bodystyle, color, engine, transmission, navigation,
-            bluetooth, heated_seats, roof_rack, name AS dealer_name FROM vehicle INNER JOIN dealer ON vehicle.owner_id=dealer.owner_id
-            INNER JOIN options ON vehicle.options_id=options.options_id INNER JOIN model ON vehicle.year=model.myear AND
-            vehicle.model=model.model WHERE vehicle.model = 'Aventador' AND year = 2016;
+            SELECT vin, vehicle.model, year, price, brand, bodystyle, color, engine, transmission, navigation, bluetooth,
+            heated_seats, roof_rack, name FROM vehicle NATURAL JOIN dealer INNER JOIN options ON vehicle.options_id=options.options_id INNER JOIN model ON
+            vehicle.model=model.model AND vehicle.year=model.year WHERE vehicle.model = 'Aventador' AND year = 2016;
         */
 
         // add attributes to ArrayList for SELECT
         String attributes[] = { "vin", "vehicle.model", "year", "price", "brand", "bodystyle", "color", "engine",
-                                "transmission", "navigation", "bluetooth", "heated_seats", "roof_rack", "name AS dealer_name" };
+                                "transmission", "navigation", "bluetooth", "heated_seats", "roof_rack", "name" };
         ArrayList<String> columns = new ArrayList<>();
         for(String s : attributes) {
             columns.add(s);
         }
 
         // join with dealer on owner_id, options on options_id, and model on year and model
-        String innerJoin = "INNER JOIN dealer ON vehicle.owner_id=dealer.owner_id INNER JOIN options ON vehicle.options_id=" +
-                "options.options_id INNER JOIN model ON vehicle.year=model.myear AND vehicle.model=model.model ";
+        String join = "NATURAL JOIN dealer NATURAL JOIN options INNER JOIN model ON vehicle.model=model.model AND vehicle.year=model.year ";
 
         // create where clause for sql query
         ArrayList<String> whereClauses = new ArrayList<>();
@@ -172,7 +170,7 @@ public class Customer {
         whereClauses.add("year = " + year);
 
         // query and print results
-        ResultSet modelResults = VehicleTable.queryVehicleTable(conn, columns, innerJoin, whereClauses);
+        ResultSet modelResults = VehicleTable.queryVehicleTable(conn, columns, join, whereClauses);
         VehicleTable.printVehicleQueryResults(modelResults);
     }
 
@@ -183,22 +181,20 @@ public class Customer {
         /*
             example query:
             SELECT vin, vehicle.model, year, price, brand, bodystyle, color, engine, transmission, navigation,
-            bluetooth, heated_seats, roof_rack, name AS dealer_name FROM vehicle INNER JOIN dealer ON vehicle.owner_id=dealer.owner_id
-            INNER JOIN options ON vehicle.options_id=options.options_id INNER JOIN model ON vehicle.year=model.myear AND
-            vehicle.model=model.model WHERE vin = 12345;
+            bluetooth, heated_seats, roof_rack, name FROM vehicle NATURAL JOIN dealer NATURAL JOIN options
+            INNER JOIN model ON vehicle.model=model.model AND vehicle.year=model.year WHERE vin = 12345;
         */
 
         // add attributes to ArrayList for SELECT
         String attributes[] = { "vin", "vehicle.model", "year", "price", "brand", "bodystyle", "color", "engine",
-                "transmission", "navigation", "bluetooth", "heated_seats", "roof_rack", "name AS dealer_name" };
+                "transmission", "navigation", "bluetooth", "heated_seats", "roof_rack", "name" };
         ArrayList<String> columns = new ArrayList<>();
         for(String s : attributes) {
             columns.add(s);
         }
 
         // join with dealer on owner_id, options on options_id, and model on year and model
-        String innerJoin = "INNER JOIN dealer ON vehicle.owner_id=dealer.owner_id INNER JOIN options ON vehicle.options_id=" +
-                "options.options_id INNER JOIN model ON vehicle.year=model.myear AND vehicle.model=model.model ";
+        String innerJoin = "NATURAL JOIN dealer NATURAL JOIN options INNER JOIN model ON vehicle.model=model.model AND vehicle.year=model.year ";
 
         // create where clause for sql query
         ArrayList<String> whereClauses = new ArrayList<>();

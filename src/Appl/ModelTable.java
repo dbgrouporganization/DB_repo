@@ -66,11 +66,11 @@ public class ModelTable {
 	public static void createModelTable(Connection conn){
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS model("
-					     + "MYEAR INT,"
+					     + "YEAR INT,"
 					     + "MODEL VARCHAR(255),"
-						 + "PRIMARY KEY(MYEAR, MODEL),"
 					     + "BRAND VARCHAR(255),"
 					     + "BODYSTYLE VARCHAR(255),"
+					     + "PRIMARY KEY(YEAR, MODEL)"
 					     + ");" ;
 			
 			/**
@@ -87,19 +87,19 @@ public class ModelTable {
      * Adds a single Model to the database
      *
      * @param conn
-     * @param MYear
+     * @param Year
      * @param Model
      * @param Brand
      * @param BodyStyle
      */
-	public static void addModel(Connection conn, int MYear, String Model, String Brand, String BodyStyle) {
+	public static void addModel(Connection conn, int Year, String Model, String Brand, String BodyStyle) {
 		
 		/**
 		 * SQL insert statement
 		 */
 		String query = String.format("INSERT INTO Model "
 				                   + "VALUES(%d,\'%s\',\'%s\',\'%s\');",
-				                     MYear, Model, Brand, BodyStyle);
+				                     Year, Model, Brand, BodyStyle);
 		try {
 			/**
 			 * create and execute the query
@@ -126,10 +126,10 @@ public class ModelTable {
 		 * The start of the statement, tells it the table to add it to
 		 * the order of the data in reference to the columns to add it to
 		 */
-		sb.append("INSERT INTO model (myear, model, brand, bodystyle) VALUES");
+		sb.append("INSERT INTO model (year, model, brand, bodystyle) VALUES");
 		
 		/**
-		 * For each model append a (myear, model, brand, bodystyle) tuple
+		 * For each model append a (year, model, brand, bodystyle) tuple
 		 * 
 		 * If it is not the last model add a comma to separate
 		 * 
@@ -138,7 +138,7 @@ public class ModelTable {
 		for(int i = 0; i < model.size(); i++){
 			Model v = model.get(i);
 			sb.append(String.format("(%d,\'%s\',\'%s\',\'%s\')", 
-					v.getMYear(), v.getModel(), v.getBrand(), v.getBodyStyle()));
+					v.getYear(), v.getModel(), v.getBrand(), v.getBodyStyle()));
 			if( i != model.size()-1){
 				sb.append(",");
 			}
@@ -236,7 +236,7 @@ public class ModelTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Model %d: %s %s %s\n",
+				System.out.printf("Model: %d %s %s %s\n",
 						          result.getInt(1),
 						          result.getString(2),
 						          result.getString(3),

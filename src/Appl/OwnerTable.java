@@ -245,7 +245,7 @@ public class OwnerTable {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()){
-				System.out.printf("Owner: %d, %d, %s, %s, %s, %d\n",
+				System.out.printf("Owner: %d %d %s %s %s %d\n",
 						          result.getInt(1),
 						          result.getInt(2),
 						          result.getString(3),

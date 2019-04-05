@@ -152,7 +152,7 @@ public class DealerTable {
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryDealerTable(Connection conn, ArrayList<String> columns, String innerJoin, ArrayList<String> whereClauses) {
+	public static ResultSet queryDealerTable(Connection conn, ArrayList<String> columns, String join, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -186,7 +186,7 @@ public class DealerTable {
 		sb.append("FROM Dealer ");
 
 		// add the inner join portion
-		sb.append(innerJoin);
+		sb.append(join);
 		
 		/**
 		 * If we gave it conditions append them

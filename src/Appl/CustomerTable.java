@@ -250,8 +250,7 @@ public class CustomerTable {
 								  result.getString(3),
 							   	  result.getString(4),
 								  result.getString(5),
-							 	  result.getString(6),
-								  result.getFloat(7));
+							 	  result.getFloat(6));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

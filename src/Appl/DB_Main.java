@@ -73,110 +73,93 @@ public class DB_Main {
 		try {
 			
 			/**
-			 * Appl.Vehicle Table Population
+			 * Vehicle Table Population
 			 */
 			VehicleTable.createVehicleTable(demo.getConnection());
 			VehicleTable.populateVehicleTableFromCSV(demo.getConnection(),"./csv files/vehicle.csv");
 			//Just displays the table
-			VehicleTable.printVehicleTable(demo.getConnection());
-			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM vehicle");
-			ResultSet results1 = VehicleTable.queryVehicleTable(demo.getConnection(), new ArrayList<String>(), "", new ArrayList<String>());
+			VehicleTable.printVehicleTable(demo.getConnection());
 
 			/**
-			 * Appl.Brand Table Population
+			 * Brand Table Population
 			 */
 			BrandTable.createBrandTable(demo.getConnection());
 			BrandTable.populateBrandTableFromCSV(demo.getConnection(),"./csv files/brand.csv");
 			//Just displays the table
-			BrandTable.printBrandTable(demo.getConnection());
-			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM brand");
-			ResultSet results2 = BrandTable.queryBrandTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			BrandTable.printBrandTable(demo.getConnection());
 
 			/**
-			 * Appl.Dealer Table Population
+			 * Dealer Table Population
 			 */
 			DealerTable.createDealerTable(demo.getConnection());
 			DealerTable.populateDealerTableFromCSV(demo.getConnection(),"./csv files/dealer.csv");
 			//Just displays the table
-			DealerTable.printDealerTable(demo.getConnection());
-			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM dealer");
-			ResultSet results3 = DealerTable.queryDealerTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			DealerTable.printDealerTable(demo.getConnection());
 
 			/**
-			 * Appl.Model Table Population
+			 * Model Table Population
 			 */
 			ModelTable.createModelTable(demo.getConnection());
 			ModelTable.populateModelTableFromCSV(demo.getConnection(),"./csv files/model.csv");
 			//Just displays the table
-			ModelTable.printModelTable(demo.getConnection());
-			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM model");
-			ResultSet results4 = ModelTable.queryModelTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			ModelTable.printModelTable(demo.getConnection());
 
 			/**
-			 * Appl.Customer Table Population
+			 * Customer Table Population
 			 */
 			CustomerTable.createCustomerTable(demo.getConnection());
 			CustomerTable.populateCustomerTableFromCSV(demo.getConnection(),"./csv files/customer.csv");
 			//Just displays the table
-			CustomerTable.printCustomerTable(demo.getConnection());
-			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM customer");
-			ResultSet results5 = CustomerTable.queryCustomerTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			CustomerTable.printCustomerTable(demo.getConnection());
 
 			/**
-			 * Appl.Options Table Population
+			 * Options Table Population
 			 */
 			OptionsTable.createOptionsTable(demo.getConnection());
 			OptionsTable.populateOptionsTableFromCSV(demo.getConnection(),"./csv files/options.csv");
 			//Just displays the table
-			OptionsTable.printOptionsTable(demo.getConnection());
-			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM options");
-			ResultSet results6 = OptionsTable.queryOptionsTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			OptionsTable.printOptionsTable(demo.getConnection());
 
 			/**
-			 * Appl.Sale Table Population
+			 * Sale Table Population
 			 */
 			SaleTable.createSaleTable(demo.getConnection());
 			SaleTable.populateSaleTableFromCSV(demo.getConnection(),"./csv files/sale.csv");
 			//Just displays the table
-			SaleTable.printSaleTable(demo.getConnection());
-			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM sale");
-			ResultSet results7 = SaleTable.querySaleTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			SaleTable.printSaleTable(demo.getConnection());
 
 			/**
-			 * Appl.Owner Table Population
+			 * Owner Table Population
 			 */
 			OwnerTable.createOwnerTable(demo.getConnection());
 			OwnerTable.populateOwnerTableFromCSV(demo.getConnection(),"./csv files/owner.csv");
 			//Just displays the table
-			OwnerTable.printOwnerTable(demo.getConnection());
-			//Runs a basic query on the table
 			System.out.println("\n\nPrint results of SELECT * FROM owner");
-			ResultSet results8 = OwnerTable.queryOwnerTable(demo.getConnection(), new ArrayList<String>(), new ArrayList<String>());
+			OwnerTable.printOwnerTable(demo.getConnection());
 
-			/**
-			 * Iterates the Result set
-			 * 
-			 * Result Set is what a query in H2 returns
-			 */
+			/*
+			// Iterates the Result set
+			// Result Set is what a query in H2 returns
 			while(results1.next()){
-				System.out.printf("\tAppl.Vehicle %d: %s %s %f %d\n",
+				System.out.printf("\tVehicle %d: %s %s %f %d\n",
 						          results1.getInt(1),
 						          results1.getString(2),
 						          results1.getString(3),
 						          results1.getFloat(4),
 								  results1.getInt(5));
 			}
+			*/
 
 			/**
 			 * A more complex query with columns selected and 
-			 * addition conditions
+			 * additional conditions
 			 */
 			System.out.println("\n\nPrint results of SELECT "
 					+ "vin, model "
@@ -193,14 +176,14 @@ public class DB_Main {
 			ArrayList<String> columns = new ArrayList<String>();
 			columns.add("vin");
 			columns.add("model");
-			columns.add("options_id");
+			columns.add("year");
 			
 			/**
 			 * Conditionals
 			 */
 			ArrayList<String> whereClauses = new ArrayList<String>();
 			whereClauses.add("model = \'Aventador\'");
-			whereClauses.add("options_id = 2");
+			whereClauses.add("year = 2016");
 			
 			/**
 			 * query and get the result set
@@ -210,12 +193,12 @@ public class DB_Main {
 			 * Notice not all of the columns are here because
 			 * we limited what to show in the query
 			 */
-			ResultSet results9 = VehicleTable.queryVehicleTable(demo.getConnection(), columns, "", whereClauses);
-			while(results9.next()){
-			System.out.printf("\tAppl.Vehicle %d: %s %d\n",
-				          results9.getInt(1),
-				          results9.getString(2),
-				          results9.getInt(3));
+			ResultSet results = VehicleTable.queryVehicleTable(demo.getConnection(), columns, "", whereClauses);
+			while(results.next()){
+			System.out.printf("\tVehicle %d: %s %d\n",
+				          results.getInt(1),
+				          results.getString(2),
+				          results.getInt(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -69,7 +69,7 @@ public class VehicleTable {
 					     + "VIN INT PRIMARY KEY,"
 					     + "MODEL VARCHAR(255),"
 						 + "YEAR INT,"
-					     + "OPTIONS_ID VARCHAR(255),"
+					     + "OPTIONS_ID INT,"
 					     + "PRICE NUMERIC(10,2),"
 						 + "OWNER_ID INT,"
 					     + ");" ;
@@ -159,7 +159,7 @@ public class VehicleTable {
 	 * @param whereClauses: conditions to limit query by
 	 * @return
 	 */
-	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, String innerJoin, ArrayList<String> whereClauses) {
+	public static ResultSet queryVehicleTable(Connection conn, ArrayList<String> columns, String join, ArrayList<String> whereClauses) {
 		StringBuilder sb = new StringBuilder();
 		
 		/**
@@ -193,7 +193,7 @@ public class VehicleTable {
 		sb.append("FROM Vehicle ");
 
 		// add the inner join portion
-		sb.append(innerJoin);
+		sb.append(join);
 		
 		/**
 		 * If we gave it conditions append them

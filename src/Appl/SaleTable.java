@@ -66,7 +66,7 @@ public class SaleTable {
 	public static void createSaleTable(Connection conn){
 		try {
 			String query = "CREATE TABLE IF NOT EXISTS sale("
-					     + "DATE VARCHAR(255),"
+					     + "DATE DATE,"
 					     + "VIN INT,"
 						 + "PRIMARY KEY(DATE, VIN),"
 					     + "BUYER_ID INT,"
