@@ -53,6 +53,25 @@ public class DB_Main {
 			e.printStackTrace();
 		}
 	}
+
+	public void createView(){
+		try {
+			String query = "create view VehicleLookup as select Vin, Vehicle.Model, Vehicle.Year , Name as Dealer, " +
+					"Owner.ADDR_STATE as State, Owner. ADDR_ZIP as Zip, vehicle.OPTIONS_ID, COLOR , ENGINE , " +
+					"TRANSMISSION , NAVIGATION , BLUETOOTH , HEATED_SEATS , ROOF_RACK , Price from "+
+					"((((Vehicle inner join Options on Vehicle.OPTIONS_ID = Options.Options_ID) inner join Model on "+
+					"(Vehicle.Model = Model.Model and Vehicle.year = Model.Year)) inner join Owner on "+
+					"(Vehicle.OWNER_ID = Owner.OWNER_ID)) inner join Dealer on (Owner.Owner_ID  = Dealer.Owner_ID));";
+
+			/**
+			 * Create a query and execute
+			 */
+			Statement stmt = conn.createStatement();
+			stmt.execute(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Starts and runs the database
@@ -156,6 +175,12 @@ public class DB_Main {
 								  results1.getInt(5));
 			}
 			*/
+
+			/**
+			 * Create the Vehicle lookup View
+			 */
+			demo.createView();
+
 
 			/**
 			 * A more complex query with columns selected and 
