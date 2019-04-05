@@ -97,17 +97,8 @@ public class DB_Main {
 			VehicleTable.createVehicleTable(demo.getConnection());
 			VehicleTable.populateVehicleTableFromCSV(demo.getConnection(),"./csv files/vehicle.csv");
 			//Just displays the table
-			System.out.println("\n\nPrint results of SELECT * FROM vehicle");
+			System.out.println("Print results of SELECT * FROM vehicle");
 			VehicleTable.printVehicleTable(demo.getConnection());
-
-			/**
-			 * Brand Table Population
-			 */
-			BrandTable.createBrandTable(demo.getConnection());
-			BrandTable.populateBrandTableFromCSV(demo.getConnection(),"./csv files/brand.csv");
-			//Just displays the table
-			System.out.println("\n\nPrint results of SELECT * FROM brand");
-			BrandTable.printBrandTable(demo.getConnection());
 
 			/**
 			 * Dealer Table Population
