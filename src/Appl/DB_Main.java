@@ -81,9 +81,11 @@ public class DB_Main {
 			String Access = "Create User Admin Password 'Admin';" +
 			"Create User VehicleLookup Password 'VehicleLookup';"+
 			"Create User Customer Password 'Customer';"+
+            "Create User Marketing Password 'Marketing';"+
 			"GRANT SELECT ON CUSTOMER to Customer;"+
 			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
-			"GRANT All ON CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE , VEHICLELOOKUP  TO Admin;";
+			"GRANT All ON CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE , VEHICLELOOKUP  TO Admin;" +
+			"Grant Select on CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE , VEHICLELOOKUP To Marketing;";
 			Statement stmt = conn.createStatement();
 			stmt.execute(Access);
 		} catch (SQLException e) {
