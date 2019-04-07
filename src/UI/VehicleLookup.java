@@ -9,9 +9,10 @@ public class VehicleLookup {
 
     public VehicleLookup(Connection conn){
         //this.conn = conn;
+        vehicleStart();
     }
 
-    public void console(){
+    public void vehicleStart(){
         boolean loop = true;
         Scanner console = new Scanner(System.in);
         while(loop) {

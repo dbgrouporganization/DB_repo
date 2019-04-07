@@ -36,7 +36,7 @@ public class DB_Main {
 	}
 	
 	/**
-	 * Getter for db connection
+	 * Getter for db connectiond
 	 * @return: returns class level connection
 	 */
 	public Connection getConnection(){
@@ -72,7 +72,26 @@ public class DB_Main {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Adds all users to the DB
+	 */
+	public void addAccess(){
+		try{
+			String Access = "Create User Admin Password 'Admin';" +
+			"Create User VehicleLookup Password 'VehicleLookup';"+
+			"Create User Customer Password 'Customer';"+
+			"GRANT SELECT ON CUSTOMER to Customer;"+
+			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
+			"GRANT All ON CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE , VEHICLELOOKUP  TO Admin;";
+			Statement stmt = conn.createStatement();
+			stmt.execute(Access);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	/**
 	 * Starts and runs the database
 	 * @param args: not used
@@ -172,6 +191,7 @@ public class DB_Main {
 			 */
 			demo.createView();
 
+			demo.addAccess();
 
 			/**
 			 * A more complex query with columns selected and 

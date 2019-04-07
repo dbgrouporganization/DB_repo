@@ -9,7 +9,8 @@ public class Login {
 
     private String user;
     private String pass;
-    private String access;
+    private Connection conn;
+    private Users userType;
 
     public Login(){
         Scanner console = new Scanner(System.in);
@@ -19,14 +20,23 @@ public class Login {
         System.out.print("Please enter your Password: ");
         pass = console.next();
         //This section is for testing purposes.
-    }
-
-    public String getAccess(){
-        //TODO figure out how to login and accessing data
-
+        switch(user) {
+            case "Admin":
+                userType = Users.ADMIN;
+                break;
+            case "VehicleLookup":
+                userType = Users.VEHICLELOOKUP;
+                break;
+            case "Customer":
+                userType = Users.CUSOTMER;
+                break;
+            case "Marketing":
+                userType = Users.MARKETING;
+                break;
+        }
         try {
             //This needs to be on the front of your location
-            String url = "jdbc:h2:./h2demo/h2demo";
+            String url = "jdbc:h2:./DB/Automobile";
 
             //This tells it to use the h2 driver
             Class.forName("org.h2.Driver");
@@ -40,7 +50,15 @@ public class Login {
             //You should handle this better
             e.printStackTrace();
         }
-        return access;
+
+    }
+
+    public Connection getConnection(){
+        return conn;
+    }
+
+    public Users getUserType(){
+        return userType;
     }
 
 
