@@ -1,89 +1,106 @@
 package UI;
 
+import java.util.ArrayList;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class VehicleLookup {
 
     private Connection conn;
 
+    private final String[] possibleSearchParams = {"", "", "", "", ""};
+
     public VehicleLookup(Connection conn){
-        //this.conn = conn;
-        vehicleStart();
+        this.conn = conn;
     }
 
-    public void vehicleStart(){
-        boolean loop = true;
+    public void console(){
+
+        ArrayList<String> params = new ArrayList<>();
+        for(String s : possibleSearchParams) {
+            params.add(s);
+        }
+
+        boolean queryLoop = true;
         Scanner console = new Scanner(System.in);
-        while(loop) {
+        System.out.println("Welcome to vehicle lookup!");
+        System.out.println("You can exit by saying 'exit'.");
+
+
+        while(queryLoop) {
+            boolean paramLoop = true;
+
             //General message
-            System.out.println("Welcome to vehicle lookup, what would you like to search by?");
-            System.out.println("The options are Vin, Model and year, Brand, Dealer, State or Zip.");
-            System.out.println("You can also exit by saying exit.");
-            // what user wants to search by
-            String search = console.next();
-            switch (search) {
-                case "exit":
-                    loop = false;
-                    return;
-                case "Vin":
-                    System.out.println("Please enter the Vin you want to find.");
-                    String vin = console.next();
-                    searchVin(vin);
-                    return;
-                case "Model":
-                    System.out.println("Please enter the model you would like to find:");
-                    String Model = console.next();
-                    System.out.println("Please enter the year you would like to find:");
-                    String Year = console.next();
-                    searchModel(Model, Year);
-                    break;
-                case "Brand":
-                    System.out.println("Please enter the Brand you would like to find:");
-                    String Brand = console.next();
-                    searchBrand(Brand);
-                    break;
-                case "Dealer":
-                    System.out.println("Please enter the Dealer you would like to find:");
-                    String Dealer = console.next();
-                    searchDealer(Dealer);
-                    break;
-                case "State":
-                    System.out.println("Please enter the state you would like to search in:");
-                    String State = console.next();
-                    searchState(State);
-                    break;
-                case "Zip":
-                    System.out.println("Please enter the zip code you would like to search in:");
-                    String Zip = console.next();
-                    searchZip(Zip);
-                    break;
+            System.out.println("What would you like to search by?");
+            int parameters = 0;
+
+            String query = "SELECT * FROM "+viewName+" WHERE ";
+
+            while(paramLoop) {
+                if(parameters > 0) {
+                    System.out.println("What else would you like to search by?");
+                }
+                System.out.println("The options are Vin, Model and year, Brand, Dealer, State, or Zip.");
+                System.out.println("To make the search, enter 'search'.");
+
+                // what user wants to search by
+                String att = console.next();
+
+                // exit?
+                if(att.equals("exit")) {
+                    queryLoop = false;
+                    paramLoop = false;
+                    continue;
+                }
+
+                // run search?
+                if(att.equals("search")) {
+                    paramLoop = false;
+                    continue;
+                }
+
+                // valid search parameter?
+                if(!params.contains(att)) {
+                     System.out.println(att+" is not a valid search parameter.");
+                     continue;
+                }
+
+                parameters++;
+
+                System.out.println("Enter the "+att+" you would like to find: ");
+
+                String value = console.next();
+
+                if(!(att.equals("vin") || att.equals("year") || att.equals("zip")))
+                    value = "'"+value+"'";
+
+                query += (parameters > 1 ? "and " : "") + att + " = " + value;
             }
+            // search parameters have been defined
+
+            query += ";";
+            executeQuery(query);
 
             //Keep going?
             System.out.println("Would you like to make another search?(Y/N)");
-            String res = console.next();
-            if( loop && res.equals("N"))
-                loop = false;
+            if(console.next().equals("N"))
+                queryLoop = false;
         }
+
+        // no more searches to be made
     }
 
-    public void searchBrand(String brand){
-        //TODO SQL querry and print response
-    }
-    public void searchVin(String vin){
-        //TODO SQL querry and print response
-    }
-    public void searchZip(String zip){
-        //TODO SQL querry and print response
-    }
-    public void searchDealer(String dealer){
-        //TODO SQL querry and print response
-    }
-    public void searchState(String state){
-        //TODO SQL querry and print response
-    }
-    public void searchModel(String model, String year){
-        //TODO SQL querry and print response
+    public void executeQuery(String query){
+        try {
+            /**
+             * execute the query
+             */
+            Statement stmt = conn.createStatement();
+            stmt.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

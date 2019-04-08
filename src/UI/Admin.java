@@ -26,9 +26,10 @@ public class Admin {
             System.out.println("Please enter any Query below:");
             String query = console.next();
             executeQuery(query);
+
             System.out.println("Would you like to make another query(Y/N)?");
             String rep = console.next();
-            if(rep.equals("Y"))
+            if(rep.equals("N"))
                 loop = false;
         }
     }
