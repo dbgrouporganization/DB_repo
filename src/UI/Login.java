@@ -42,7 +42,7 @@ public class Login {
             Class.forName("org.h2.Driver");
 
             //creates the connection
-            Connection conn = DriverManager.getConnection(url,
+            conn = DriverManager.getConnection(url,
                     user,
                     pass);
 

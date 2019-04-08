@@ -1,8 +1,6 @@
 package UI;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Scanner;
 
 /**
@@ -16,7 +14,6 @@ public class Admin {
     public Admin(Connection conn){
         this.conn = conn;
         System.out.println("Welcome to the admin console.");
-        askQuery();
     }
 
     public void askQuery(){
@@ -24,13 +21,25 @@ public class Admin {
         Scanner console = new Scanner(System.in);
         while (loop){
             System.out.println("Please enter any Query below:");
-            String query = console.next();
+            String query = console.nextLine();
             executeQuery(query);
-
             System.out.println("Would you like to make another query(Y/N)?");
-            String rep = console.next();
+            String rep = console.nextLine();
             if(rep.equals("N"))
-                loop = false;
+                break;
+        }
+    }
+
+    public void printQuery( ResultSet rs) throws SQLException{
+        ResultSetMetaData data = rs.getMetaData();
+        int numCols = data.getColumnCount();
+        while (rs.next()) {
+            for (int i = 1; i <= numCols; i++) {
+                if (i > 1) System.out.print(",\t");
+                String columnValue = rs.getString(i);
+                System.out.print(columnValue + " " + data.getColumnName(i));
+            }
+            System.out.print("\n");
         }
     }
 
@@ -40,7 +49,9 @@ public class Admin {
              * execute the query
              */
             Statement stmt = conn.createStatement();
-            stmt.execute(query);
+            ResultSet result = stmt.executeQuery(query);
+            printQuery(result);
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
