@@ -28,7 +28,7 @@ public class Login {
                 userType = Users.VEHICLELOOKUP;
                 break;
             case "Customer":
-                userType = Users.CUSOTMER;
+                userType = Users.CUSTOMER;
                 break;
             case "Marketing":
                 userType = Users.MARKETING;

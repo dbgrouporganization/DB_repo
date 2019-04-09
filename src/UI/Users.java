@@ -1,4 +1,4 @@
 package UI;
 
-public enum Users {CUSOTMER, VEHICLELOOKUP, ADMIN, MARKETING
+public enum Users {CUSTOMER, VEHICLELOOKUP, ADMIN, MARKETING
 }
