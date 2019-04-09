@@ -144,10 +144,6 @@ public class VehicleLookup {
                 if(result.getBoolean("ROOF_RACK"))
                     optionsStr +=(options > 0 ? ", " : "") + "Roof Rack" ;
 
-
-
-
-
                 System.out.printf("\t%s\n", optionsStr);
 
                 // Owner info
