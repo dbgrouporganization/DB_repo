@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Customer {
+
     private Connection conn;
+
     public Customer(Connection conn){
         this.conn = conn;
-        System.out.println("Welcome Customer!");
+        System.out.println("\nWelcome Customer!");
         customerStart();
     }
 
@@ -18,8 +20,8 @@ public class Customer {
         Scanner console = new Scanner(System.in);
         boolean loop = true;
         while(loop) {
-            System.out.println("What would you like to search for dealers, models, or vin");
-            System.out.println("If you would like to exit enter exit.");
+            System.out.println("What would you like to search for? Dealers, Models, or VIN?");
+            System.out.println("If you would like to exit enter 'exit'.");
             String search = console.next();
             switch (search) {
                 case "exit":
@@ -28,10 +30,19 @@ public class Customer {
                 case "dealers":
                     dealerLookup();
                     break;
+                case "Dealers":
+                    dealerLookup();
+                    break;
                 case "models":
                     modelLookup();
                     break;
+                case "Models":
+                    modelLookup();
+                    break;
                 case "vin":
+                    vinLookup();
+                    break;
+                case "VIN":
                     vinLookup();
                     break;
                 default:

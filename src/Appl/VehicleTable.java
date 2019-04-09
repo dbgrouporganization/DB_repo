@@ -3,10 +3,7 @@ package Appl;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -284,6 +281,7 @@ public class VehicleTable {
 	 */
 	public static void printVehicleTable(Connection conn){
 		String query = "SELECT * FROM Vehicle;";
+
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
