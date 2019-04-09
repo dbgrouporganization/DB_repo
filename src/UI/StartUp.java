@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 
 public class StartUp {
@@ -15,6 +16,14 @@ public class StartUp {
     Users userType;
 
     public void go(){
+        Scanner console = new Scanner(System.in);
+        System.out.println("Would you like to Login or Sign up?(L/S)");
+        String action = console.nextLine();
+        if(action.equals("S")) {
+            SignIn s = new SignIn();
+            s.newUser();
+            System.out.println("You must now Login.");
+        }
         Login login = new Login();
         conn = login.getConnection();
         userType = login.getUserType();
