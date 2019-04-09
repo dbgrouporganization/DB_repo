@@ -40,12 +40,15 @@ public class SignIn {
                 case "Marketing":
                     createMarketer(user, pass);
                     loop = false;
+                    break;
                 case "Customer":
                     createCustomer(user, pass);
                     loop = false;
+                    break;
                 case "Dealer":
                     createLookup(user, pass);
                     loop = false;
+                    break;
                 default:
                     System.out.println("You have not entered a valid type, please try again.");
                     loop = true;
@@ -62,8 +65,8 @@ public class SignIn {
 
     public void createCustomer(String user, String pass){
         try{
-            String login = "Create User " + user + " Password " + pass + ";";
-            String access = "GRANT SELECT ON CUSTOMER to" + user + ";";
+            String login = "Create User " + user + " Password '" + pass + "'; ";
+            String access = " GRANT SELECT ON CUSTOMER to " + user + " ;";
             Statement stmt = conn.createStatement();
             stmt.execute(login + access);
         } catch (SQLException e){
@@ -73,8 +76,8 @@ public class SignIn {
 
     public void createLookup(String user, String pass){
         try{
-            String login = "Create User " + user + " Password " + pass + ";";
-            String access = "GRANT SELECT ON VehicleLookup to" + user + ";";
+            String login = "Create User " + user + " Password '" + pass + "'; ";
+            String access = "GRANT SELECT ON VehicleLookup to " + user + ";";
             Statement stmt = conn.createStatement();
             stmt.execute(login + access);
         } catch (SQLException e){
@@ -84,9 +87,9 @@ public class SignIn {
 
     public void createMarketer(String user, String pass){
         try{
-            String login = "Create User " + user + " Password " + pass + ";";
-            String access = "Grant Select on CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE ," + "" +
-                    " VEHICLELOOKUP To" + user + ";";
+            String login = "Create User " + user + " Password '" + pass + "'; ";
+            String access = " Grant Select on CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE ," +
+                    " VEHICLELOOKUP to " + user + ";";
             Statement stmt = conn.createStatement();
             stmt.execute(login + access);
         } catch (SQLException e){
