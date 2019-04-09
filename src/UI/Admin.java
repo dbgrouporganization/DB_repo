@@ -34,8 +34,9 @@ public class Admin {
         ResultSetMetaData data = rs.getMetaData();
         int numCols = data.getColumnCount();
         for (int i = 1; i <= numCols; i++) {
-            System.out.println(data.getColumnName(i) + "\t");
+            System.out.print(data.getColumnName(i) + "\t");
         }
+        System.out.println();
         while (rs.next()) {
             for (int i = 1; i <= numCols; i++) {
                     if (i > 1) System.out.print(",\t");
