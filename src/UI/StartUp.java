@@ -1,12 +1,8 @@
 package UI;
 
-import Appl.VehicleTable;
-
 import java.sql.*;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 
 public class StartUp {

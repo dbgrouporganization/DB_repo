@@ -15,7 +15,7 @@ public class Login {
     public Login(){
         Scanner console = new Scanner(System.in);
         System.out.println("Welcome to the Automobile Database!");
-        System.out.print("PLease enter your Username: ");
+        System.out.print("Please enter your Username: ");
         user = console.next();
         System.out.print("Please enter your Password: ");
         pass = console.next();
