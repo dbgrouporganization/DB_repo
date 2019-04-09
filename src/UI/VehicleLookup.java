@@ -17,9 +17,10 @@ public class VehicleLookup {
         Scanner console = new Scanner(System.in);
         while(loop) {
             //General message
-            System.out.println("Welcome to vehicle lookup, what would you like to search by?");
-            System.out.println("The options are Vin, Model and year, Brand, Dealer, State or Zip.");
-            System.out.println("You can also exit by saying exit.");
+            System.out.println("\nWelcome to the vehicle lookup module!");
+            System.out.println("What would you like to search by?");
+            System.out.println("The options are VIN, Model, Year, Brand, Dealer, State or Zip.");
+            System.out.println("You can also exit by typing 'exit'");
             // what user wants to search by
             String search = console.next();
             switch (search) {

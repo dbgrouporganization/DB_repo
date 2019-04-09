@@ -13,7 +13,7 @@ public class Admin {
 
     public Admin(Connection conn){
         this.conn = conn;
-        System.out.println("Welcome to the admin console.");
+        System.out.println("\nWelcome to the admin console.");
     }
 
     public void askQuery(){
@@ -23,9 +23,9 @@ public class Admin {
             System.out.println("Please enter any Query below:");
             String query = console.nextLine();
             executeQuery(query);
-            System.out.println("Would you like to make another query(Y/N)?");
+            System.out.println("Would you like to make another query? (y/n)");
             String rep = console.nextLine();
-            if(rep.equals("N"))
+            if(rep.equals("n"))
                 break;
         }
     }
