@@ -11,7 +11,7 @@ public class VehicleLookup {
 
     private Connection conn;
 
-    private final String[] viewAttributes = {"VIN", "BRAND", "MODEL", "YEAR", "DEALER", "STATE", "ZIP",
+    private final String[] viewAttributes = {"VIN", "BRAND", "MODEL", "YEAR", "DEALER", "CITY","STATE", "ZIP",
                                             "OPTIONS_ID", "COLOR", "ENGINE", "TRANSMISSION", "NAVIGATION",
                                             "BLUETOOTH", "HEATED_SEATS", "ROOF_RACK", "PRICE"};
 
@@ -83,10 +83,12 @@ public class VehicleLookup {
 
                     String value = console.nextLine();
 
-                    if (stringParams.contains(att))
-                        value = "'" + value + "'";
+                    if (stringParams.contains(att)) {
+                        query += (parameters > 1 ? "and " : "") + att + " like '%" + value + "%'";
 
-                    query += (parameters > 1 ? "and " : "") + att + " = " + value;
+                    } else {
+                        query += (parameters > 1 ? "and " : "") + att + " = " + value;
+                    }
                 }
             }
             if(!queryLoop) continue;
