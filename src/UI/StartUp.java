@@ -25,7 +25,7 @@ public class StartUp {
                 vehicleStart();
             case MARKETING:
                 marketingStart();
-            case CUSOTMER:
+            case CUSTOMER:
                 customerStart();
         }
     }
