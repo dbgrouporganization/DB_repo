@@ -23,26 +23,18 @@ public class Customer {
             System.out.println("What would you like to search for? Dealers, Models, or VIN?");
             System.out.println("If you would like to exit enter 'exit'.");
             String search = console.next();
+            search = search.toLowerCase();
             switch (search) {
                 case "exit":
                     loop = false;
-                    return;
-                case "dealers":
-                    dealerLookup();
                     break;
-                case "Dealers":
+                case "dealers":
                     dealerLookup();
                     break;
                 case "models":
                     modelLookup();
                     break;
-                case "Models":
-                    modelLookup();
-                    break;
                 case "vin":
-                    vinLookup();
-                    break;
-                case "VIN":
                     vinLookup();
                     break;
                 default:
@@ -72,6 +64,7 @@ public class Customer {
         while(loop) {
             System.out.println("Would you like to search by name, city, state or zip?");
             String search = console.next();
+            search = search.toLowerCase();
             switch (search) {
                 case "exit":
                     loop = false;

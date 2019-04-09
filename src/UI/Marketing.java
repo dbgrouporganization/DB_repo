@@ -17,18 +17,22 @@ public class Marketing {
         Scanner console = new Scanner(System.in);
         boolean loop = true;
         while(loop) {
-            System.out.println("What would you like to search for Customers or Sales.");
-            System.out.println("If you would like to exit enter exit.");
+            System.out.println("What would you like to search for? Customers or Sales?");
+            System.out.println("If you would like to exit type 'exit'.");
             String search = console.next();
+            search = search.toLowerCase();
             switch (search) {
                 case "exit":
                     loop = false;
-                    return;
-                case "Customers":
+                    break;
+                case "customers":
                     customerLookup();
                     break;
-                case "Sales":
+                case "sales":
                     salesLookup();
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
                     break;
             }
         }
@@ -37,21 +41,28 @@ public class Marketing {
     public void salesLookup(){
         Scanner console = new Scanner(System.in);
         //List of customer searches can be expanded.
-        System.out.println("What would you like to search sales by? Seller ID, Buyer ID, Date");
-        String search = console.next();
+        System.out.println("What would you like to search sales by? Seller ID, Buyer ID, or Date?");
+        String search = console.nextLine();
+        search = search.toLowerCase();
         switch (search) {
-            case "Seller ID":
-                System.out.println("What is the seller id?");
+            case "seller id":
+                System.out.println("What is the Seller ID?");
                 String sid = console.next();
                 //TODO SQL Query for sid
-            case "Dealer ID":
-                System.out.println("What is the dealer id?");
+                break;
+            case "dealer id":
+                System.out.println("What is the Dealer ID?");
                 String did = console.next();
                 //TODO SQL Query for sid
-            case "Date":
-                System.out.println("What is the date?");
+                break;
+            case "date":
+                System.out.println("What was the Date?");
                 String date = console.next();
                 //TODO SQL Query for date
+                break;
+            default:
+                System.out.println("Invalid input. Please try again.");
+                break;
         }
     }
 
@@ -59,34 +70,35 @@ public class Marketing {
         Scanner console = new Scanner(System.in);
         //List of customer searches can be expanded.
         System.out.println("What would you like to search customers by? First Name, Last Name, ID, State, City, Zip");
-        String search = console.next();
+        String search = console.nextLine();
+        search = search.toLowerCase();
         switch (search) {
-            case "First Name":
+            case "first name":
                 System.out.println("What is their first name?");
-                String fname = console.next();
+                String fname = console.nextLine();
                 //TODO SQL Query for fname
-                return;
-            case "Last Name":
+                break;
+            case "last name":
                 System.out.println("What is their last name?");
-                String lname = console.next();
+                String lname = console.nextLine();
                 //TODO SQL Query for lname
                 break;
-            case "ID":
+            case "id":
                 System.out.println("What is their ID?");
                 String id = console.next();
                 //TODO SQL Query for ID
                 break;
-            case "State":
+            case "state":
                 System.out.println("What is their state?");
                 String state = console.next();
                 //TODO SQL Query for state
                 break;
-            case "City":
+            case "city":
                 System.out.println("What is their city?");
                 String city = console.next();
                 //TODO SQL Query for city
                 break;
-            case "Zip":
+            case "zip":
                 System.out.println("What is their zip?");
                 String zip = console.next();
                 //TODO SQL Query for zip

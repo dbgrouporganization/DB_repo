@@ -29,7 +29,7 @@ public class StartUp {
                 break;
         }
     }
-    
+
     private void customerStart(){
         Customer customer = new Customer(conn);
         customer.customerStart();
