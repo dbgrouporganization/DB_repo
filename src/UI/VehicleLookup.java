@@ -11,11 +11,11 @@ public class VehicleLookup {
 
     private Connection conn;
 
-    private final String[] viewAttributes = {"VIN", "BRAND", "MODEL", "YEAR", "DEALER", "CITY", "STATE", "ZIP",
+    private final String[] viewAttributes = {"VIN", "BRAND", "MODEL", "YEAR", "DEALER", "STATE", "ZIP",
                                             "OPTIONS_ID", "COLOR", "ENGINE", "TRANSMISSION", "NAVIGATION",
                                             "BLUETOOTH", "HEATED_SEATS", "ROOF_RACK", "PRICE"};
 
-    private final String[] stringSearchParams = {"Model", "Brand", "Dealer", "City", "State"};
+    private final String[] stringSearchParams = {"Model", "Brand", "Dealer", "State"};
     private final String[] integerSearchParams = {"Vin", "Year", "Zip"};
 
     public VehicleLookup(Connection conn) {
@@ -121,7 +121,7 @@ public class VehicleLookup {
                             result.getString("MODEL"),
                             result.getInt("PRICE"));
 
-                // Vin info
+                //Vin info
                 System.out.printf("\tVin: %d\n", result.getInt("VIN") );
 
                 // Options info
@@ -129,11 +129,20 @@ public class VehicleLookup {
                 System.out.printf("\tEngine: %s\n", result.getString("ENGINE") );
                 System.out.printf("\tTransmission: %s\n", result.getString("TRANSMISSION") );
 
-                String optionsStr = "Options: "
-                                + (result.getBoolean("NAVIGATION") ? "GPS, " : "")
-                                + (result.getBoolean("BLUETOOTH") ? "Bluetooth, " : "")
-                                + (result.getBoolean("HEATED_SEATS") ? "Heated Seats, " : "")
-                                + (result.getBoolean("ROOF_RACK") ? "Roof Rack" : "");
+                String optionsStr = "Options: ";
+                int options = 0;
+
+                if(result.getBoolean("NAVIGATION"))
+                    optionsStr += "GPS";
+
+                if(result.getBoolean("BLUETOOTH"))
+                    optionsStr += (options > 0 ? ", " : "") + "Bluetooth" ;
+
+                if(result.getBoolean("HEATED_SEATS"))
+                    optionsStr += (options > 0 ? ", " : "") + "Heated Seats" ;
+
+                if(result.getBoolean("ROOF_RACK"))
+                    optionsStr +=(options > 0 ? ", " : "") + "Roof Rack" ;
 
                 System.out.printf("\t%s\n", optionsStr);
 
