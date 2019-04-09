@@ -57,7 +57,7 @@ public class DB_Main {
 	public void createView(){
 		try {
 			String query = "create view VehicleLookup as select Vin, Model.Brand, Vehicle.Model, Vehicle.Year , Name as Dealer, " +
-					"Owner.ADDR_STATE as State, Owner. ADDR_ZIP as Zip, vehicle.OPTIONS_ID, COLOR , ENGINE , " +
+					"Owner.ADDR_STATE as State, Owner.ADDR_ZIP as Zip, vehicle.OPTIONS_ID, COLOR , ENGINE , " +
 					"TRANSMISSION , NAVIGATION , BLUETOOTH , HEATED_SEATS , ROOF_RACK , Price from "+
 					"((((Vehicle inner join Options on Vehicle.OPTIONS_ID = Options.Options_ID) inner join Model on "+
 					"(Vehicle.Model = Model.Model and Vehicle.year = Model.Year)) inner join Owner on "+
@@ -78,16 +78,16 @@ public class DB_Main {
 	 */
 	public void addAccess(){
 		try{
-			String Access = "Create User Admin Password 'Admin';" +
+			String access = "Create User Admin Password 'Admin';" +
 			"Create User VehicleLookup Password 'VehicleLookup';"+
 			"Create User Customer Password 'Customer';"+
             "Create User Marketing Password 'Marketing';"+
 			"GRANT SELECT ON CUSTOMER to Customer;"+
 			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
-			"GRANT All ON CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE , VEHICLELOOKUP  TO Admin;" +
-			"Grant Select on CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE , VEHICLELOOKUP To Marketing;";
+			"GRANT ALL ON CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP  TO Admin;" +
+			"GRANT SELECT on CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP To Marketing;";
 			Statement stmt = conn.createStatement();
-			stmt.execute(Access);
+			stmt.execute(access);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

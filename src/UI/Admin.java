@@ -33,11 +33,15 @@ public class Admin {
     public void printQuery( ResultSet rs) throws SQLException{
         ResultSetMetaData data = rs.getMetaData();
         int numCols = data.getColumnCount();
+        for (int i = 1; i <= numCols; i++) {
+            System.out.print(data.getColumnName(i) + "\t");
+        }
+        System.out.println();
         while (rs.next()) {
             for (int i = 1; i <= numCols; i++) {
-                if (i > 1) System.out.print(",\t");
-                String columnValue = rs.getString(i);
-                System.out.print(columnValue + " " + data.getColumnName(i));
+                    if (i > 1) System.out.print(",\t");
+                    String columnValue = rs.getString(i);
+                    System.out.print(columnValue);
             }
             System.out.print("\n");
         }
@@ -53,7 +57,7 @@ public class Admin {
             printQuery(result);
             stmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("That is an invalid SQL Query.");
         }
     }
 }
