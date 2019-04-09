@@ -30,14 +30,19 @@ public class StartUp {
         switch(userType){
             case ADMIN:
                 adminStart();
+                break;
             case VEHICLELOOKUP:
                 vehicleStart();
+                break;
             case MARKETING:
                 marketingStart();
+                break;
             case CUSTOMER:
                 customerStart();
+                break;
         }
     }
+    
     private void customerStart(){
         Customer customer = new Customer(conn);
         customer.customerStart();
@@ -58,6 +63,7 @@ public class StartUp {
         System.out.println("You will now be logged out of the database.");
         closeConn();
     }
+
     private void adminStart(){
         Admin admin = new Admin(conn);
         admin.askQuery();
