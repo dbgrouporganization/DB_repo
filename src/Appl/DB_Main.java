@@ -57,7 +57,7 @@ public class DB_Main {
 	public void createView(){
 		try {
 			String query = "create view VehicleLookup as select Vin, Model.Brand, Vehicle.Model, Vehicle.Year , Name as Dealer, " +
-					"Owner.ADDR_STATE as State, Owner.ADDR_ZIP as Zip, vehicle.OPTIONS_ID, COLOR , ENGINE , " +
+					"Owner.ADDR_CITY as CITY, Owner.ADDR_STATE as State, Owner.ADDR_ZIP as Zip, vehicle.OPTIONS_ID, COLOR , ENGINE , " +
 					"TRANSMISSION , NAVIGATION , BLUETOOTH , HEATED_SEATS , ROOF_RACK , Price from "+
 					"((((Vehicle inner join Options on Vehicle.OPTIONS_ID = Options.Options_ID) inner join Model on "+
 					"(Vehicle.Model = Model.Model and Vehicle.year = Model.Year)) inner join Owner on "+

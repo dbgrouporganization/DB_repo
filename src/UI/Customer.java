@@ -21,7 +21,7 @@ public class Customer {
         boolean loop = true;
         while(loop) {
             System.out.println("What would you like to search for? Dealers, Models, or VIN?");
-            System.out.println("If you would like to exit enter 'exit'");
+            System.out.println("If you would like to exit enter 'exit'.");
             String search = console.next();
             switch (search) {
                 case "exit":

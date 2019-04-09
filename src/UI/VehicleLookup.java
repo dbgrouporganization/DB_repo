@@ -11,11 +11,11 @@ public class VehicleLookup {
 
     private Connection conn;
 
-    private final String[] viewAttributes = {"VIN", "BRAND", "MODEL", "YEAR", "DEALER", "STATE", "ZIP",
+    private final String[] viewAttributes = {"VIN", "BRAND", "MODEL", "YEAR", "DEALER", "CITY", "STATE", "ZIP",
                                             "OPTIONS_ID", "COLOR", "ENGINE", "TRANSMISSION", "NAVIGATION",
                                             "BLUETOOTH", "HEATED_SEATS", "ROOF_RACK", "PRICE"};
 
-    private final String[] stringSearchParams = {"Model", "Brand", "Dealer", "State"};
+    private final String[] stringSearchParams = {"Model", "Brand", "Dealer", "City", "State"};
     private final String[] integerSearchParams = {"Vin", "Year", "Zip"};
 
     public VehicleLookup(Connection conn) {
@@ -35,9 +35,8 @@ public class VehicleLookup {
 
         boolean queryLoop = true;
         Scanner console = new Scanner(System.in);
-        System.out.println("Welcome to vehicle lookup!");
-        System.out.println("You can exit by saying 'exit'.");
-
+        System.out.println("\nWelcome to vehicle lookup!");
+        System.out.println("You can exit by typing 'exit'.");
 
         while (queryLoop) {
             boolean paramLoop = true;
@@ -52,11 +51,11 @@ public class VehicleLookup {
                 if (parameters > 0) {
                     System.out.println("What else would you like to search by?");
                 }
-                System.out.println("The options are Vin, Model, Year, Brand, Dealer, State, or Zip.");
+                System.out.println("The options are Vin, Model, Year, Brand, Dealer, City, State, or Zip.");
                 System.out.println("To make the search, enter 'search'.");
 
                 // what user wants to search by
-                String att = console.next();
+                String att = console.nextLine();
 
                 // exit?
                 if (att.equals("exit")) {
@@ -82,7 +81,7 @@ public class VehicleLookup {
 
                     System.out.println("Enter the " + att + " you would like to find: ");
 
-                    String value = console.next();
+                    String value = console.nextLine();
 
                     if (stringParams.contains(att))
                         value = "'" + value + "'";
@@ -96,8 +95,8 @@ public class VehicleLookup {
             executeQuery(query);
 
             //Keep going?
-            System.out.println("Would you like to make another search?(Y/N)");
-            if (console.next().equals("N"))
+            System.out.println("Would you like to make another search? (y/n)");
+            if (console.next().equals("n"))
                 queryLoop = false;
         }
 
@@ -122,7 +121,7 @@ public class VehicleLookup {
                             result.getString("MODEL"),
                             result.getInt("PRICE"));
 
-                //Vin info
+                // Vin info
                 System.out.printf("\tVin: %d\n", result.getInt("VIN") );
 
                 // Options info
@@ -131,16 +130,17 @@ public class VehicleLookup {
                 System.out.printf("\tTransmission: %s\n", result.getString("TRANSMISSION") );
 
                 String optionsStr = "Options: "
-                                + (result.getBoolean("NAVIGATION") ? "GPS," : "")
-                                + (result.getBoolean("BLUETOOTH") ? "Bluetooth," : "")
-                                + (result.getBoolean("HEATED_SEATS") ? "Heated Seats," : "")
+                                + (result.getBoolean("NAVIGATION") ? "GPS, " : "")
+                                + (result.getBoolean("BLUETOOTH") ? "Bluetooth, " : "")
+                                + (result.getBoolean("HEATED_SEATS") ? "Heated Seats, " : "")
                                 + (result.getBoolean("ROOF_RACK") ? "Roof Rack" : "");
 
                 System.out.printf("\t%s\n", optionsStr);
 
                 // Owner info
-                System.out.printf("\tOwner: %s located in %s %d\n",
+                System.out.printf("\tOwner: %s located in %s, %s %d\n",
                             result.getString("DEALER"),
+                            result.getString("CITY"),
                             result.getString("STATE"),
                             result.getInt("ZIP"));
             }
