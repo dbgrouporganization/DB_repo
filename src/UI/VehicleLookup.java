@@ -89,6 +89,7 @@ public class VehicleLookup {
                     query += (parameters > 1 ? "and " : "") + att + " = " + value;
                 }
             }
+            if(!queryLoop) continue;
             // search parameters have been defined
 
             query += ";";
