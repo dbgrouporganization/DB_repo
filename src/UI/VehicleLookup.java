@@ -72,7 +72,7 @@ public class VehicleLookup {
 
                 // valid search parameter?
                 else if (!stringParams.contains(att) && !integerParams.contains(att)) {
-                    System.out.println(att + " is not a valid search parameter.");
+                    System.out.println("'" + att + "' is not a valid search parameter.");
                     continue;
                 }
 

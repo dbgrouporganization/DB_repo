@@ -7,7 +7,6 @@ public class Marketing {
 
     private Connection conn;
 
-
     public Marketing(Connection conn){
         this.conn = conn;
         System.out.println("\nWelcome Marketing Team!");

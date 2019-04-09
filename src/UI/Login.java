@@ -57,9 +57,7 @@ public class Login {
         return conn;
     }
 
-    public Users getUserType(){
+    public Users getUserType() {
         return userType;
     }
-
-
 }
