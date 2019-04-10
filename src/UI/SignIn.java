@@ -66,7 +66,7 @@ public class SignIn {
     public void createCustomer(String user, String pass){
         try{
             String login = "Create User " + user + " Password '" + pass + "'; ";
-            String access = " GRANT SELECT ON CUSTOMER to " + user + " ;";
+            String access = " GRANT Customer to " + user + " ;";
             Statement stmt = conn.createStatement();
             stmt.execute(login + access);
         } catch (SQLException e){
@@ -77,7 +77,7 @@ public class SignIn {
     public void createLookup(String user, String pass){
         try{
             String login = "Create User " + user + " Password '" + pass + "'; ";
-            String access = "GRANT SELECT ON VehicleLookup to " + user + ";";
+            String access = "GRANT VehicleLookup to " + user + ";";
             Statement stmt = conn.createStatement();
             stmt.execute(login + access);
         } catch (SQLException e){
@@ -88,8 +88,7 @@ public class SignIn {
     public void createMarketer(String user, String pass){
         try{
             String login = "Create User " + user + " Password '" + pass + "'; ";
-            String access = " Grant Select on CUSTOMER , DEALER , MODEL , OPTIONS , OWNER , SALE , VEHICLE ," +
-                    " VEHICLELOOKUP to " + user + ";";
+            String access = " Grant Marketing to " + user + ";";
             Statement stmt = conn.createStatement();
             stmt.execute(login + access);
         } catch (SQLException e){

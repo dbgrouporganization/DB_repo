@@ -78,14 +78,22 @@ public class DB_Main {
 	 */
 	public void addAccess(){
 		try{
-			String access = "Create User Admin Password 'Admin';" +
-			"Create User VehicleLookup Password 'VehicleLookup';"+
-			"Create User Customer Password 'Customer';"+
-            "Create User Marketing Password 'Marketing';"+
+			String access = "Create User AdminTest Password 'Admin';" +
+			"Create User VehicleLookupTest Password 'VehicleLookup';"+
+			"Create User CustomerTest Password 'Customer';"+
+            "Create User MarketingTest Password 'Marketing';"+
+			"Create Role Admin;" +
+			"Create Role VehicleLookup;"+
+			"Create Role Customer;"+
+			"Create Role Marketing;"+
 			"GRANT SELECT ON CUSTOMER to Customer;"+
 			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
 			"GRANT ALL ON CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP  TO Admin;" +
-			"GRANT SELECT on CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP To Marketing;";
+			"GRANT SELECT on CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP To Marketing;" +
+			"Grant Admin to AdminTest;" +
+			"Grant Marketing to MarketingTest;" +
+			"Grant Customer to CustomerTest;" +
+			"Grant VehicleLookup to VehicleLookupTest;";
 			Statement stmt = conn.createStatement();
 			stmt.execute(access);
 		} catch (SQLException e) {
