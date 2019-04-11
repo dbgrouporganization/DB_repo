@@ -1,8 +1,6 @@
 package UI;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Login {
@@ -19,21 +17,7 @@ public class Login {
         user = console.next();
         System.out.print("Please enter your Password: ");
         pass = console.next();
-        //This section is for testing purposes.
-        switch(user) {
-            case "Admin":
-                userType = Users.ADMIN;
-                break;
-            case "VehicleLookup":
-                userType = Users.VEHICLELOOKUP;
-                break;
-            case "Customer":
-                userType = Users.CUSTOMER;
-                break;
-            case "Marketing":
-                userType = Users.MARKETING;
-                break;
-        }
+        String type = null;
         try {
             //This needs to be on the front of your location
             String url = "jdbc:h2:./DB/Automobile";
@@ -45,11 +29,32 @@ public class Login {
             conn = DriverManager.getConnection(url,
                     user,
                     pass);
-
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery("Select * from INFORMATION_SCHEMA.ROLES;");
+            result.next();
+            type = result.getString(1);
+            stmt.close();
         } catch (SQLException | ClassNotFoundException e) {
             //You should handle this better
             e.printStackTrace();
         }
+
+        //This section is for testing purposes.
+        switch(type) {
+            case "ADMIN":
+                userType = Users.ADMIN;
+                break;
+            case "VEHICLELOOKUP":
+                userType = Users.VEHICLELOOKUP;
+                break;
+            case "CUSTOMER":
+                userType = Users.CUSTOMER;
+                break;
+            case "MARKETING":
+                userType = Users.MARKETING;
+                break;
+        }
+
 
     }
 
