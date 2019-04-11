@@ -142,9 +142,8 @@ public class Customer {
                     break;
             }
             System.out.println("Would you like to make another search? (y/n)");
-            if(console.nextLine().equals("n")) {
+            if(console.nextLine().equals("n"))
                 loop = false;
-            }
         }
     }
 }

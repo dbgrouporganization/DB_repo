@@ -1,6 +1,10 @@
 package UI;
 
+import Appl.SaleTable;
+
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Marketing {
@@ -39,29 +43,76 @@ public class Marketing {
 
     public void salesLookup(){
         Scanner console = new Scanner(System.in);
-        //List of customer searches can be expanded.
-        System.out.println("What would you like to search sales by? Seller ID, Buyer ID, or Date?");
-        String search = console.nextLine();
-        search = search.toLowerCase();
-        switch (search) {
-            case "seller id":
-                System.out.println("What is the Seller ID?");
-                String sid = console.next();
-                //TODO SQL Query for sid
-                break;
-            case "dealer id":
-                System.out.println("What is the Dealer ID?");
-                String did = console.next();
-                //TODO SQL Query for sid
-                break;
-            case "date":
-                System.out.println("What was the Date?");
-                String date = console.next();
-                //TODO SQL Query for date
-                break;
-            default:
-                System.out.println("Invalid input. Please try again.");
-                break;
+        boolean loop = true;
+
+        // ArrayList of where clauses
+        ArrayList<String> whereClauses = new ArrayList<>();
+
+        while(loop) {
+            //List of customer searches can be expanded.
+            System.out.println("What would you like to search sales by? Buyer ID, Seller ID, or Date?");
+            String search = console.nextLine();
+            search = search.toLowerCase();
+
+            switch (search) {
+                case "buyer id":
+                    System.out.println("What is the Buyer ID?");
+                    String did = console.next();
+                    // TODO test this and possibly make prettier
+
+                    // make sure where clause array is empty then add new where clause for sql query
+                    if (!whereClauses.isEmpty()) {
+                        for (String s : whereClauses) {
+                            whereClauses.remove(s);
+                        }
+                    }
+                    whereClauses.add("buyer_id = " + did);
+
+                    // query and print results
+                    ResultSet didResults = SaleTable.querySaleTable(conn, new ArrayList<>(), whereClauses);
+                    SaleTable.printSaleTable(didResults);
+                    break;
+                case "seller id":
+                    System.out.println("What is the Seller ID?");
+                    String sid = console.nextLine();
+                    // TODO test this and possibly make prettier
+
+                    // make sure where clause array is empty then add new where clause for sql query
+                    if (!whereClauses.isEmpty()) {
+                        for (String s : whereClauses) {
+                            whereClauses.remove(s);
+                        }
+                    }
+                    whereClauses.add("seller_id = " + sid);
+
+                    // query and print results
+                    ResultSet sidResults = SaleTable.querySaleTable(conn, new ArrayList<>(), whereClauses);
+                    SaleTable.printSaleTable(sidResults);
+                    break;
+                case "date":
+                    System.out.println("What was the Date? (MM/DD/YYYY)");
+                    String date = console.next();
+                    // TODO test this and possibly make prettier
+
+                    // make sure where clause array is empty then add new where clause for sql query
+                    if (!whereClauses.isEmpty()) {
+                        for (String s : whereClauses) {
+                            whereClauses.remove(s);
+                        }
+                    }
+                    whereClauses.add("date = '" + date + "'");
+
+                    // query and print results
+                    ResultSet dateResults = SaleTable.querySaleTable(conn, new ArrayList<>(), whereClauses);
+                    SaleTable.printSaleTable(dateResults);
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    break;
+            }
+            System.out.println("Would you like to make another search? (y/n)");
+            if(console.nextLine().equals("n"))
+                loop = false;
         }
     }
 

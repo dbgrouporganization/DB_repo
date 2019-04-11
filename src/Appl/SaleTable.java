@@ -245,6 +245,23 @@ public class SaleTable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
+
+	/**
+	 * Prints the results from the table
+	 * @param result
+	 */
+	public static void printSaleTable(ResultSet result){
+		try {
+			while(result.next()){
+				System.out.printf("Sale %d: %s %d %d\n",
+						result.getInt(2),
+						result.getString(1),
+						result.getInt(3),
+						result.getInt(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
