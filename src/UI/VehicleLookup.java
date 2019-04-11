@@ -116,49 +116,53 @@ public class VehicleLookup {
             ResultSet result = stmt.executeQuery(query);
 
             result.beforeFirst();
+            if(result.next() == false){
+                System.out.println("No Results Found.");
+            } else {
+                result.beforeFirst();
+                while(result.next()) {
+                    // Model info
+                    System.out.printf("%d %s %s $%d\n",
+                                result.getInt("YEAR"),
+                                result.getString("BRAND"),
+                                result.getString("MODEL"),
+                                result.getInt("PRICE"));
 
-            while(result.next()) {
-                // Model info
-                System.out.printf("%d %s %s $%d\n",
-                            result.getInt("YEAR"),
-                            result.getString("BRAND"),
-                            result.getString("MODEL"),
-                            result.getInt("PRICE"));
+                    //Vin info
+                    System.out.printf("\tVin: %d\n", result.getInt("VIN") );
 
-                //Vin info
-                System.out.printf("\tVin: %d\n", result.getInt("VIN") );
+                    // Options info
+                    System.out.printf("\tColor: %s\n", result.getString("COLOR") );
+                    System.out.printf("\tEngine: %s\n", result.getString("ENGINE") );
+                    System.out.printf("\tTransmission: %s\n", result.getString("TRANSMISSION") );
 
-                // Options info
-                System.out.printf("\tColor: %s\n", result.getString("COLOR") );
-                System.out.printf("\tEngine: %s\n", result.getString("ENGINE") );
-                System.out.printf("\tTransmission: %s\n", result.getString("TRANSMISSION") );
+                    String optionsStr = "Options: ";
+                    int options = 0;
 
-                String optionsStr = "Options: ";
-                int options = 0;
+                    if(result.getBoolean("NAVIGATION"))
+                        optionsStr += "GPS";
 
-                if(result.getBoolean("NAVIGATION"))
-                    optionsStr += "GPS";
+                    if(result.getBoolean("BLUETOOTH"))
+                        optionsStr += (options > 0 ? ", " : "") + "Bluetooth" ;
 
-                if(result.getBoolean("BLUETOOTH"))
-                    optionsStr += (options > 0 ? ", " : "") + "Bluetooth" ;
+                    if(result.getBoolean("HEATED_SEATS"))
+                        optionsStr += (options > 0 ? ", " : "") + "Heated Seats" ;
 
-                if(result.getBoolean("HEATED_SEATS"))
-                    optionsStr += (options > 0 ? ", " : "") + "Heated Seats" ;
+                    if(result.getBoolean("ROOF_RACK"))
+                        optionsStr +=(options > 0 ? ", " : "") + "Roof Rack" ;
 
-                if(result.getBoolean("ROOF_RACK"))
-                    optionsStr +=(options > 0 ? ", " : "") + "Roof Rack" ;
+                    System.out.printf("\t%s\n", optionsStr);
 
-                System.out.printf("\t%s\n", optionsStr);
-
-                // Owner info
-                System.out.printf("\tOwner: %s located in %s, %s %d\n",
-                            result.getString("DEALER"),
-                            result.getString("CITY"),
-                            result.getString("STATE"),
-                            result.getInt("ZIP"));
+                    // Owner info
+                    System.out.printf("\tOwner: %s located in %s, %s %d\n",
+                                result.getString("DEALER"),
+                                result.getString("CITY"),
+                                result.getString("STATE"),
+                                result.getInt("ZIP"));
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }

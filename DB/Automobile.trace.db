@@ -33,3 +33,63 @@ SELECT * FROM VEHICLELOOKUP WHERE model like '%Aventador%'; [90096-197]
 	at UI.StartUp.customerStart(StartUp.java:34)
 	at UI.StartUp.go(StartUp.java:28)
 	at UI.StartUp.main(StartUp.java:72)
+2019-04-11 18:21:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement " CREATE VIEW MARKETING AS SELECT  FROM OWNER NATURAL JOIN CUSTOMER INNER JOIN SALE ON OWNER.OWNER_ID = SALE.BUYER_ID;[*] "; expected "(, ., [, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, RIGHT, LEFT, FULL, INNER, JOIN, CROSS, NATURAL, ,, SELECT"; SQL statement:
+ create view Marketing as select  from Owner natural join Customer inner join Sale on Owner.Owner_ID = Sale.Buyer_ID; [42001-197]
+2019-04-11 18:22:16 database: wrong user or password; user: "TES"
+org.h2.message.DbException: Wrong user name or password [28000-197]
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.engine.Engine.openSession(Engine.java:107)
+	at org.h2.engine.Engine.openSession(Engine.java:179)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:157)
+	at org.h2.engine.Engine.createSession(Engine.java:140)
+	at org.h2.engine.Engine.createSession(Engine.java:28)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:351)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:103)
+	at org.h2.Driver.connect(Driver.java:69)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at UI.Login.<init>(Login.java:31)
+	at UI.StartUp.go(StartUp.java:27)
+	at UI.StartUp.main(StartUp.java:85)
+Caused by: org.h2.jdbc.JdbcSQLException: Wrong user name or password [28000-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	... 17 more
+2019-04-11 18:22:45 database: wrong user or password; user: "DFJK"
+org.h2.message.DbException: Wrong user name or password [28000-197]
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.engine.Engine.openSession(Engine.java:107)
+	at org.h2.engine.Engine.openSession(Engine.java:179)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:157)
+	at org.h2.engine.Engine.createSession(Engine.java:140)
+	at org.h2.engine.Engine.createSession(Engine.java:28)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:351)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:103)
+	at org.h2.Driver.connect(Driver.java:69)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at UI.Login.<init>(Login.java:31)
+	at UI.StartUp.go(StartUp.java:27)
+	at UI.StartUp.main(StartUp.java:85)
+Caused by: org.h2.jdbc.JdbcSQLException: Wrong user name or password [28000-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	... 17 more
+2019-04-11 18:27:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: The result set is not scrollable and can not be reset. You may need to use conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ..). [90128-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.jdbc.JdbcResultSet.resetResult(JdbcResultSet.java:3282)
+	at org.h2.jdbc.JdbcResultSet.beforeFirst(JdbcResultSet.java:2751)
+	at UI.VehicleLookup.executeQuery(VehicleLookup.java:122)
+	at UI.VehicleLookup.vehicleStart(VehicleLookup.java:99)
+	at UI.StartUp.vehicleStart(StartUp.java:62)
+	at UI.StartUp.go(StartUp.java:35)
+	at UI.StartUp.main(StartUp.java:85)
