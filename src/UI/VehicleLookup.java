@@ -15,8 +15,8 @@ public class VehicleLookup {
                                             "OPTIONS_ID", "COLOR", "ENGINE", "TRANSMISSION", "NAVIGATION",
                                             "BLUETOOTH", "HEATED_SEATS", "ROOF_RACK", "PRICE"};
 
-    private final String[] stringSearchParams = {"Model", "Brand", "Dealer", "State"};
-    private final String[] integerSearchParams = {"Vin", "Year", "Zip"};
+    private final String[] stringSearchParams = {"model", "brand", "dealer", "state"};
+    private final String[] integerSearchParams = {"vin", "year", "zip"};
 
     public VehicleLookup(Connection conn) {
         this.conn = conn;
@@ -56,6 +56,7 @@ public class VehicleLookup {
 
                 // what user wants to search by
                 String att = console.nextLine();
+                att = att.toLowerCase();
 
                 // exit?
                 if (att.equals("exit")) {

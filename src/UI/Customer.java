@@ -20,7 +20,7 @@ public class Customer {
         Scanner console = new Scanner(System.in);
         boolean loop = true;
         while(loop) {
-            System.out.println("What would you like to search for? Dealers, Models, or VIN?");
+            System.out.println("What would you like to search for? Vehicles or Dealers?");
             System.out.println("If you would like to exit enter 'exit'.");
             String search = console.next();
             search = search.toLowerCase();
@@ -31,11 +31,9 @@ public class Customer {
                 case "dealers":
                     dealerLookup();
                     break;
-                case "models":
-                    modelLookup();
-                    break;
-                case "vin":
-                    vinLookup();
+                case "vehicles":
+                    VehicleLookup vehicleLookup = new VehicleLookup(conn);
+                    vehicleLookup.vehicleStart();
                     break;
                 default:
                     System.out.println("Invalid input. Please try again.");
@@ -182,6 +180,10 @@ public class Customer {
         Scanner console = new Scanner(System.in);
         System.out.println("Please enter the vin to search for:");
         int vin = console.nextInt();
+        /*
+            example query:
+            SELECT * FROM VehicleLookup WHERE vin = 10134362;
+         */
         /*
             example query:
             SELECT vin, vehicle.model, vehicle.year, price, brand, bodystyle, color, engine, transmission, navigation, bluetooth,
