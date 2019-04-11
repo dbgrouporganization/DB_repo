@@ -17,9 +17,11 @@ public class StartUp {
 
     public void go(){
         Scanner console = new Scanner(System.in);
+        boolean not_registerd = false;
         System.out.println("Would you like to Login or Sign up?(L/S)");
         String action = console.nextLine();
-        if(action.equals("S")) {
+        action = action.toLowerCase();
+        if(action.equals("s")) {
             SignIn s = new SignIn();
             s.newUser();
             System.out.println("You must now Login.");
