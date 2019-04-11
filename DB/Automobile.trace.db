@@ -1,19 +1,80 @@
-2019-04-09 18:26:05 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM VEHICLELOOKUP WHERE ;[*]"; expected "NOT, EXISTS, INTERSECTS, SELECT, FROM, WITH"; SQL statement:
-SELECT * FROM VEHICLELOOKUP WHERE ; [42001-197]
-2019-04-11 17:33:17 jdbc[3]: exception
+2019-04-11 17:44:37 database: wrong user or password; user: "CUSTOMER"
+org.h2.message.DbException: Wrong user name or password [28000-197]
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.message.DbException.get(DbException.java:144)
+	at org.h2.engine.Engine.openSession(Engine.java:107)
+	at org.h2.engine.Engine.openSession(Engine.java:179)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:157)
+	at org.h2.engine.Engine.createSession(Engine.java:140)
+	at org.h2.engine.Engine.createSession(Engine.java:28)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:351)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:103)
+	at org.h2.Driver.connect(Driver.java:69)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at UI.Login.<init>(Login.java:29)
+	at UI.StartUp.go(StartUp.java:27)
+	at UI.StartUp.main(StartUp.java:85)
+Caused by: org.h2.jdbc.JdbcSQLException: Wrong user name or password [28000-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	... 17 more
+2019-04-11 17:49:04 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM VEHICLELOOKUP WHERE dealer like '%Bryan's Cars%[*]';"; SQL statement:
 SELECT * FROM VEHICLELOOKUP WHERE dealer like '%Bryan's Cars%'; [42000-197]
-2019-04-11 17:34:30 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLException: Not enough rights for object "PUBLIC.VEHICLELOOKUP"; SQL statement:
-SELECT * FROM VEHICLELOOKUP WHERE model like '%Aventador%'; [90096-197]
+2019-04-11 17:54:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT NAME, ADDR_NUM, ADDR_STREET, ADDR_CITY, ADDR_STATE, ADDR_ZIP FROM DEALER NATURAL JOIN WHERE[*] NAME = 'Bryan''s'; "; expected "identifier"; SQL statement:
+SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM Dealer NATURAL JOIN WHERE name = 'Bryan''s'; [42001-197]
+2019-04-11 17:55:45 database: flush
+org.h2.message.DbException: General error: "java.lang.IllegalStateException: The file is locked: nio:C:/Users/Jackson/OneDrive/Documents/RIT Classes/Second Year Spring/Principles of Data Management/DB_repo/DB/Automobile.mv.db [1.4.197/7]" [50000-197]
+	at org.h2.message.DbException.get(DbException.java:168)
+	at org.h2.message.DbException.convert(DbException.java:307)
+	at org.h2.mvstore.db.MVTableEngine$1.uncaughtException(MVTableEngine.java:95)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:2506)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:383)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:364)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2934)
+	at org.h2.mvstore.db.MVTableEngine$Store.open(MVTableEngine.java:155)
+	at org.h2.mvstore.db.MVTableEngine.init(MVTableEngine.java:100)
+	at org.h2.engine.Database.getPageStore(Database.java:2538)
+	at org.h2.engine.Database.open(Database.java:709)
+	at org.h2.engine.Database.openDatabase(Database.java:286)
+	at org.h2.engine.Database.<init>(Database.java:280)
+	at org.h2.engine.Engine.openSession(Engine.java:66)
+	at org.h2.engine.Engine.openSession(Engine.java:179)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:157)
+	at org.h2.engine.Engine.createSession(Engine.java:140)
+	at org.h2.engine.Engine.createSession(Engine.java:28)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:351)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:103)
+	at org.h2.Driver.connect(Driver.java:69)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at UI.Login.<init>(Login.java:29)
+	at UI.StartUp.go(StartUp.java:27)
+	at UI.StartUp.main(StartUp.java:85)
+Caused by: org.h2.jdbc.JdbcSQLException: General error: "java.lang.IllegalStateException: The file is locked: nio:C:/Users/Jackson/OneDrive/Documents/RIT Classes/Second Year Spring/Principles of Data Management/DB_repo/DB/Automobile.mv.db [1.4.197/7]" [50000-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	... 27 more
+Caused by: java.lang.IllegalStateException: The file is locked: nio:C:/Users/Jackson/OneDrive/Documents/RIT Classes/Second Year Spring/Principles of Data Management/DB_repo/DB/Automobile.mv.db [1.4.197/7]
+	at org.h2.mvstore.DataUtils.newIllegalStateException(DataUtils.java:870)
+	at org.h2.mvstore.FileStore.open(FileStore.java:173)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:350)
+	... 21 more
+2019-04-11 17:56:21 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Not enough rights for object "PUBLIC.OWNER"; SQL statement:
+SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM Dealer NATURAL JOIN owner WHERE name = 'Bryan''s'; [90096-197]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
 	at org.h2.message.DbException.get(DbException.java:179)
 	at org.h2.message.DbException.get(DbException.java:155)
 	at org.h2.engine.User.checkRight(User.java:101)
 	at org.h2.table.TableFilter.<init>(TableFilter.java:142)
 	at org.h2.command.Parser.readTableFilter(Parser.java:1458)
-	at org.h2.command.Parser.parseSelectSimpleFromPart(Parser.java:2138)
+	at org.h2.command.Parser.readJoin(Parser.java:1800)
+	at org.h2.command.Parser.parseJoinTableFilter(Parser.java:2183)
+	at org.h2.command.Parser.parseSelectSimpleFromPart(Parser.java:2139)
 	at org.h2.command.Parser.parseSelectSimple(Parser.java:2287)
 	at org.h2.command.Parser.parseSelectSub(Parser.java:2133)
 	at org.h2.command.Parser.parseSelectUnion(Parser.java:1946)
@@ -26,10 +87,10 @@ SELECT * FROM VEHICLELOOKUP WHERE model like '%Aventador%'; [90096-197]
 	at org.h2.engine.Session.prepareCommand(Session.java:549)
 	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1247)
 	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:78)
-	at UI.VehicleLookup.executeQuery(VehicleLookup.java:116)
-	at UI.VehicleLookup.vehicleStart(VehicleLookup.java:99)
-	at UI.Customer.customerStart(Customer.java:36)
+	at Appl.DealerTable.queryDealerTable(DealerTable.java:219)
+	at UI.Customer.dealerLookup(Customer.java:93)
+	at UI.Customer.customerStart(Customer.java:32)
 	at UI.Customer.<init>(Customer.java:16)
-	at UI.StartUp.customerStart(StartUp.java:34)
-	at UI.StartUp.go(StartUp.java:28)
-	at UI.StartUp.main(StartUp.java:72)
+	at UI.StartUp.customerStart(StartUp.java:47)
+	at UI.StartUp.go(StartUp.java:41)
+	at UI.StartUp.main(StartUp.java:85)

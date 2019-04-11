@@ -10,7 +10,6 @@ public class Marketing {
     public Marketing(Connection conn){
         this.conn = conn;
         System.out.println("\nWelcome Marketing Team!");
-        marketingStart();
     }
 
     public void marketingStart(){

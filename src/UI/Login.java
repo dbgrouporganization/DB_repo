@@ -54,8 +54,6 @@ public class Login {
                 userType = Users.MARKETING;
                 break;
         }
-
-
     }
 
     public Connection getConnection(){

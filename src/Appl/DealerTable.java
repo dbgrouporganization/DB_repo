@@ -210,7 +210,7 @@ public class DealerTable {
 		sb.append(";");
 		
 		//Print it out to verify it made it right
-		System.out.println("Query: " + sb.toString());
+		// System.out.println("Query: " + sb.toString());
 		try {
 			/**
 			 * Execute the query and return the result set
@@ -245,8 +245,9 @@ public class DealerTable {
 	 */
 	public static void printDealerQueryResults(ResultSet results){
 		try {
+			System.out.println("Dealers:");
 			while(results.next()){
-				System.out.printf("Dealer %s: %d %s %s %s %d\n",
+				System.out.printf("%s located at %d %s %s, %s %d\n",
 						results.getString(1),
 						results.getInt(2),
 						results.getString(3),

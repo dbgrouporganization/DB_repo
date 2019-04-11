@@ -86,7 +86,7 @@ public class DB_Main {
 			"Create Role VehicleLookup;"+
 			"Create Role Customer;"+
 			"Create Role Marketing;"+
-			"GRANT SELECT ON CUSTOMER to Customer;"+
+			"GRANT SELECT ON Dealer, Owner, VehicleLookup to Customer;"+
 			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
 			"GRANT ALL ON CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP  TO Admin;" +
 			"GRANT SELECT on CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP To Marketing;" +
