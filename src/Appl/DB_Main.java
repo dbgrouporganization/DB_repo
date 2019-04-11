@@ -56,18 +56,18 @@ public class DB_Main {
 
 	public void createView(){
 		try {
-			String query = "create view VehicleLookup as select Vin, Model.Brand, Vehicle.Model, Vehicle.Year , Name as Dealer, " +
+			String vlookup = "create view VehicleLookup as select Vin, Model.Brand, Vehicle.Model, Vehicle.Year , Name as Dealer, " +
 					"Owner.ADDR_CITY as CITY, Owner.ADDR_STATE as State, Owner.ADDR_ZIP as Zip, vehicle.OPTIONS_ID, COLOR , ENGINE , " +
 					"TRANSMISSION , NAVIGATION , BLUETOOTH , HEATED_SEATS , ROOF_RACK , Price from "+
 					"((((Vehicle inner join Options on Vehicle.OPTIONS_ID = Options.Options_ID) inner join Model on "+
 					"(Vehicle.Model = Model.Model and Vehicle.year = Model.Year)) inner join Owner on "+
 					"(Vehicle.OWNER_ID = Owner.OWNER_ID)) inner join Dealer on (Owner.Owner_ID  = Dealer.Owner_ID));";
-
+			String market = "create view Marketing as select  from Owner natural join Customer inner join Sale on Owner.Owner_ID = Sale.Buyer_ID;";
 			/**
 			 * Create a query and execute
 			 */
 			Statement stmt = conn.createStatement();
-			stmt.execute(query);
+			stmt.execute(vlookup + " " + market);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
