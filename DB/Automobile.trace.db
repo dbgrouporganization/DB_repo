@@ -1,0 +1,35 @@
+2019-04-09 18:26:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM VEHICLELOOKUP WHERE ;[*]"; expected "NOT, EXISTS, INTERSECTS, SELECT, FROM, WITH"; SQL statement:
+SELECT * FROM VEHICLELOOKUP WHERE ; [42001-197]
+2019-04-11 17:33:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM VEHICLELOOKUP WHERE dealer like '%Bryan's Cars%[*]';"; SQL statement:
+SELECT * FROM VEHICLELOOKUP WHERE dealer like '%Bryan's Cars%'; [42000-197]
+2019-04-11 17:34:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Not enough rights for object "PUBLIC.VEHICLELOOKUP"; SQL statement:
+SELECT * FROM VEHICLELOOKUP WHERE model like '%Aventador%'; [90096-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.engine.User.checkRight(User.java:101)
+	at org.h2.table.TableFilter.<init>(TableFilter.java:142)
+	at org.h2.command.Parser.readTableFilter(Parser.java:1458)
+	at org.h2.command.Parser.parseSelectSimpleFromPart(Parser.java:2138)
+	at org.h2.command.Parser.parseSelectSimple(Parser.java:2287)
+	at org.h2.command.Parser.parseSelectSub(Parser.java:2133)
+	at org.h2.command.Parser.parseSelectUnion(Parser.java:1946)
+	at org.h2.command.Parser.parseSelect(Parser.java:1919)
+	at org.h2.command.Parser.parsePrepared(Parser.java:463)
+	at org.h2.command.Parser.parse(Parser.java:335)
+	at org.h2.command.Parser.parse(Parser.java:307)
+	at org.h2.command.Parser.prepareCommand(Parser.java:278)
+	at org.h2.engine.Session.prepareLocal(Session.java:611)
+	at org.h2.engine.Session.prepareCommand(Session.java:549)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1247)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:78)
+	at UI.VehicleLookup.executeQuery(VehicleLookup.java:116)
+	at UI.VehicleLookup.vehicleStart(VehicleLookup.java:99)
+	at UI.Customer.customerStart(Customer.java:36)
+	at UI.Customer.<init>(Customer.java:16)
+	at UI.StartUp.customerStart(StartUp.java:34)
+	at UI.StartUp.go(StartUp.java:28)
+	at UI.StartUp.main(StartUp.java:72)
