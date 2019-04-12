@@ -62,7 +62,7 @@ public class DB_Main {
 					"((((Vehicle inner join Options on Vehicle.OPTIONS_ID = Options.Options_ID) inner join Model on "+
 					"(Vehicle.Model = Model.Model and Vehicle.year = Model.Year)) inner join Owner on "+
 					"(Vehicle.OWNER_ID = Owner.OWNER_ID)) inner join Dealer on (Owner.Owner_ID  = Dealer.Owner_ID));";
-			String market = "create view Marketing as select * from Owner natural join Customer inner join Sale on Owner.Owner_ID = Sale.Buyer_ID order by date;";
+			String market = "create view Marketing as select * from Owner natural join Customer inner join Sale on Owner.Owner_ID = Sale.Buyer_ID;";
 			// String customer = "create view DealerLookup as select name, addr_num, addr_street, addr_city, addr_state, addr_zip from owner natural join dealer;";
 			/**
 			 * Create a query and execute
@@ -81,6 +81,7 @@ public class DB_Main {
 		try{
 			String access = "Create User AdminTest Password 'Admin';" +
 			"Create User VehicleLookupTest Password 'VehicleLookup';"+
+			"Create User vlt Password 'vlpass';"+
 			"Create User CustomerTest Password 'Customer';"+
             "Create User MarketingTest Password 'Marketing';"+
 			"Create Role Admin;" +
@@ -94,7 +95,8 @@ public class DB_Main {
 			"Grant Admin to AdminTest;" +
 			"Grant Marketing to MarketingTest;" +
 			"Grant Customer to CustomerTest;" +
-			"Grant VehicleLookup to VehicleLookupTest;";
+			"Grant VehicleLookup to VehicleLookupTest;" +
+			"Grant VehicleLookup to vlt;";
 			Statement stmt = conn.createStatement();
 			stmt.execute(access);
 		} catch (SQLException e) {

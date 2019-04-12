@@ -48,7 +48,6 @@ public class Customer {
     public void dealerLookup(){
         Scanner console = new Scanner(System.in);
         boolean loop = true;
-        int parameters = 0;
 
         ArrayList<String> stringParams = new ArrayList<>();
         for (String s : stringSearchParams) {
@@ -63,6 +62,7 @@ public class Customer {
         String query = "SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM dealer NATURAL JOIN owner WHERE ";
 
         while(loop) {
+            int parameters = 0;
             boolean paramLoop = true;
 
             // General message
@@ -150,7 +150,7 @@ public class Customer {
             while(result.next()) {
                 // Dealer name
                 System.out.printf("%s\n",
-                        result.getInt("NAME"));
+                        result.getString("NAME"));
 
                 // Location info
                 System.out.printf("\tLocated at %d %s %s, %s %d\n",

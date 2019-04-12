@@ -12,8 +12,8 @@ public class Marketing {
     private Connection conn;
 
     private final String[] saleStringSearchParams = {"date"};
-    private final String[] saleIntegerSearchParams = {"buyer id", "seller id"};
-    private final String[] customerStringSearchParams = {"first name", "last name", "state", "city"};
+    private final String[] saleIntegerSearchParams = {"buyer_id", "seller_id"};
+    private final String[] customerStringSearchParams = {"first_name", "last_name", "state", "city"};
     private final String[] customerIntegerSearchParams = {"id", "income", "zip"};
 
     public Marketing(Connection conn){
@@ -27,7 +27,7 @@ public class Marketing {
         while(loop) {
             System.out.println("What would you like to search for? Customers or Sales?");
             System.out.println("If you would like to exit type 'exit'.");
-            String search = console.next();
+            String search = console.nextLine();
             search = search.toLowerCase();
             switch (search) {
                 case "exit":
@@ -192,6 +192,10 @@ public class Marketing {
                 String att = console.nextLine();
                 att = att.toLowerCase();
 
+                // if att is 'first name' change to 'first_name'
+                if(att.contains(" "))
+                    att = att.substring(0, att.indexOf(" ")) + "_" + att.substring(att.indexOf(" ") + 1, att.length());
+
                 // exit?
                 if(att.equals("exit")) {
                     loop = false;
@@ -219,11 +223,7 @@ public class Marketing {
                     if(value.contains("'"))
                         value = value.substring(0, value.indexOf("'")) + "'" + value.substring(value.indexOf("'"), value.length());
 
-                    // if att is 'first name' change to 'first_name'
-                    if(att.contains(" "))
-                        att = att.substring(0, value.indexOf(" ")) + att.substring(att.indexOf(" ") + 1, att.length());
-
-                    if (stringParams.contains(att)) {
+                    if(stringParams.contains(att)) {
                         query += (parameters > 1 ? "and " : "") + att + " like '%" + value + "%'";
 
                     } else {
