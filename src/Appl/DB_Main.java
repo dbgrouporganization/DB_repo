@@ -62,7 +62,8 @@ public class DB_Main {
 					"((((Vehicle inner join Options on Vehicle.OPTIONS_ID = Options.Options_ID) inner join Model on "+
 					"(Vehicle.Model = Model.Model and Vehicle.year = Model.Year)) inner join Owner on "+
 					"(Vehicle.OWNER_ID = Owner.OWNER_ID)) inner join Dealer on (Owner.Owner_ID  = Dealer.Owner_ID));";
-			String market = "create view Marketing as select  from Owner natural join Customer inner join Sale on Owner.Owner_ID = Sale.Buyer_ID;";
+			String market = "create view Marketing as select * from Owner natural join Customer inner join Sale on Owner.Owner_ID = Sale.Buyer_ID order by date;";
+			// String customer = "create view DealerLookup as select name, addr_num, addr_street, addr_city, addr_state, addr_zip from owner natural join dealer;";
 			/**
 			 * Create a query and execute
 			 */
@@ -88,7 +89,7 @@ public class DB_Main {
 			"Create Role Marketing;"+
 			"GRANT SELECT ON Dealer, Owner, VehicleLookup to Customer;"+
 			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
-			"GRANT ALL ON CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP  TO Admin;" +
+			"GRANT ALL ON CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP TO Admin;" +
 			"GRANT SELECT on CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP To Marketing;" +
 			"Grant Admin to AdminTest;" +
 			"Grant Marketing to MarketingTest;" +

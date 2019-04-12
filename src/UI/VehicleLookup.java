@@ -161,7 +161,6 @@ public class VehicleLookup {
                             result.getString("STATE"),
                             result.getInt("ZIP"));
             }
-
         } catch (SQLException e) {
             //e.printStackTrace();
         }

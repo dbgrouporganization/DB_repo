@@ -1,15 +1,18 @@
 package UI;
 
-import Appl.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Customer {
 
     private Connection conn;
+
+    private final String[] stringSearchParams = {"name", "city", "state"};
+    private final String[] integerSearchParams = {"zip"};
 
     public Customer(Connection conn){
         this.conn = conn;
@@ -42,6 +45,127 @@ public class Customer {
         }
     }
 
+    public void dealerLookup(){
+        Scanner console = new Scanner(System.in);
+        boolean loop = true;
+        int parameters = 0;
+
+        ArrayList<String> stringParams = new ArrayList<>();
+        for (String s : stringSearchParams) {
+            stringParams.add(s);
+        }
+
+        ArrayList<String> integerParams = new ArrayList<>();
+        for (String i : integerSearchParams) {
+            integerParams.add(i);
+        }
+
+        String query = "SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM dealer NATURAL JOIN owner WHERE ";
+
+        while(loop) {
+            boolean paramLoop = true;
+
+            // General message
+            System.out.println("What would you like to search by?");
+            System.out.println("You can exit by typing 'exit'.");
+
+            while(paramLoop) {
+                if(parameters > 0) {
+                    System.out.println("What else would you like to search by?");
+                }
+                System.out.println("Your options are Name, City, State, or Zip.");
+                System.out.println("To make the search, enter 'search'.");
+
+                // what user wants to search by
+                String att = console.nextLine();
+                att = att.toLowerCase();
+
+                // exit?
+                if(att.equals("exit")) {
+                    loop = false;
+                    paramLoop = false;
+                    continue;
+                }
+
+                // run search?
+                else if(att.equals("search")) {
+                    paramLoop = false;
+                    continue;
+                }
+
+                // valid search parameter?
+                else if (!stringParams.contains(att) && !integerParams.contains(att)) {
+                    System.out.println("'" + att + "' is not a valid search parameter.");
+                    continue;
+                }
+
+                else {
+                    parameters++;
+
+                    System.out.println("Enter the " + att + " you would like to find: ");
+
+                    String value = console.nextLine();
+
+                    // if attribute value has an apostrophe, duplicate it for sql query
+                    if(value.contains("'")) {
+                        value = value.substring(0, value.indexOf("'")) + "'" + value.substring(value.indexOf("'"), value.length());
+                    }
+
+                    if(stringParams.contains(att)) {
+                        if(!att.equals("name"))
+                            att = "addr_" + att;
+                        query += (parameters > 1 ? "and " : "") + att + " like '%" + value + "%'";
+
+                    } else {
+                        if(!att.equals("name"))
+                            att = "addr_" + att;
+                        query += (parameters > 1 ? "and " : "") + att + " = " + value;
+                    }
+                }
+            }
+            if(!loop) continue;
+            // search parameters have been defined
+
+            query += ";";
+            executeDealerQuery(query);
+
+            //Keep going?
+            System.out.println("Would you like to make another search? (y/n)");
+            if (console.nextLine().equals("n"))
+                loop = false;
+        }
+
+        // no more searches to be made
+    }
+
+    /**
+     * Execute the query and display the results.
+     */
+    public void executeDealerQuery(String query) {
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery(query);
+
+            result.beforeFirst();
+            while(result.next()) {
+                // Dealer name
+                System.out.printf("%s\n",
+                        result.getInt("NAME"));
+
+                // Location info
+                System.out.printf("\tLocated at %d %s %s, %s %d\n",
+                        result.getInt("ADDR_NUM"),
+                        result.getString("ADDR_STREET"),
+                        result.getString("ADDR_CITY"),
+                        result.getString("ADDR_STATE"),
+                        result.getInt("ADDR_ZIP"));
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+        }
+    }
+
+    /*
     public void dealerLookup(){
         Scanner console = new Scanner(System.in);
         boolean loop = true;
@@ -146,4 +270,5 @@ public class Customer {
                 loop = false;
         }
     }
+    */
 }
