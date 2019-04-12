@@ -15,7 +15,7 @@ public class VehicleLookup {
                                             "OPTIONS_ID", "COLOR", "ENGINE", "TRANSMISSION", "NAVIGATION",
                                             "BLUETOOTH", "HEATED_SEATS", "ROOF_RACK", "PRICE"};
 
-    private final String[] stringSearchParams = {"model", "brand", "dealer", "state"};
+    private final String[] stringSearchParams = {"model", "brand", "dealer", "city", "state"};
     private final String[] integerSearchParams = {"vin", "year", "zip"};
 
     public VehicleLookup(Connection conn) {
@@ -84,6 +84,11 @@ public class VehicleLookup {
 
                     String value = console.nextLine();
 
+                    // if attribute value has an apostrophe, duplicate it for sql query
+                    if(value.contains("'")) {
+                        value = value.substring(0, value.indexOf("'")) + "'" + value.substring(value.indexOf("'"), value.length());
+                    }
+
                     if (stringParams.contains(att)) {
                         query += (parameters > 1 ? "and " : "") + att + " like '%" + value + "%'";
 
@@ -100,7 +105,7 @@ public class VehicleLookup {
 
             //Keep going?
             System.out.println("Would you like to make another search? (y/n)");
-            if (console.next().equals("n"))
+            if (console.nextLine().equals("n"))
                 queryLoop = false;
         }
 

@@ -3,6 +3,7 @@ package UI;
 import Appl.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,7 +14,6 @@ public class Customer {
     public Customer(Connection conn){
         this.conn = conn;
         System.out.println("\nWelcome Customer!");
-        customerStart();
     }
 
     public void customerStart(){
@@ -54,14 +54,14 @@ public class Customer {
         }
 
         // join with owner on owner_id
-        String naturalJoin = "NATURAL JOIN ";
+        String naturalJoin = "NATURAL JOIN owner ";
 
         // ArrayList of where clauses
         ArrayList<String> whereClauses = new ArrayList<>();
 
         while(loop) {
             System.out.println("Would you like to search by name, city, state or zip?");
-            String search = console.next();
+            String search = console.nextLine();
             search = search.toLowerCase();
             switch (search) {
                 case "exit":
@@ -69,12 +69,7 @@ public class Customer {
                     return;
                 case "name":
                     System.out.println("Please enter the dealer's name to search for:");
-                    String name = console.next();
-                    /*
-                        example query:
-                        SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM dealer
-                        NATURAL JOIN owner WHERE name = 'Owen''s Imports';
-                    */
+                    String name = console.nextLine();
 
                     // if name of dealer has an apostrophe, duplicate it for sql query
                     if(name.contains("'")) {
@@ -95,12 +90,7 @@ public class Customer {
                     break;
                 case "city":
                     System.out.println("Please enter the dealer's city to search for:");
-                    String city = console.next();
-                    /*
-                        example query:
-                        SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM dealer
-                        NATURAL JOIN owner WHERE addr_city = 'Rochester';
-                    */
+                    String city = console.nextLine();
 
                     // make sure where clause array is empty then add new where clause for sql query
                     if(!whereClauses.isEmpty()) {
@@ -116,12 +106,7 @@ public class Customer {
                     break;
                 case "state":
                     System.out.println("Please enter the dealer's state to search for:");
-                    String state = console.next();
-                    /*
-                        example query:
-                        SELECT name, addr_num, addr_street, addr_city, addr_state, addr_zip FROM dealer
-                        NATURAL JOIN owner WHERE addr_state = 'NY';
-                    */
+                    String state = console.nextLine();
 
                     // make sure where clause array is empty then add new where clause for sql query
                     if(!whereClauses.isEmpty()) {
@@ -135,79 +120,30 @@ public class Customer {
                     ResultSet stateResults = DealerTable.queryDealerTable(conn, columns, naturalJoin, whereClauses);
                     DealerTable.printDealerQueryResults(stateResults);
                     break;
+                case "zip":
+                    System.out.println("Please enter the dealer's zip to search for:");
+                    String zipString = console.next();
+                    int zip = Integer.parseInt(zipString);
+
+                    // make sure where clause array is empty then add new where clause for sql query
+                    if(!whereClauses.isEmpty()) {
+                        for(String s : whereClauses) {
+                            whereClauses.remove(s);
+                        }
+                    }
+                    whereClauses.add("addr_zip = " + zip);
+
+                    // query and print results
+                    ResultSet zipResults = DealerTable.queryDealerTable(conn, columns, naturalJoin, whereClauses);
+                    DealerTable.printDealerQueryResults(zipResults);
+                    break;
                 default:
                     System.out.println("Invalid input. Please try again.");
                     break;
             }
+            System.out.println("Would you like to make another search? (y/n)");
+            if(console.nextLine().equals("n"))
+                loop = false;
         }
-    }
-
-    public void modelLookup(){
-        Scanner console = new Scanner(System.in);
-        System.out.println("Please enter the Model you would like to search for:");
-        String model = console.next();
-        System.out.println("Please enter the Year you would like to search for:");
-        int year = console.nextInt();
-        /*
-            example query:
-            SELECT vin, vehicle.model, vehicle.year, price, brand, bodystyle, color, engine, transmission, navigation, bluetooth,
-            heated_seats, roof_rack, name FROM vehicle NATURAL JOIN model INNER JOIN dealer ON vehicle.owner_id = dealer.owner_id
-            INNER JOIN options ON vehicle.options_id = options.options_id WHERE vehicle.model = 'Aventador' AND vehicle.year = 2016;
-        */
-
-        // add attributes to ArrayList for SELECT
-        String attributes[] = { "vin", "vehicle.model", "vehicle.year", "price", "brand", "bodystyle", "color", "engine",
-                                "transmission", "navigation", "bluetooth", "heated_seats", "roof_rack", "name" };
-        ArrayList<String> columns = new ArrayList<>();
-        for(String s : attributes) {
-            columns.add(s);
-        }
-
-        // natural join with model, inner join with dealer on owner_id, and inner join with options on options_id
-        String join = "NATURAL JOIN model INNER JOIN dealer ON vehicle.owner_id = dealer.owner_id INNER JOIN options ON vehicle.options_id = options.options_id ";
-
-        // create where clause for sql query
-        ArrayList<String> whereClauses = new ArrayList<>();
-        whereClauses.add("vehicle.model = '" + model + "'");
-        whereClauses.add("vehicle.year = " + year);
-
-        // query and print results
-        ResultSet modelResults = VehicleTable.queryVehicleTable(conn, columns, join, whereClauses);
-        VehicleTable.printVehicleQueryResults(modelResults);
-    }
-
-    public void vinLookup(){
-        Scanner console = new Scanner(System.in);
-        System.out.println("Please enter the vin to search for:");
-        int vin = console.nextInt();
-        /*
-            example query:
-            SELECT * FROM VehicleLookup WHERE vin = 10134362;
-         */
-        /*
-            example query:
-            SELECT vin, vehicle.model, vehicle.year, price, brand, bodystyle, color, engine, transmission, navigation, bluetooth,
-            heated_seats, roof_rack, name FROM vehicle NATURAL JOIN model INNER JOIN dealer ON vehicle.owner_id = dealer.owner_id
-            INNER JOIN options ON vehicle.options_id = options.options_id WHERE vin = 10134362;
-        */
-
-        // add attributes to ArrayList for SELECT
-        String attributes[] = { "vin", "vehicle.model", "vehicle.year", "price", "brand", "bodystyle", "color", "engine",
-                "transmission", "navigation", "bluetooth", "heated_seats", "roof_rack", "name" };
-        ArrayList<String> columns = new ArrayList<>();
-        for(String s : attributes) {
-            columns.add(s);
-        }
-
-        // natural join with model, inner join with dealer on owner_id, and inner join with options on options_id
-        String join = "NATURAL JOIN model INNER JOIN dealer ON vehicle.owner_id = dealer.owner_id INNER JOIN options ON vehicle.options_id = options.options_id ";
-
-        // create where clause for sql query
-        ArrayList<String> whereClauses = new ArrayList<>();
-        whereClauses.add("vin = " + vin);
-
-        // query and print results
-        ResultSet vinResults = VehicleTable.queryVehicleTable(conn, columns, join, whereClauses);
-        VehicleTable.printVehicleQueryResults(vinResults);
     }
 }
