@@ -69,7 +69,6 @@ public class StartUp {
     private void adminStart(){
         Admin admin = new Admin(conn);
         admin.askQuery();
-        System.out.println("You will now be logged out of the database.");
         closeConn();
     }
 

@@ -91,7 +91,7 @@ public class DB_Main {
 			"GRANT SELECT ON Dealer, Owner, VehicleLookup to Customer;"+
 			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
 			"GRANT ALL ON CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP TO Admin;" +
-			"GRANT SELECT on CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP To Marketing;" +
+			"GRANT SELECT on Marketing, CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP To Marketing;" +
 			"Grant Admin to AdminTest;" +
 			"Grant Marketing to MarketingTest;" +
 			"Grant Customer to CustomerTest;" +

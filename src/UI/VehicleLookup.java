@@ -123,7 +123,7 @@ public class VehicleLookup {
             result.beforeFirst();
             while(result.next()) {
                 // Model info
-                System.out.printf("%d %s %s $%d\n",
+                System.out.printf("\n%d %s %s $%d\n",
                             result.getInt("YEAR"),
                             result.getString("BRAND"),
                             result.getString("MODEL"),
@@ -140,17 +140,19 @@ public class VehicleLookup {
                 String optionsStr = "Options: ";
                 int options = 0;
 
-                if(result.getBoolean("NAVIGATION"))
+                if(result.getBoolean("NAVIGATION")) {
                     optionsStr += "GPS";
+                    options++;
+                }
 
                 if(result.getBoolean("BLUETOOTH"))
-                    optionsStr += (options > 0 ? ", " : "") + "Bluetooth" ;
+                    optionsStr += (options++ > 0 ? ", " : "") + "Bluetooth" ;
 
                 if(result.getBoolean("HEATED_SEATS"))
-                    optionsStr += (options > 0 ? ", " : "") + "Heated Seats" ;
+                    optionsStr += (options++ > 0 ? ", " : "") + "Heated Seats" ;
 
                 if(result.getBoolean("ROOF_RACK"))
-                    optionsStr +=(options > 0 ? ", " : "") + "Roof Rack" ;
+                    optionsStr +=(options++ > 0 ? ", " : "") + "Roof Rack" ;
 
                 System.out.printf("\t%s\n", optionsStr);
 

@@ -50,6 +50,7 @@ public class Marketing {
         Scanner console = new Scanner(System.in);
         boolean loop = true;
         boolean paramLoop = true;
+        boolean between = false;
         int parameters = 0;
 
         ArrayList<String> stringParams = new ArrayList<>();
@@ -62,7 +63,7 @@ public class Marketing {
             integerParams.add(i);
         }
 
-        String query = "SELECT date, vin, buyer_id, first_name, last_name, seller_id, name FROM marketing WHERE ";
+        String query = "SELECT date, vin, buyer_id, first_name, last_name, seller_id FROM marketing WHERE ";
 
         while(loop) {
             // General message
@@ -80,6 +81,9 @@ public class Marketing {
                 String att = console.nextLine();
                 att = att.toLowerCase();
 
+                if(att.equals("date"))
+                    between = true;
+
                 // exit?
                 if(att.equals("exit")) {
                     loop = false;
@@ -91,6 +95,7 @@ public class Marketing {
                     paramLoop = false;
                 }
 
+
                 // valid search parameter?
                 else if (!stringParams.contains(att) && !integerParams.contains(att)) {
                     System.out.println("'" + att + "' is not a valid search parameter.");
@@ -99,20 +104,33 @@ public class Marketing {
                 else {
                     parameters++;
 
-                    System.out.println("Enter the " + att + " you would like to find: ");
-
-                    String value = console.nextLine();
-
-                    // if attribute value has an apostrophe, duplicate it for sql query
-                    if(value.contains("'")) {
-                        value = value.substring(0, value.indexOf("'")) + "'" + value.substring(value.indexOf("'"), value.length());
-                    }
-
-                    if (stringParams.contains(att)) {
-                        query += (parameters > 1 ? "and " : "") + att + " like '%" + value + "%'";
+                    if(between){
+                        System.out.println("Enter the range of dates you would look to search. Example  YYYY-MM-DD");
+                        System.out.print("Starting at: ");
+                        String start = console.nextLine();
+                        System.out.print("Ending at: ");
+                        String end = console.nextLine();
+                        System.out.println();
+                        query += (parameters > 1 ? " and " : "") + att + " between " + start + " and " + end;
+                        between = false;
 
                     } else {
-                        query += (parameters > 1 ? "and " : "") + att + " = " + value;
+
+                        System.out.println("Enter the " + att + " you would like to find: ");
+
+                        String value = console.nextLine();
+
+                        // if attribute value has an apostrophe, duplicate it for sql query
+                        if (value.contains("'")) {
+                            value = value.substring(0, value.indexOf("'")) + "'" + value.substring(value.indexOf("'"), value.length());
+                        }
+
+                        if (stringParams.contains(att)) {
+                            query += (parameters > 1 ? "and " : "") + att + " like '%" + value + "%'";
+
+                        } else {
+                            query += (parameters > 1 ? "and " : "") + att + " = " + value;
+                        }
                     }
                 }
             }
@@ -152,7 +170,7 @@ public class Marketing {
                         result.getString("LAST_NAME"));
             }
         } catch (SQLException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -160,6 +178,7 @@ public class Marketing {
         Scanner console = new Scanner(System.in);
         boolean loop = true;
         boolean paramLoop = true;
+        boolean between = false;
         int parameters = 0;
 
         ArrayList<String> stringParams = new ArrayList<>();
@@ -173,8 +192,8 @@ public class Marketing {
         }
 
         // First Name, Last Name, ID, State, City, Zip
-        String query = "SELECT owner_id, first_name, last_name, addr_num, addr_street, addr_city, addr_state, " +
-                "addr_zip, phone, gender, income FROM customer NATURAL JOIN owner WHERE ";
+        String query = "SELECT Customer.owner_id, first_name, last_name, addr_num, addr_street, addr_city, addr_state, " +
+                "addr_zip, phone, gender, income FROM customer Natural Join owner WHERE ";
 
         while(loop) {
             // General message
@@ -196,6 +215,9 @@ public class Marketing {
                 if(att.contains(" "))
                     att = att.substring(0, att.indexOf(" ")) + "_" + att.substring(att.indexOf(" ") + 1, att.length());
 
+                if(att.equals("income"))
+                    between = true;
+
                 // exit?
                 if(att.equals("exit")) {
                     loop = false;
@@ -215,19 +237,29 @@ public class Marketing {
                 else {
                     parameters++;
 
-                    System.out.println("Enter the " + att + " you would like to find: ");
-
-                    String value = console.nextLine();
-
-                    // if attribute value has an apostrophe, duplicate it for sql query
-                    if(value.contains("'"))
-                        value = value.substring(0, value.indexOf("'")) + "'" + value.substring(value.indexOf("'"), value.length());
-
-                    if(stringParams.contains(att)) {
-                        query += (parameters > 1 ? "and " : "") + att + " like '%" + value + "%'";
-
+                    if(between){
+                        System.out.println("Enter the range of " + att + " you would like to find: ");
+                        System.out.print("Starting at: ");
+                        String start = console.nextLine();
+                        System.out.print("Ending at: ");
+                        String end = console.nextLine();
+                        System.out.println();
+                        query += (parameters > 1 ? " and " : "") + att + " between " + start + " and " + end;
+                        between = false;
                     } else {
-                        query += (parameters > 1 ? "and " : "") + att + " = " + value;
+                        System.out.println("Enter the " + att + " you would like to find: ");
+
+                        String value = console.nextLine();
+
+                        // if attribute value has an apostrophe, duplicate it for sql query
+                        if (value.contains("'"))
+                            value = value.substring(0, value.indexOf("'")) + "'" + value.substring(value.indexOf("'"), value.length());
+
+                        if (stringParams.contains(att)) {
+                            query += (parameters > 1 ? " and " : "") + att + " like '%" + value + "%'";
+                        } else {
+                            query += (parameters > 1 ? " and " : "") + att + " = " + value;
+                        }
                     }
                 }
 
@@ -239,9 +271,9 @@ public class Marketing {
             executeCustomerQuery(query);
 
             //Keep going?
-            System.out.println("Would you like to make another search? (y/n)");
+            System.out.println("Would you like to make another Customer search? (y/n)");
             if (console.nextLine().equals("n"))
-                loop = false;
+                break;
 
             // no more searches to be made
         }
@@ -279,7 +311,7 @@ public class Marketing {
                         result.getInt("ADDR_ZIP"));
             }
         } catch (SQLException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
