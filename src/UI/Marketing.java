@@ -162,7 +162,7 @@ public class Marketing {
                 // VIN and ID
                 System.out.printf("VIN: %d Date: %s\n",
                         result.getInt("VIN"),
-                        result.getString("DATE"));
+                        result.getDate("DATE"));
 
                 // Buyer info
                 System.out.printf("Buyer: %s %s\n",
