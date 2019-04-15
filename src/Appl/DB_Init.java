@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 
  * @author omg
  */
-public class DB_Main {
+public class DB_Init {
 
 	//The connection to the database
 	private Connection conn;
@@ -88,9 +88,9 @@ public class DB_Main {
 			"Create Role VehicleLookup;"+
 			"Create Role Customer;"+
 			"Create Role Marketing;"+
-			"GRANT SELECT ON Dealer, Owner, VehicleLookup to Customer;"+
-			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
 			"GRANT ALL ON CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP TO Admin;" +
+			"GRANT SELECT ON VehicleLookup TO VehicleLookup;"+
+			"GRANT SELECT ON Dealer, Owner, VehicleLookup to Customer;"+
 			"GRANT SELECT on Marketing, CUSTOMER, DEALER, MODEL, OPTIONS, OWNER, SALE, VEHICLE, VEHICLELOOKUP To Marketing;" +
 			"Grant Admin to AdminTest;" +
 			"Grant Marketing to MarketingTest;" +
@@ -111,7 +111,7 @@ public class DB_Main {
 	 */
 	public static void main(String[] args) {
 
-		DB_Main demo = new DB_Main();
+		DB_Init demo = new DB_Init();
 		
 		// Hard drive location of the database
 		String location = "./DB/Automobile";
