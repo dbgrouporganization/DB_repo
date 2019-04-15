@@ -111,7 +111,7 @@ public class Marketing {
                         System.out.print("Ending at: ");
                         String end = console.nextLine();
                         System.out.println();
-                        query += (parameters > 1 ? " and " : "") + att + " between " + start + " and " + end;
+                        query += (parameters > 1 ? " and " : "") + att + " between '" + start + "' and '" + end + "'";
                         between = false;
 
                     } else {
@@ -166,8 +166,10 @@ public class Marketing {
 
                 // Buyer info
                 System.out.printf("Buyer: %s %s\n",
-                        result.getInt("FIRST_NAME"),
+                        result.getString("FIRST_NAME"),
                         result.getString("LAST_NAME"));
+
+                System.out.println();
             }
         } catch (SQLException e) {
             e.printStackTrace();
