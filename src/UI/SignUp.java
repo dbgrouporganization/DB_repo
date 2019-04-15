@@ -30,7 +30,7 @@ public class SignUp {
         Scanner console = new Scanner(System.in);
         System.out.print("Please enter a username: ");
         String user = console.nextLine();
-        System.out.println("Please enter a password: ");
+        System.out.print("Please enter a password: ");
         String pass = console.nextLine();
         boolean loop = true;
         while (loop) {
