@@ -127,7 +127,7 @@ public class DB_Main {
 			 * Vehicle Table Population
 			 */
 			VehicleTable.createVehicleTable(demo.getConnection());
-			VehicleTable.populateVehicleTableFromCSV(demo.getConnection(),"./csv files/vehicle.csv");
+			VehicleTable.populateVehicleTableFromCSV(demo.getConnection(),"./csv/vehicle.csv");
 			//Just displays the table
 			System.out.println("Print results of SELECT * FROM vehicle");
 			VehicleTable.printVehicleTable(demo.getConnection());
@@ -136,7 +136,7 @@ public class DB_Main {
 			 * Dealer Table Population
 			 */
 			DealerTable.createDealerTable(demo.getConnection());
-			DealerTable.populateDealerTableFromCSV(demo.getConnection(),"./csv files/dealer.csv");
+			DealerTable.populateDealerTableFromCSV(demo.getConnection(),"./csv/dealer.csv");
 			//Just displays the table
 			System.out.println("\n\nPrint results of SELECT * FROM dealer");
 			DealerTable.printDealerTable(demo.getConnection());
@@ -145,7 +145,7 @@ public class DB_Main {
 			 * Model Table Population
 			 */
 			ModelTable.createModelTable(demo.getConnection());
-			ModelTable.populateModelTableFromCSV(demo.getConnection(),"./csv files/model.csv");
+			ModelTable.populateModelTableFromCSV(demo.getConnection(),"./csv/model.csv");
 			//Just displays the table
 			System.out.println("\n\nPrint results of SELECT * FROM model");
 			ModelTable.printModelTable(demo.getConnection());
@@ -154,7 +154,7 @@ public class DB_Main {
 			 * Customer Table Population
 			 */
 			CustomerTable.createCustomerTable(demo.getConnection());
-			CustomerTable.populateCustomerTableFromCSV(demo.getConnection(),"./csv files/customer.csv");
+			CustomerTable.populateCustomerTableFromCSV(demo.getConnection(),"./csv/customer.csv");
 			//Just displays the table
 			System.out.println("\n\nPrint results of SELECT * FROM customer");
 			CustomerTable.printCustomerTable(demo.getConnection());
@@ -163,7 +163,7 @@ public class DB_Main {
 			 * Options Table Population
 			 */
 			OptionsTable.createOptionsTable(demo.getConnection());
-			OptionsTable.populateOptionsTableFromCSV(demo.getConnection(),"./csv files/options.csv");
+			OptionsTable.populateOptionsTableFromCSV(demo.getConnection(),"./csv/options.csv");
 			//Just displays the table
 			System.out.println("\n\nPrint results of SELECT * FROM options");
 			OptionsTable.printOptionsTable(demo.getConnection());
@@ -172,7 +172,7 @@ public class DB_Main {
 			 * Sale Table Population
 			 */
 			SaleTable.createSaleTable(demo.getConnection());
-			SaleTable.populateSaleTableFromCSV(demo.getConnection(),"./csv files/sale.csv");
+			SaleTable.populateSaleTableFromCSV(demo.getConnection(),"./csv/sale.csv");
 			//Just displays the table
 			System.out.println("\n\nPrint results of SELECT * FROM sale");
 			SaleTable.printSaleTable(demo.getConnection());
@@ -181,7 +181,7 @@ public class DB_Main {
 			 * Owner Table Population
 			 */
 			OwnerTable.createOwnerTable(demo.getConnection());
-			OwnerTable.populateOwnerTableFromCSV(demo.getConnection(),"./csv files/owner.csv");
+			OwnerTable.populateOwnerTableFromCSV(demo.getConnection(),"./csv/owner.csv");
 			//Just displays the table
 			System.out.println("\n\nPrint results of SELECT * FROM owner");
 			OwnerTable.printOwnerTable(demo.getConnection());
