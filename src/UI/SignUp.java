@@ -6,11 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class SignIn {
+public class SignUp {
 
     Connection conn;
 
-    public SignIn(){
+    public SignUp(){
         try {
             //This needs to be on the front of your location
             String url = "jdbc:h2:" + "./DB/Automobile";
@@ -30,7 +30,7 @@ public class SignIn {
         Scanner console = new Scanner(System.in);
         System.out.print("Please enter a username: ");
         String user = console.nextLine();
-        System.out.println("Please enter a password: ");
+        System.out.print("Please enter a password: ");
         String pass = console.nextLine();
         boolean loop = true;
         while (loop) {

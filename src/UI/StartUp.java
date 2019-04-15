@@ -22,7 +22,7 @@ public class StartUp {
         String action = console.nextLine();
         action = action.toLowerCase();
         if(action.equals("s")) {
-            SignIn s = new SignIn();
+            SignUp s = new SignUp();
             s.newUser();
             System.out.println("You must now Login.");
         }
